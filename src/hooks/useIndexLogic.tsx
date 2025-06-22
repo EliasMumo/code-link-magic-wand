@@ -1,0 +1,139 @@
+
+import { useState, useEffect } from 'react';
+import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/useAuth';
+import { useProperties } from '@/hooks/useProperties';
+import { useFavorites } from '@/hooks/useFavorites';
+import { useNavigate } from 'react-router-dom';
+
+export const useIndexLogic = () => {
+  const { toast } = useToast();
+  const { user, loading: authLoading } = useAuth();
+  const { properties, loading: propertiesLoading, userRole, addProperty, incrementPropertyViews } = useProperties();
+  const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
+  const navigate = useNavigate();
+  
+  const [userMode, setUserMode] = useState<'renter' | 'landlord'>('renter');
+  const [currentView, setCurrentView] = useState<'home' | 'search' | 'detail' | 'add-property'>('home');
+  const [selectedProperty, setSelectedProperty] = useState<any>(null);
+  const [searchFilters, setSearchFilters] = useState({
+    location: '',
+    minPrice: 1000,
+    maxPrice: 3000,
+    bedrooms: 'any',
+    propertyType: 'any'
+  });
+  const [smartSearchResults, setSmartSearchResults] = useState<any[]>([]);
+  const [isSmartSearchActive, setIsSmartSearchActive] = useState(false);
+
+  useEffect(() => {
+    if (!authLoading && !user) {
+      navigate('/auth');
+    }
+  }, [user, authLoading, navigate]);
+
+  // Set user mode based on actual user role
+  useEffect(() => {
+    if (userRole === 'landlord') {
+      setUserMode('landlord');
+    } else {
+      setUserMode('renter');
+    }
+  }, [userRole]);
+
+  const handlePropertyClick = (property: any) => {
+    setSelectedProperty(property);
+    setCurrentView('detail');
+    incrementPropertyViews(property.id);
+  };
+
+  const handleAddProperty = async (propertyData: any) => {
+    const newProperty = await addProperty(propertyData);
+    if (newProperty) {
+      setCurrentView('home');
+    }
+  };
+
+  const handleSearch = () => {
+    setIsSmartSearchActive(false);
+    setSmartSearchResults([]);
+    toast({
+      title: "Search Updated!",
+      description: "Showing properties matching your criteria.",
+    });
+  };
+
+  const handleSmartSearchResults = (rankedProperties: any[], insights: string) => {
+    setSmartSearchResults(rankedProperties);
+    setIsSmartSearchActive(true);
+    toast({
+      title: "Smart Search Complete!",
+      description: insights,
+    });
+  };
+
+  const handleToggleFavorite = (propertyId: string) => {
+    if (isFavorite(propertyId)) {
+      removeFromFavorites(propertyId);
+    } else {
+      addToFavorites(propertyId);
+    }
+  };
+
+  const handleAddPropertyClick = () => {
+    if (userRole !== 'landlord') {
+      toast({
+        title: "Access Denied",
+        description: "Only landlords can list properties",
+        variant: "destructive",
+      });
+      return;
+    }
+    setCurrentView('add-property');
+  };
+
+  // Filter only available properties for featured properties
+  const availableProperties = properties.filter(p => p.is_available);
+  const displayProperties = isSmartSearchActive ? smartSearchResults : availableProperties;
+  const featuredProperties = availableProperties.slice(0, 3);
+  const landlordProperties = properties.filter(p => p.landlord_id === user?.id).slice(0, 6);
+
+  // Calculate statistics
+  const totalViews = properties.reduce((sum, property) => sum + (property.view_count || 0), 0);
+  const totalInquiries = properties.reduce((sum, property) => sum + (property.inquiry_count || 0), 0);
+
+  return {
+    // State
+    userMode,
+    currentView,
+    selectedProperty,
+    searchFilters,
+    authLoading,
+    propertiesLoading,
+    userRole,
+    user,
+    properties: displayProperties,
+    featuredProperties,
+    landlordProperties,
+    isSmartSearchActive,
+    
+    // Statistics
+    propertiesCount: properties.length,
+    availablePropertiesCount: availableProperties.length,
+    totalViews,
+    totalInquiries,
+    
+    // Setters
+    setCurrentView,
+    setSearchFilters,
+    
+    // Handlers
+    handlePropertyClick,
+    handleAddProperty,
+    handleSearch,
+    handleSmartSearchResults,
+    handleToggleFavorite,
+    handleAddPropertyClick,
+    isFavorite
+  };
+};

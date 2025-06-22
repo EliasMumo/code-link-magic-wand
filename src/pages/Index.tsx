@@ -1,12 +1,164 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import React from 'react';
+import Navigation from '@/components/Navigation';
+import PropertyGrid from '@/components/PropertyGrid';
+import SearchFilters from '@/components/SearchFilters';
+import PropertyDetail from '@/components/PropertyDetail';
+import AddPropertyForm from '@/components/AddPropertyForm';
+import HeroSection from '@/components/HeroSection';
+import StatsSection from '@/components/StatsSection';
+import FeaturedProperties from '@/components/FeaturedProperties';
+import LandlordDashboard from '@/components/LandlordDashboard';
+import { Home } from 'lucide-react';
+import { useIndexLogic } from '@/hooks/useIndexLogic';
 
 const Index = () => {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+  const {
+    userMode,
+    currentView,
+    selectedProperty,
+    searchFilters,
+    authLoading,
+    propertiesLoading,
+    userRole,
+    user,
+    properties,
+    featuredProperties,
+    landlordProperties,
+    isSmartSearchActive,
+    propertiesCount,
+    availablePropertiesCount,
+    totalViews,
+    totalInquiries,
+    setCurrentView,
+    setSearchFilters,
+    handlePropertyClick,
+    handleAddProperty,
+    handleSearch,
+    handleSmartSearchResults,
+    handleToggleFavorite,
+    handleAddPropertyClick,
+    isFavorite
+  } = useIndexLogic();
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <Home className="h-12 w-12 text-blue-600 mx-auto mb-4" />
+          <p className="text-gray-600">Loading...</p>
+        </div>
       </div>
+    );
+  }
+
+  if (!user) {
+    return null;
+  }
+
+  const handleBackFromSearch = () => {
+    setCurrentView('home');
+  };
+
+  // Get user's display name
+  const userName = user?.user_metadata?.first_name && user?.user_metadata?.last_name 
+    ? `${user.user_metadata.first_name} ${user.user_metadata.last_name}`
+    : user?.user_metadata?.first_name || null;
+
+  const renderContent = () => {
+    switch (currentView) {
+      case 'detail':
+        return (
+          <PropertyDetail 
+            property={selectedProperty} 
+            onBack={() => setCurrentView('home')}
+            onToggleFavorite={handleToggleFavorite}
+            isFavorite={isFavorite(selectedProperty?.id)}
+          />
+        );
+      case 'search':
+        return (
+          <div>
+            <SearchFilters 
+              filters={searchFilters}
+              onFiltersChange={setSearchFilters}
+              onSearch={handleSearch}
+              properties={properties}
+              onSmartSearchResults={handleSmartSearchResults}
+            />
+            <PropertyGrid 
+              properties={properties}
+              onPropertyClick={handlePropertyClick}
+              onToggleFavorite={handleToggleFavorite}
+              isFavorite={isFavorite}
+              loading={propertiesLoading}
+            />
+          </div>
+        );
+      case 'add-property':
+        return (
+          <AddPropertyForm 
+            onBack={() => setCurrentView('home')}
+            onSubmit={handleAddProperty}
+          />
+        );
+      default:
+        return (
+          <div>
+            <HeroSection 
+              userMode={userMode}
+              onSearchClick={() => setCurrentView('search')}
+              onAddPropertyClick={handleAddPropertyClick}
+            />
+
+            <StatsSection 
+              propertiesCount={propertiesCount}
+              availablePropertiesCount={availablePropertiesCount}
+              totalViews={totalViews}
+              totalInquiries={totalInquiries}
+            />
+
+            {userMode === 'renter' && (
+              <FeaturedProperties 
+                properties={featuredProperties}
+                onPropertyClick={handlePropertyClick}
+                onToggleFavorite={handleToggleFavorite}
+                isFavorite={isFavorite}
+                onViewAllClick={() => setCurrentView('search')}
+                loading={propertiesLoading}
+              />
+            )}
+
+            {userMode === 'landlord' && userRole === 'landlord' && (
+              <LandlordDashboard 
+                properties={landlordProperties}
+                onPropertyClick={handlePropertyClick}
+                onToggleFavorite={handleToggleFavorite}
+                isFavorite={isFavorite}
+                onAddPropertyClick={handleAddPropertyClick}
+                loading={propertiesLoading}
+              />
+            )}
+          </div>
+        );
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Navigation 
+        userMode={userMode}
+        onModeChange={() => {}} // Disabled since mode is now based on actual role
+        onSearchClick={() => setCurrentView('search')}
+        onAddPropertyClick={handleAddPropertyClick}
+        userRole={userRole}
+        currentView={currentView}
+        onBackClick={handleBackFromSearch}
+        userName={userName}
+      />
+      
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {renderContent()}
+      </main>
     </div>
   );
 };
