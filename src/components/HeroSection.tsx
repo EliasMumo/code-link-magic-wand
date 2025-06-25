@@ -11,10 +11,10 @@ interface HeroSectionProps {
 
 const HeroSection = ({ userMode, onSearchClick, onAddPropertyClick }: HeroSectionProps) => {
   return (
-    <div className="relative bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 rounded-2xl p-8 mb-8 overflow-hidden">
+    <div className="relative bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100 rounded-2xl p-8 mb-8 overflow-hidden">
       {/* Background decorative elements */}
-      <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-blue-200/20 to-purple-200/20 rounded-full blur-3xl -translate-y-32 translate-x-32"></div>
-      <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-purple-200/20 to-blue-200/20 rounded-full blur-3xl translate-y-24 -translate-x-24"></div>
+      <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-blue-200/20 to-blue-300/20 rounded-full blur-3xl -translate-y-32 translate-x-32"></div>
+      <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-blue-300/20 to-blue-200/20 rounded-full blur-3xl translate-y-24 -translate-x-24"></div>
       
       <div className="relative z-10">
         <div className="text-center mb-8">
@@ -27,7 +27,7 @@ const HeroSection = ({ userMode, onSearchClick, onAddPropertyClick }: HeroSectio
             <>
               <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
                 Find Your Perfect
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600"> Home</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-700"> Home</span>
               </h1>
               <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
                 Discover amazing rental properties that match your lifestyle and budget. 
@@ -37,7 +37,7 @@ const HeroSection = ({ userMode, onSearchClick, onAddPropertyClick }: HeroSectio
                 <Button 
                   onClick={onSearchClick} 
                   size="lg" 
-                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-3 text-lg"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg"
                 >
                   <Search className="h-5 w-5 mr-2" />
                   Start Searching
@@ -48,7 +48,7 @@ const HeroSection = ({ userMode, onSearchClick, onAddPropertyClick }: HeroSectio
             <>
               <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
                 List Your Property
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600"> Today</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-700"> Today</span>
               </h1>
               <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
                 Connect with quality tenants and maximize your rental income. 
@@ -58,7 +58,7 @@ const HeroSection = ({ userMode, onSearchClick, onAddPropertyClick }: HeroSectio
                 <Button 
                   onClick={onAddPropertyClick} 
                   size="lg" 
-                  className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white px-8 py-3 text-lg"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg"
                 >
                   <Plus className="h-5 w-5 mr-2" />
                   Add Property
@@ -71,7 +71,7 @@ const HeroSection = ({ userMode, onSearchClick, onAddPropertyClick }: HeroSectio
         {/* Feature highlights */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
           <div className="text-center p-6 bg-white/50 backdrop-blur-sm rounded-xl border border-white/20">
-            <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+            <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mx-auto mb-4">
               <Home className="h-6 w-6 text-white" />
             </div>
             <h3 className="font-semibold text-gray-900 mb-2">Quality Properties</h3>
@@ -79,7 +79,7 @@ const HeroSection = ({ userMode, onSearchClick, onAddPropertyClick }: HeroSectio
           </div>
           
           <div className="text-center p-6 bg-white/50 backdrop-blur-sm rounded-xl border border-white/20">
-            <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+            <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mx-auto mb-4">
               <Shield className="h-6 w-6 text-white" />
             </div>
             <h3 className="font-semibold text-gray-900 mb-2">Secure Platform</h3>
@@ -87,7 +87,7 @@ const HeroSection = ({ userMode, onSearchClick, onAddPropertyClick }: HeroSectio
           </div>
           
           <div className="text-center p-6 bg-white/50 backdrop-blur-sm rounded-xl border border-white/20">
-            <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+            <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mx-auto mb-4">
               <Users className="h-6 w-6 text-white" />
             </div>
             <h3 className="font-semibold text-gray-900 mb-2">Community Focused</h3>

@@ -27,7 +27,7 @@ const LandlordDashboard = ({
         <h2 className="text-2xl font-bold text-gray-900">Your Properties</h2>
         <Button 
           onClick={onAddPropertyClick}
-          className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800"
+          className="bg-blue-600 hover:bg-blue-700"
         >
           <Plus className="mr-2 h-4 w-4" />
           Add New Property
