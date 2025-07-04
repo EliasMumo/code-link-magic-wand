@@ -6,6 +6,7 @@ import { ArrowLeft } from 'lucide-react';
 import { PropertyFormData } from '@/types/property';
 import PropertyFormFields from '@/components/forms/PropertyFormFields';
 import ImageUpload from '@/components/forms/ImageUpload';
+import VideoUpload from '@/components/forms/VideoUpload';
 import ContactFields from '@/components/forms/ContactFields';
 import PropertyOptions from '@/components/forms/PropertyOptions';
 
@@ -32,6 +33,7 @@ const AddPropertyForm = ({ onBack, onSubmit }: AddPropertyFormProps) => {
 
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]);
+  const [videoUrls, setVideoUrls] = useState<string[]>([]);
 
   const handleInputChange = (key: string, value: string | boolean) => {
     setFormData(prev => ({ ...prev, [key]: value }));
@@ -58,6 +60,14 @@ const AddPropertyForm = ({ onBack, onSubmit }: AddPropertyFormProps) => {
   const removeImage = (index: number) => {
     setSelectedImages(prev => prev.filter((_, i) => i !== index));
     setImagePreviewUrls(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleVideoUrlAdd = (url: string) => {
+    setVideoUrls(prev => [...prev, url]);
+  };
+
+  const handleVideoUrlRemove = (index: number) => {
+    setVideoUrls(prev => prev.filter((_, i) => i !== index));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -89,6 +99,7 @@ const AddPropertyForm = ({ onBack, onSubmit }: AddPropertyFormProps) => {
         property_type: formData.propertyType,
         amenities: formData.amenities ? formData.amenities.split(',').map(a => a.trim()) : [],
         images: imageBase64Array,
+        videos: videoUrls.length > 0 ? videoUrls : null,
         is_furnished: formData.isFurnished,
         is_pet_friendly: formData.isPetFriendly,
         is_available: true,
@@ -127,6 +138,12 @@ const AddPropertyForm = ({ onBack, onSubmit }: AddPropertyFormProps) => {
               imagePreviewUrls={imagePreviewUrls}
               onImageUpload={handleImageUpload}
               onRemoveImage={removeImage}
+            />
+
+            <VideoUpload
+              videoUrls={videoUrls}
+              onVideoUrlAdd={handleVideoUrlAdd}
+              onVideoUrlRemove={handleVideoUrlRemove}
             />
 
             <ContactFields 

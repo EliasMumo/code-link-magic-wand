@@ -3,7 +3,7 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { MapPin, Bed, Bath, Home, Heart, GitCompare } from 'lucide-react';
+import { MapPin, Bed, Bath, Home, Heart, GitCompare, Video } from 'lucide-react';
 
 interface PropertyCardProps {
   property: {
@@ -16,6 +16,7 @@ interface PropertyCardProps {
     property_type: string;
     is_available: boolean;
     images?: string[];
+    videos?: string[];
   };
   onClick: (property: any) => void;
   onToggleFavorite?: (propertyId: string) => void;
@@ -107,6 +108,12 @@ const PropertyCard = ({
               <Bath className="h-4 w-4 mr-1" />
               <span>{property.bathrooms}</span>
             </div>
+            {property.videos && property.videos.length > 0 && (
+              <div className="flex items-center">
+                <Video className="h-4 w-4 mr-1 text-primary" />
+                <span>{property.videos.length}</span>
+              </div>
+            )}
           </div>
         </div>
         

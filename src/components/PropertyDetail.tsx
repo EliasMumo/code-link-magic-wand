@@ -4,10 +4,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { MapPin, Bed, Bath, Square, Calendar, Phone, Mail, ArrowLeft, Home, Heart, MessageCircle, Star } from 'lucide-react';
+import { MapPin, Bed, Bath, Square, Calendar, Phone, Mail, ArrowLeft, Home, Heart, MessageCircle, Star, Video } from 'lucide-react';
 import PropertyReviews from './PropertyReviews';
 import InquiryForm from './InquiryForm';
 import Map from './Map';
+import VideoPlayer from './VideoPlayer';
 
 interface PropertyDetailProps {
   property: any;
@@ -110,8 +111,14 @@ const PropertyDetail = ({ property, onBack, onToggleFavorite, isFavorite }: Prop
               </div>
               
               <Tabs defaultValue="description" className="w-full">
-                <TabsList className="grid w-full grid-cols-3">
+                <TabsList className={`grid w-full ${property.videos && property.videos.length > 0 ? 'grid-cols-4' : 'grid-cols-3'}`}>
                   <TabsTrigger value="description">Description</TabsTrigger>
+                  {property.videos && property.videos.length > 0 && (
+                    <TabsTrigger value="videos">
+                      <Video className="h-4 w-4 mr-1" />
+                      Videos
+                    </TabsTrigger>
+                  )}
                   <TabsTrigger value="reviews">Reviews</TabsTrigger>
                   <TabsTrigger value="map">Location</TabsTrigger>
                 </TabsList>
@@ -137,6 +144,26 @@ const PropertyDetail = ({ property, onBack, onToggleFavorite, isFavorite }: Prop
                     )}
                   </div>
                 </TabsContent>
+
+                {property.videos && property.videos.length > 0 && (
+                  <TabsContent value="videos" className="mt-4">
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-semibold mb-4">Property Videos</h3>
+                      <div className="grid gap-4">
+                        {property.videos.map((videoUrl: string, index: number) => (
+                          <div key={index} className="space-y-2">
+                            <h4 className="text-sm font-medium text-gray-700">Video {index + 1}</h4>
+                            <VideoPlayer
+                              videoUrl={videoUrl}
+                              title={`${property.title} - Video ${index + 1}`}
+                              className="w-full"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+                )}
                 
                 <TabsContent value="reviews" className="mt-4">
                   <PropertyReviews propertyId={property.id} />

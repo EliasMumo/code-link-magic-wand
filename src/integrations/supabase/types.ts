@@ -277,6 +277,7 @@ export type Database = {
           property_type: string
           title: string
           updated_at: string | null
+          videos: string[] | null
           view_count: number | null
         }
         Insert: {
@@ -301,6 +302,7 @@ export type Database = {
           property_type: string
           title: string
           updated_at?: string | null
+          videos?: string[] | null
           view_count?: number | null
         }
         Update: {
@@ -325,6 +327,7 @@ export type Database = {
           property_type?: string
           title?: string
           updated_at?: string | null
+          videos?: string[] | null
           view_count?: number | null
         }
         Relationships: [
