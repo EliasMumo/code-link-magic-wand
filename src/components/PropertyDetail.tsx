@@ -4,7 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { MapPin, Bed, Bath, Square, Calendar, Phone, Mail, ArrowLeft, Home, Heart, MessageCircle, Star, Video } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { MapPin, Bed, Bath, Square, Calendar, Phone, Mail, ArrowLeft, Home, Heart, MessageCircle, Star, Video, AlertTriangle } from 'lucide-react';
 import PropertyReviews from './PropertyReviews';
 import InquiryForm from './InquiryForm';
 import Map from './Map';
@@ -59,6 +60,13 @@ const PropertyDetail = ({ property, onBack, onToggleFavorite, isFavorite }: Prop
         <ArrowLeft className="h-4 w-4 mr-2" />
         Back to listings
       </Button>
+
+      <Alert className="mb-6 border-orange-200 bg-orange-50">
+        <AlertTriangle className="h-4 w-4 text-orange-600" />
+        <AlertDescription className="text-orange-800">
+          <strong>Safety Warning:</strong> Never pay any rent, deposit, or fees before physically visiting the property and meeting the landlord in person. Verify the landlord's identity and ensure the property is legitimate before making any payments.
+        </AlertDescription>
+      </Alert>
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
