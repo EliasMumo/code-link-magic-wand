@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
-import { Video, Plus, X } from 'lucide-react';
+import { Video, Upload, X, Loader2 } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/use-toast';
 
 interface VideoUploadProps {
   videoUrls: string[];
@@ -12,35 +14,112 @@ interface VideoUploadProps {
 }
 
 const VideoUpload = ({ videoUrls, onVideoUrlAdd, onVideoUrlRemove }: VideoUploadProps) => {
-  const [newVideoUrl, setNewVideoUrl] = React.useState('');
+  const [uploading, setUploading] = useState(false);
+  const { user } = useAuth();
+  const { toast } = useToast();
 
-  const handleAddVideo = () => {
-    if (newVideoUrl.trim() && videoUrls.length < 3) {
-      onVideoUrlAdd(newVideoUrl.trim());
-      setNewVideoUrl('');
+  const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0 || !user) {
+      return;
+    }
+
+    if (videoUrls.length >= 3) {
+      toast({
+        title: "Maximum videos reached",
+        description: "You can only upload 3 videos per property",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const file = files[0];
+    
+    // Check file size (max 100MB)
+    if (file.size > 100 * 1024 * 1024) {
+      toast({
+        title: "File too large",
+        description: "Video files must be under 100MB",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Check file type
+    if (!file.type.startsWith('video/')) {
+      toast({
+        title: "Invalid file type",
+        description: "Please upload a video file",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setUploading(true);
+
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${user.id}/${Date.now()}.${fileExt}`;
+
+      const { data, error } = await supabase.storage
+        .from('property-videos')
+        .upload(fileName, file);
+
+      if (error) throw error;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('property-videos')
+        .getPublicUrl(data.path);
+
+      onVideoUrlAdd(publicUrl);
+      
+      toast({
+        title: "Video uploaded",
+        description: "Your video has been uploaded successfully",
+      });
+
+      // Reset the input
+      e.target.value = '';
+    } catch (error: any) {
+      console.error('Error uploading video:', error);
+      toast({
+        title: "Upload failed",
+        description: error.message || "Failed to upload video",
+        variant: "destructive",
+      });
+    } finally {
+      setUploading(false);
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      handleAddVideo();
+  const handleRemoveVideo = async (index: number) => {
+    const videoUrl = videoUrls[index];
+    
+    // If it's a stored video, delete it from storage
+    if (videoUrl.includes('property-videos')) {
+      try {
+        const path = videoUrl.split('/property-videos/')[1];
+        await supabase.storage
+          .from('property-videos')
+          .remove([path]);
+      } catch (error) {
+        console.error('Error deleting video:', error);
+      }
     }
+    
+    onVideoUrlRemove(index);
   };
 
-  const isValidVideoUrl = (url: string) => {
-    const videoPatterns = [
-      /youtube\.com\/watch\?v=/,
-      /youtu\.be\//,
-      /vimeo\.com\//,
-      /instagram\.com\/p\//,
-      /facebook\.com/,
-      /tiktok\.com\/@[^\/]+\/video\//,
-      /\.mp4$/,
-      /\.webm$/,
-      /\.ogg$/
-    ];
-    return videoPatterns.some(pattern => pattern.test(url));
+  const isStoredVideo = (url: string) => {
+    return url.includes('property-videos');
+  };
+
+  const getVideoName = (url: string, index: number) => {
+    if (isStoredVideo(url)) {
+      const filename = url.split('/').pop();
+      return filename || `Video ${index + 1}`;
+    }
+    return `Video ${index + 1}`;
   };
 
   return (
@@ -48,21 +127,33 @@ const VideoUpload = ({ videoUrls, onVideoUrlAdd, onVideoUrlRemove }: VideoUpload
       <Label className="text-sm font-medium">Property Videos (Optional)</Label>
       
       <div className="flex gap-2">
-        <Input
-          placeholder="Enter video URL (YouTube, Vimeo, Instagram, Facebook, TikTok, or direct link)"
-          value={newVideoUrl}
-          onChange={(e) => setNewVideoUrl(e.target.value)}
-          onKeyPress={handleKeyPress}
-          className="flex-1"
-        />
-        <Button
-          type="button"
-          onClick={handleAddVideo}
-          disabled={!newVideoUrl.trim() || videoUrls.length >= 3}
-          size="sm"
-        >
-          <Plus className="h-4 w-4" />
-        </Button>
+        <div className="flex-1">
+          <input
+            type="file"
+            id="video-upload"
+            accept="video/*"
+            onChange={handleVideoUpload}
+            disabled={uploading || videoUrls.length >= 3}
+            className="hidden"
+          />
+          <label
+            htmlFor="video-upload"
+            className={`
+              flex items-center justify-center gap-2 p-3 border-2 border-dashed rounded-lg cursor-pointer
+              transition-colors hover:bg-muted
+              ${uploading || videoUrls.length >= 3 ? 'opacity-50 cursor-not-allowed' : 'hover:border-primary'}
+            `}
+          >
+            {uploading ? (
+              <Loader2 className="h-5 w-5 animate-spin" />
+            ) : (
+              <Upload className="h-5 w-5" />
+            )}
+            <span className="text-sm">
+              {uploading ? 'Uploading...' : 'Click to upload video'}
+            </span>
+          </label>
+        </div>
       </div>
 
       {videoUrls.length > 0 && (
@@ -74,18 +165,19 @@ const VideoUpload = ({ videoUrls, onVideoUrlAdd, onVideoUrlRemove }: VideoUpload
                   <div className="flex items-center gap-3 flex-1 min-w-0">
                     <Video className="h-5 w-5 text-primary flex-shrink-0" />
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium truncate">Video {index + 1}</p>
-                      <p className="text-xs text-muted-foreground truncate">{url}</p>
-                      {!isValidVideoUrl(url) && (
-                        <p className="text-xs text-destructive">⚠ URL format may not be supported</p>
-                      )}
+                      <p className="text-sm font-medium truncate">
+                        {getVideoName(url, index)}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {isStoredVideo(url) ? 'Uploaded video' : 'External video'}
+                      </p>
                     </div>
                   </div>
                   <Button
                     type="button"
                     variant="ghost"
                     size="sm"
-                    onClick={() => onVideoUrlRemove(index)}
+                    onClick={() => handleRemoveVideo(index)}
                     className="flex-shrink-0"
                   >
                     <X className="h-4 w-4" />
@@ -98,9 +190,10 @@ const VideoUpload = ({ videoUrls, onVideoUrlAdd, onVideoUrlRemove }: VideoUpload
       )}
 
       <div className="text-xs text-muted-foreground">
-        <p>• Supported: YouTube, Vimeo, Instagram, Facebook, TikTok, or direct video file links (.mp4, .webm, .ogg)</p>
+        <p>• Upload video files directly or use external links</p>
         <p>• Maximum 3 videos per property</p>
-        <p>• Example: https://www.youtube.com/watch?v=VIDEO_ID</p>
+        <p>• Video files must be under 100MB</p>
+        <p>• Supported formats: MP4, WebM, MOV, AVI</p>
       </div>
     </div>
   );

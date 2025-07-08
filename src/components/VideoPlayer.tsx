@@ -10,6 +10,10 @@ interface VideoPlayerProps {
 
 const VideoPlayer = ({ videoUrl, title = "Property Video", className = "" }: VideoPlayerProps) => {
   const getVideoType = (url: string) => {
+    // Check if it's a stored video first
+    if (url.includes('property-videos')) {
+      return 'stored';
+    }
     if (url.includes('youtube.com') || url.includes('youtu.be')) {
       return 'youtube';
     }
@@ -25,7 +29,7 @@ const VideoPlayer = ({ videoUrl, title = "Property Video", className = "" }: Vid
     if (url.includes('tiktok.com')) {
       return 'tiktok';
     }
-    if (url.match(/\.(mp4|webm|ogg)$/i)) {
+    if (url.match(/\.(mp4|webm|ogg|mov|avi)$/i)) {
       return 'direct';
     }
     return 'unknown';
@@ -64,6 +68,21 @@ const VideoPlayer = ({ videoUrl, title = "Property Video", className = "" }: Vid
 
   const renderVideo = () => {
     switch (videoType) {
+      case 'stored':
+      case 'direct':
+        return (
+          <video
+            controls
+            className="w-full h-full rounded-lg"
+            preload="metadata"
+          >
+            <source src={videoUrl} type="video/mp4" />
+            <source src={videoUrl} type="video/webm" />
+            <source src={videoUrl} type="video/ogg" />
+            Your browser does not support the video tag.
+          </video>
+        );
+
       case 'youtube':
         const youtubeUrl = getYouTubeEmbedUrl(videoUrl);
         return youtubeUrl ? (
@@ -124,19 +143,6 @@ const VideoPlayer = ({ videoUrl, title = "Property Video", className = "" }: Vid
           />
         ) : null;
 
-      case 'direct':
-        return (
-          <video
-            controls
-            className="w-full h-full rounded-lg"
-            preload="metadata"
-          >
-            <source src={videoUrl} type="video/mp4" />
-            <source src={videoUrl} type="video/webm" />
-            <source src={videoUrl} type="video/ogg" />
-            Your browser does not support the video tag.
-          </video>
-        );
 
       default:
         return (
