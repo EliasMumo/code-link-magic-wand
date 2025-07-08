@@ -33,6 +33,9 @@ const VideoUpload = ({ videoUrls, onVideoUrlAdd, onVideoUrlRemove }: VideoUpload
       /youtube\.com\/watch\?v=/,
       /youtu\.be\//,
       /vimeo\.com\//,
+      /instagram\.com\/p\//,
+      /facebook\.com/,
+      /tiktok\.com\/@[^\/]+\/video\//,
       /\.mp4$/,
       /\.webm$/,
       /\.ogg$/
@@ -46,7 +49,7 @@ const VideoUpload = ({ videoUrls, onVideoUrlAdd, onVideoUrlRemove }: VideoUpload
       
       <div className="flex gap-2">
         <Input
-          placeholder="Enter video URL (YouTube, Vimeo, or direct video link)"
+          placeholder="Enter video URL (YouTube, Vimeo, Instagram, Facebook, TikTok, or direct link)"
           value={newVideoUrl}
           onChange={(e) => setNewVideoUrl(e.target.value)}
           onKeyPress={handleKeyPress}
@@ -95,7 +98,7 @@ const VideoUpload = ({ videoUrls, onVideoUrlAdd, onVideoUrlRemove }: VideoUpload
       )}
 
       <div className="text-xs text-muted-foreground">
-        <p>• Supported: YouTube, Vimeo, or direct video file links (.mp4, .webm, .ogg)</p>
+        <p>• Supported: YouTube, Vimeo, Instagram, Facebook, TikTok, or direct video file links (.mp4, .webm, .ogg)</p>
         <p>• Maximum 3 videos per property</p>
         <p>• Example: https://www.youtube.com/watch?v=VIDEO_ID</p>
       </div>

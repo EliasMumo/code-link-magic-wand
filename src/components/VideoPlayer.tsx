@@ -16,6 +16,15 @@ const VideoPlayer = ({ videoUrl, title = "Property Video", className = "" }: Vid
     if (url.includes('vimeo.com')) {
       return 'vimeo';
     }
+    if (url.includes('instagram.com')) {
+      return 'instagram';
+    }
+    if (url.includes('facebook.com')) {
+      return 'facebook';
+    }
+    if (url.includes('tiktok.com')) {
+      return 'tiktok';
+    }
     if (url.match(/\.(mp4|webm|ogg)$/i)) {
       return 'direct';
     }
@@ -32,6 +41,23 @@ const VideoPlayer = ({ videoUrl, title = "Property Video", className = "" }: Vid
     const regex = /vimeo\.com\/(\d+)/;
     const match = url.match(regex);
     return match ? `https://player.vimeo.com/video/${match[1]}` : null;
+  };
+
+  const getInstagramEmbedUrl = (url: string) => {
+    const regex = /instagram\.com\/p\/([a-zA-Z0-9_-]+)/;
+    const match = url.match(regex);
+    return match ? `https://www.instagram.com/p/${match[1]}/embed/` : null;
+  };
+
+  const getFacebookEmbedUrl = (url: string) => {
+    const encoded = encodeURIComponent(url);
+    return `https://www.facebook.com/plugins/video.php?height=314&href=${encoded}&show_text=false&width=560&t=0`;
+  };
+
+  const getTikTokEmbedUrl = (url: string) => {
+    const regex = /tiktok\.com\/@[^\/]+\/video\/(\d+)/;
+    const match = url.match(regex);
+    return match ? `https://www.tiktok.com/embed/v2/${match[1]}` : null;
   };
 
   const videoType = getVideoType(videoUrl);
@@ -57,6 +83,42 @@ const VideoPlayer = ({ videoUrl, title = "Property Video", className = "" }: Vid
             src={vimeoUrl}
             title={title}
             allow="autoplay; fullscreen; picture-in-picture"
+            allowFullScreen
+            className="w-full h-full rounded-lg"
+          />
+        ) : null;
+
+      case 'instagram':
+        const instagramUrl = getInstagramEmbedUrl(videoUrl);
+        return instagramUrl ? (
+          <iframe
+            src={instagramUrl}
+            title={title}
+            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+            allowFullScreen
+            className="w-full h-full rounded-lg"
+          />
+        ) : null;
+
+      case 'facebook':
+        const facebookUrl = getFacebookEmbedUrl(videoUrl);
+        return facebookUrl ? (
+          <iframe
+            src={facebookUrl}
+            title={title}
+            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+            allowFullScreen
+            className="w-full h-full rounded-lg"
+          />
+        ) : null;
+
+      case 'tiktok':
+        const tiktokUrl = getTikTokEmbedUrl(videoUrl);
+        return tiktokUrl ? (
+          <iframe
+            src={tiktokUrl}
+            title={title}
+            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
             allowFullScreen
             className="w-full h-full rounded-lg"
           />
