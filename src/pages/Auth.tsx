@@ -6,9 +6,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { Home, ArrowLeft } from 'lucide-react';
+import { TermsAndConditions } from '@/components/TermsAndConditions';
 
 const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -23,6 +25,7 @@ const Auth = () => {
     phone: '',
     role: 'tenant'
   });
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   
   const { signIn, signUp, user, resetPassword } = useAuth();
   const navigate = useNavigate();
@@ -271,7 +274,29 @@ const Auth = () => {
                       required
                     />
                   </div>
-                  <Button type="submit" className="w-full" disabled={isLoading}>
+                  
+                  <div className="space-y-4">
+                    <div>
+                      <Label className="text-sm font-semibold">Terms and Conditions</Label>
+                      <TermsAndConditions />
+                    </div>
+                    
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="terms"
+                        checked={acceptedTerms}
+                        onCheckedChange={(checked) => setAcceptedTerms(checked as boolean)}
+                      />
+                      <Label
+                        htmlFor="terms"
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
+                        I agree to the Terms and Conditions above
+                      </Label>
+                    </div>
+                  </div>
+                  
+                  <Button type="submit" className="w-full" disabled={isLoading || !acceptedTerms}>
                     {isLoading ? 'Creating Account...' : 'Sign Up'}
                   </Button>
                 </form>
