@@ -52,7 +52,7 @@ const RentCalculator = () => {
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
       <div className="text-center mb-8">
-        <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+        <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
           <Calculator className="h-8 w-8 text-white" />
         </div>
         <h1 className="text-3xl font-bold text-gray-900">Rent Calculator</h1>
