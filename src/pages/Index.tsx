@@ -40,18 +40,23 @@ const Index = () => {
     isFavorite
   } = useIndexLogic();
 
+  // Debug logging
+  console.log('Index component render - authLoading:', authLoading, 'user:', user, 'currentView:', currentView);
+  
   if (authLoading) {
+    console.log('Showing auth loading state');
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <Home className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-          <p className="text-gray-600">Loading...</p>
+          <p className="text-gray-600">Loading DwellMerge...</p>
         </div>
       </div>
     );
   }
 
   if (!user) {
+    console.log('No user authenticated, redirecting should happen via useIndexLogic');
     return null;
   }
 

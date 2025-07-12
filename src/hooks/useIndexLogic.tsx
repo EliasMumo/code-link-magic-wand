@@ -14,7 +14,13 @@ export const useIndexLogic = () => {
   const navigate = useNavigate();
   
   const [userMode, setUserMode] = useState<'renter' | 'landlord'>('renter');
-  const [currentView, setCurrentView] = useState<'home' | 'search' | 'detail' | 'add-property'>('home');
+  
+  // Parse URL to set initial view
+  const urlParams = new URLSearchParams(window.location.search);
+  const viewParam = urlParams.get('view');
+  const initialView = (viewParam === 'add-property' || viewParam === 'search' || viewParam === 'detail') ? viewParam : 'home';
+  
+  const [currentView, setCurrentView] = useState<'home' | 'search' | 'detail' | 'add-property'>(initialView as any);
   const [selectedProperty, setSelectedProperty] = useState<any>(null);
   const [searchFilters, setSearchFilters] = useState({
     location: '',
@@ -27,7 +33,9 @@ export const useIndexLogic = () => {
   const [isSmartSearchActive, setIsSmartSearchActive] = useState(false);
 
   useEffect(() => {
+    console.log('useIndexLogic auth effect - authLoading:', authLoading, 'user:', user);
     if (!authLoading && !user) {
+      console.log('Navigating to /auth');
       navigate('/auth');
     }
   }, [user, authLoading, navigate]);
