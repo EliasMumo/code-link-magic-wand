@@ -3,6 +3,8 @@ import { useState, useEffect, createContext, useContext, ReactNode } from 'react
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useTermsAcceptance } from '@/hooks/useTermsAcceptance';
+import { TermsAcceptanceModal } from '@/components/TermsAcceptanceModal';
 
 interface AuthContextType {
   user: User | null;
@@ -33,6 +35,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  
+  // Terms acceptance handling
+  const { 
+    needsAcceptance, 
+    currentTermsVersion, 
+    loading: termsLoading, 
+    acceptTerms 
+  } = useTermsAcceptance(user?.id);
 
   useEffect(() => {
     // Set up auth state listener
@@ -143,5 +153,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     resetPassword,
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+      {user && needsAcceptance && !loading && !termsLoading && (
+        <TermsAcceptanceModal
+          open={true}
+          onAccept={acceptTerms}
+          version={currentTermsVersion?.version}
+        />
+      )}
+    </AuthContext.Provider>
+  );
 };

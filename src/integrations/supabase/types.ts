@@ -227,6 +227,8 @@ export type Database = {
           last_name: string
           phone: string | null
           role: string
+          terms_accepted_at: string | null
+          terms_version_accepted: string | null
           updated_at: string | null
         }
         Insert: {
@@ -241,6 +243,8 @@ export type Database = {
           last_name: string
           phone?: string | null
           role?: string
+          terms_accepted_at?: string | null
+          terms_version_accepted?: string | null
           updated_at?: string | null
         }
         Update: {
@@ -255,6 +259,8 @@ export type Database = {
           last_name?: string
           phone?: string | null
           role?: string
+          terms_accepted_at?: string | null
+          terms_version_accepted?: string | null
           updated_at?: string | null
         }
         Relationships: []
@@ -693,6 +699,33 @@ export type Database = {
         }
         Relationships: []
       }
+      terms_versions: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          is_current: boolean
+          updated_at: string
+          version: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          is_current?: boolean
+          updated_at?: string
+          version: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          is_current?: boolean
+          updated_at?: string
+          version?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -705,6 +738,10 @@ export type Database = {
       increment_property_views: {
         Args: { property_uuid: string }
         Returns: undefined
+      }
+      user_needs_terms_acceptance: {
+        Args: { user_id: string }
+        Returns: boolean
       }
     }
     Enums: {
