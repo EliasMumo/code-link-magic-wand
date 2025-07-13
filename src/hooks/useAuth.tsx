@@ -4,7 +4,9 @@ import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useTermsAcceptance } from '@/hooks/useTermsAcceptance';
+import { useDisclaimerAcceptance } from '@/hooks/useDisclaimerAcceptance';
 import { TermsAcceptanceModal } from '@/components/TermsAcceptanceModal';
+import { DisclaimerModal } from '@/components/DisclaimerModal';
 
 interface AuthContextType {
   user: User | null;
@@ -43,6 +45,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     loading: termsLoading, 
     acceptTerms 
   } = useTermsAcceptance(user?.id);
+
+  // Disclaimer handling
+  const { 
+    needsDisclaimer, 
+    loading: disclaimerLoading, 
+    acceptDisclaimer 
+  } = useDisclaimerAcceptance(user?.id);
 
   useEffect(() => {
     // Set up auth state listener
@@ -156,7 +165,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   return (
     <AuthContext.Provider value={value}>
       {children}
-      {user && needsAcceptance && !loading && !termsLoading && (
+      {/* Show disclaimer first, then terms */}
+      {user && needsDisclaimer && !loading && !disclaimerLoading && (
+        <DisclaimerModal
+          open={true}
+          onAccept={acceptDisclaimer}
+        />
+      )}
+      {user && !needsDisclaimer && needsAcceptance && !loading && !termsLoading && (
         <TermsAcceptanceModal
           open={true}
           onAccept={acceptTerms}
