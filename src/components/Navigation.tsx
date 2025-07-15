@@ -132,11 +132,11 @@ const Navigation = ({
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Logout Button */}
+            {/* Logout Button - More Prominent */}
             <Button 
-              variant="outline" 
+              variant="destructive" 
               onClick={handleSignOut}
-              className="flex items-center text-red-600 border-red-200 hover:bg-red-50 hover:border-red-300"
+              className="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2"
             >
               <LogOut className="h-4 w-4 mr-2" />
               Sign Out
@@ -145,14 +145,15 @@ const Navigation = ({
 
           {/* Mobile Menu Button and Logout */}
           <div className="md:hidden flex items-center space-x-2">
-            {/* Mobile Logout Button */}
+            {/* Mobile Logout Button - More Prominent */}
             <Button 
-              variant="ghost" 
+              variant="destructive" 
               size="sm"
               onClick={handleSignOut}
-              className="text-red-600 hover:bg-red-50"
+              className="bg-red-600 hover:bg-red-700 text-white"
             >
               <LogOut className="h-4 w-4" />
+              <span className="ml-1 text-xs">Out</span>
             </Button>
             
             <DropdownMenu open={isMenuOpen} onOpenChange={setIsMenuOpen}>
