@@ -6,11 +6,21 @@ import { AlertTriangle, Shield, Eye, CreditCard, Users } from "lucide-react";
 interface DisclaimerModalProps {
   open: boolean;
   onAccept: () => void;
+  onClose?: () => void;
 }
 
-export const DisclaimerModal = ({ open, onAccept }: DisclaimerModalProps) => {
+export const DisclaimerModal = ({ open, onAccept, onClose }: DisclaimerModalProps) => {
+  const handleClose = () => {
+    if (onClose) {
+      onClose();
+    } else {
+      // If no onClose provided, treat X click as acceptance
+      onAccept();
+    }
+  };
+
   return (
-    <Dialog open={open} onOpenChange={() => {}}>
+    <Dialog open={open} onOpenChange={(isOpen) => !isOpen && handleClose()}>
       <DialogContent 
         className="max-w-3xl max-h-[85vh] flex flex-col border-2 border-destructive/20"
         aria-labelledby="disclaimer-title"

@@ -30,6 +30,9 @@ const Navigation = ({
   const navigate = useNavigate();
   const { signOut } = useAuth();
 
+  // Debug logging
+  console.log('Navigation component - userRole:', userRole, 'userName:', userName);
+
   const handleSignOut = async () => {
     await signOut();
     navigate('/auth');
