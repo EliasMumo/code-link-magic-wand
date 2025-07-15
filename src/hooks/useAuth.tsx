@@ -2,7 +2,7 @@
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
+
 import { useTermsAcceptance } from '@/hooks/useTermsAcceptance';
 import { useDisclaimerAcceptance } from '@/hooks/useDisclaimerAcceptance';
 import { TermsAcceptanceModal } from '@/components/TermsAcceptanceModal';
@@ -36,7 +36,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
-  const { toast } = useToast();
+  
+  console.log('AuthProvider rendering - user:', user, 'loading:', loading);
   
   // Terms acceptance handling
   const { 
@@ -80,11 +81,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     });
 
     if (error) {
-      toast({
-        title: "Sign In Failed",
-        description: error.message,
-        variant: "destructive",
-      });
+      console.error('Sign in error:', error);
     }
 
     return { error };
@@ -103,16 +100,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     });
 
     if (error) {
-      toast({
-        title: "Sign Up Failed",
-        description: error.message,
-        variant: "destructive",
-      });
+      console.error('Sign up error:', error);
     } else {
-      toast({
-        title: "Sign Up Successful",
-        description: "Please check your email to verify your account.",
-      });
+      console.log('Check your email for the confirmation link!');
     }
 
     return { error };
@@ -121,11 +111,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
-      toast({
-        title: "Sign Out Failed",
-        description: error.message,
-        variant: "destructive",
-      });
+      console.error('Sign out error:', error);
     }
   };
 
@@ -137,16 +123,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     });
 
     if (error) {
-      toast({
-        title: "Password Reset Failed",
-        description: error.message,
-        variant: "destructive",
-      });
+      console.error('Password reset error:', error);
     } else {
-      toast({
-        title: "Password Reset Email Sent",
-        description: "Please check your email for the password reset link.",
-      });
+      console.log('Password reset email sent!');
     }
 
     return { error };
