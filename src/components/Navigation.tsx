@@ -126,17 +126,32 @@ const Navigation = ({
                   <Settings className="h-4 w-4 mr-2" />
                   Settings
                 </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleSignOut}>
-                  <LogOut className="h-4 w-4 mr-2" />
-                  Sign Out
-                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+
+            {/* Logout Button */}
+            <Button 
+              variant="outline" 
+              onClick={handleSignOut}
+              className="flex items-center text-red-600 border-red-200 hover:bg-red-50 hover:border-red-300"
+            >
+              <LogOut className="h-4 w-4 mr-2" />
+              Sign Out
+            </Button>
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center">
+          {/* Mobile Menu Button and Logout */}
+          <div className="md:hidden flex items-center space-x-2">
+            {/* Mobile Logout Button */}
+            <Button 
+              variant="ghost" 
+              size="sm"
+              onClick={handleSignOut}
+              className="text-red-600 hover:bg-red-50"
+            >
+              <LogOut className="h-4 w-4" />
+            </Button>
+            
             <DropdownMenu open={isMenuOpen} onOpenChange={setIsMenuOpen}>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="sm">
@@ -172,10 +187,6 @@ const Navigation = ({
                 <DropdownMenuItem onClick={() => handleNavigation('/settings')}>
                   <Settings className="h-4 w-4 mr-2" />
                   Settings
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleSignOut}>
-                  <LogOut className="h-4 w-4 mr-2" />
-                  Sign Out
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
