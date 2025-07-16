@@ -32,45 +32,51 @@ export const TermsAcceptanceModal = ({ open, onAccept, version }: TermsAcceptanc
           </p>
         </DialogHeader>
         
-        <div className="flex-1 min-h-0">
+        <div className="flex-1 min-h-0 mb-6">
           <TermsAndConditions />
         </div>
         
-        <div className="space-y-6 pt-4 border-t">
-          <div className="flex items-start space-x-3 p-4 bg-blue-50 rounded-lg border-2 border-blue-200">
-            <Checkbox 
-              id="terms-agreement"
-              checked={isChecked}
-              onCheckedChange={(checked) => setIsChecked(checked === true)}
-              aria-describedby="terms-agreement-text"
-              className="mt-1 h-5 w-5 border-2 border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600"
-            />
-            <label 
-              htmlFor="terms-agreement" 
-              id="terms-agreement-text"
-              className="text-sm leading-6 cursor-pointer font-medium text-gray-900 flex-1"
-            >
-              <span className="block">
-                I have read and agree to the{" "}
-                <span className="font-semibold text-blue-600">Terms and Conditions</span>{" "}
-                above
-              </span>
-              <span className="text-xs text-gray-600 mt-1 block">
-                You must accept these terms to continue using DwellMerge
-              </span>
-            </label>
-          </div>
-          
-          <div className="flex justify-end">
+        <div className="pt-4 border-t bg-white">
+          <div className="flex items-center justify-between gap-4">
+            {/* Checkbox and label on the left */}
+            <div className="flex items-center space-x-3">
+              <Checkbox 
+                id="terms-acceptance-checkbox"
+                checked={isChecked}
+                onCheckedChange={(checked) => {
+                  console.log('Checkbox changed:', checked);
+                  setIsChecked(checked === true);
+                }}
+                className="h-5 w-5 border-2 border-blue-600 rounded data-[state=checked]:bg-blue-600 data-[state=checked]:text-white data-[state=checked]:border-blue-600 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                aria-describedby="terms-acceptance-label"
+              />
+              <label 
+                htmlFor="terms-acceptance-checkbox" 
+                id="terms-acceptance-label"
+                className="text-sm font-medium text-gray-900 cursor-pointer select-none"
+              >
+                I have read and agree to the Terms and Conditions
+              </label>
+            </div>
+            
+            {/* Continue button on the right */}
             <Button 
               onClick={handleAccept}
               disabled={!isChecked}
-              className="min-w-[140px] bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
+              className="min-w-[140px] bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed transition-all duration-200"
               size="lg"
+              aria-label={isChecked ? "Accept terms and continue" : "Please check the agreement box to continue"}
             >
-              {isChecked ? "Accept & Continue" : "Please Check Above"}
+              {isChecked ? "Accept & Continue" : "Continue"}
             </Button>
           </div>
+          
+          {/* Additional instruction if not checked */}
+          {!isChecked && (
+            <p className="text-xs text-red-600 mt-2 text-center animate-fade-in">
+              Please check the box above to accept the terms and conditions
+            </p>
+          )}
         </div>
       </DialogContent>
     </Dialog>
