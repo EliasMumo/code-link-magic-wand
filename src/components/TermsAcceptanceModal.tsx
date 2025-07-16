@@ -36,20 +36,28 @@ export const TermsAcceptanceModal = ({ open, onAccept, version }: TermsAcceptanc
           <TermsAndConditions />
         </div>
         
-        <div className="space-y-4 pt-4 border-t">
-          <div className="flex items-start space-x-2">
+        <div className="space-y-6 pt-4 border-t">
+          <div className="flex items-start space-x-3 p-4 bg-blue-50 rounded-lg border-2 border-blue-200">
             <Checkbox 
               id="terms-agreement"
               checked={isChecked}
               onCheckedChange={(checked) => setIsChecked(checked === true)}
               aria-describedby="terms-agreement-text"
+              className="mt-1 h-5 w-5 border-2 border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600"
             />
             <label 
               htmlFor="terms-agreement" 
               id="terms-agreement-text"
-              className="text-sm leading-5 cursor-pointer"
+              className="text-sm leading-6 cursor-pointer font-medium text-gray-900 flex-1"
             >
-              I have read and agree to the Terms and Conditions above
+              <span className="block">
+                I have read and agree to the{" "}
+                <span className="font-semibold text-blue-600">Terms and Conditions</span>{" "}
+                above
+              </span>
+              <span className="text-xs text-gray-600 mt-1 block">
+                You must accept these terms to continue using DwellMerge
+              </span>
             </label>
           </div>
           
@@ -57,9 +65,10 @@ export const TermsAcceptanceModal = ({ open, onAccept, version }: TermsAcceptanc
             <Button 
               onClick={handleAccept}
               disabled={!isChecked}
-              className="min-w-[120px]"
+              className="min-w-[140px] bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
+              size="lg"
             >
-              Continue
+              {isChecked ? "Accept & Continue" : "Please Check Above"}
             </Button>
           </div>
         </div>

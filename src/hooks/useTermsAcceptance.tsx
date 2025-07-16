@@ -17,6 +17,7 @@ export const useTermsAcceptance = (userId: string | undefined) => {
   const { toast } = useToast();
 
   useEffect(() => {
+    console.log('useTermsAcceptance effect - userId:', userId);
     if (!userId) {
       setLoading(false);
       return;
@@ -27,6 +28,8 @@ export const useTermsAcceptance = (userId: string | undefined) => {
 
   const checkTermsAcceptance = async () => {
     try {
+      console.log('Checking terms acceptance for user:', userId);
+      
       // Get current terms version
       const { data: termsData, error: termsError } = await supabase
         .from('terms_versions')
@@ -40,6 +43,7 @@ export const useTermsAcceptance = (userId: string | undefined) => {
         return;
       }
 
+      console.log('Current terms version:', termsData);
       setCurrentTermsVersion(termsData);
 
       // Check if user needs to accept terms using the database function
@@ -52,6 +56,7 @@ export const useTermsAcceptance = (userId: string | undefined) => {
         return;
       }
 
+      console.log('User needs terms acceptance:', needsAcceptanceData);
       setNeedsAcceptance(needsAcceptanceData);
     } catch (error) {
       console.error('Error in checkTermsAcceptance:', error);
@@ -64,6 +69,8 @@ export const useTermsAcceptance = (userId: string | undefined) => {
     if (!userId || !currentTermsVersion) return;
 
     try {
+      console.log('Accepting terms for user:', userId, 'version:', currentTermsVersion.version);
+      
       const { error } = await supabase
         .from('profiles')
         .update({
@@ -82,6 +89,7 @@ export const useTermsAcceptance = (userId: string | undefined) => {
         return;
       }
 
+      console.log('Terms accepted successfully');
       setNeedsAcceptance(false);
       toast({
         title: "Terms Accepted",

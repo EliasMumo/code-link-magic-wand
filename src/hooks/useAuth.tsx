@@ -152,11 +152,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         />
       )}
       {user && !needsDisclaimer && needsAcceptance && !loading && !termsLoading && (
-        <TermsAcceptanceModal
-          open={true}
-          onAccept={acceptTerms}
-          version={currentTermsVersion?.version}
-        />
+        <>
+          {console.log('Rendering TermsAcceptanceModal - needsAcceptance:', needsAcceptance, 'termsLoading:', termsLoading, 'needsDisclaimer:', needsDisclaimer)}
+          <TermsAcceptanceModal
+            open={true}
+            onAccept={acceptTerms}
+            version={currentTermsVersion?.version}
+          />
+        </>
       )}
     </AuthContext.Provider>
   );
