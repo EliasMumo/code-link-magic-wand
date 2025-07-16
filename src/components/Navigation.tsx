@@ -66,65 +66,53 @@ const Navigation = ({
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-2">
             <Button 
               variant="ghost" 
               onClick={onSearchClick}
-              className="flex items-center"
+              className="flex items-center px-3"
             >
               <Search className="h-4 w-4 mr-2" />
-              Search Properties
-            </Button>
-
-            <Button 
-              variant="ghost" 
-              onClick={() => handleNavigation('/rent-calculator')}
-              className="flex items-center"
-            >
-              <Calculator className="h-4 w-4 mr-2" />
-              Rent Calculator
+              Search
             </Button>
 
             {userRole === 'landlord' && (
-              <>
-                <Button 
-                  variant="ghost" 
-                  onClick={onAddPropertyClick}
-                  className="flex items-center"
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Property
-                </Button>
-
-                <Button 
-                  variant="ghost" 
-                  onClick={() => handleNavigation('/properties')}
-                  className="flex items-center"
-                >
-                  <Building2 className="h-4 w-4 mr-2" />
-                  My Properties
-                </Button>
-
-                <Button 
-                  variant="ghost" 
-                  onClick={() => handleNavigation('/analytics')}
-                  className="flex items-center"
-                >
-                  <BarChart3 className="h-4 w-4 mr-2" />
-                  Analytics
-                </Button>
-              </>
+              <Button 
+                variant="ghost" 
+                onClick={onAddPropertyClick}
+                className="flex items-center px-3"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Add Property
+              </Button>
             )}
 
             {/* User Menu */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex items-center">
+                <Button variant="ghost" className="flex items-center px-3">
                   <User className="h-4 w-4 mr-2" />
                   {userName || 'User'}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48 bg-white border shadow-lg">
+                <DropdownMenuItem onClick={() => handleNavigation('/rent-calculator')}>
+                  <Calculator className="h-4 w-4 mr-2" />
+                  Rent Calculator
+                </DropdownMenuItem>
+                {userRole === 'landlord' && (
+                  <>
+                    <DropdownMenuItem onClick={() => handleNavigation('/properties')}>
+                      <Building2 className="h-4 w-4 mr-2" />
+                      My Properties
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleNavigation('/analytics')}>
+                      <BarChart3 className="h-4 w-4 mr-2" />
+                      Analytics
+                    </DropdownMenuItem>
+                  </>
+                )}
+                <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => handleNavigation('/settings')}>
                   <Settings className="h-4 w-4 mr-2" />
                   Settings
@@ -132,11 +120,11 @@ const Navigation = ({
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Logout Button - More Prominent */}
+            {/* Logout Button */}
             <Button 
               variant="destructive" 
               onClick={handleSignOut}
-              className="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2"
+              className="bg-red-600 hover:bg-red-700 text-white px-3"
             >
               <LogOut className="h-4 w-4 mr-2" />
               Sign Out
