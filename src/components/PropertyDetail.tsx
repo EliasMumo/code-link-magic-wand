@@ -71,8 +71,18 @@ const PropertyDetail = ({ property, onBack, onToggleFavorite, isFavorite }: Prop
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           <Card>
-            <div className="h-64 bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center rounded-t-lg">
-              <Home className="h-24 w-24 text-blue-400" />
+            <div className="h-64 rounded-t-lg overflow-hidden">
+              {property.images && property.images.length > 0 ? (
+                <img 
+                  src={property.images[0]} 
+                  alt={property.title}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="h-full bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
+                  <Home className="h-24 w-24 text-blue-400" />
+                </div>
+              )}
             </div>
             <CardContent className="p-6">
               <div className="flex items-start justify-between mb-4">
