@@ -22,14 +22,14 @@ export const DisclaimerModal = ({ open, onAccept, onClose }: DisclaimerModalProp
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && handleClose()}>
       <DialogContent 
-        className="max-w-3xl max-h-[85vh] flex flex-col border-2 border-destructive/20"
+        className="max-w-3xl max-h-[85vh] flex flex-col border-2 border-amber-200/50"
         aria-labelledby="disclaimer-title"
         aria-describedby="disclaimer-content"
       >
-        <DialogHeader className="bg-gradient-to-r from-destructive/5 to-destructive/10 -m-6 p-6 mb-0">
-          <DialogTitle id="disclaimer-title" className="flex items-center gap-3 text-2xl font-bold text-destructive">
-            <div className="flex items-center justify-center w-10 h-10 bg-destructive/20 rounded-full">
-              <AlertTriangle className="h-6 w-6" aria-hidden="true" />
+        <DialogHeader className="bg-gradient-to-r from-amber-50 to-orange-50 -m-6 p-6 mb-0">
+          <DialogTitle id="disclaimer-title" className="flex items-center gap-3 text-2xl font-bold text-amber-800">
+            <div className="flex items-center justify-center w-10 h-10 bg-amber-100 rounded-full">
+              <AlertTriangle className="h-6 w-6 text-amber-600" aria-hidden="true" />
             </div>
             Important Safety Notice
           </DialogTitle>
@@ -42,35 +42,35 @@ export const DisclaimerModal = ({ open, onAccept, onClose }: DisclaimerModalProp
           <div id="disclaimer-content" className="space-y-6 p-6">
             
             {/* Critical Warning Section */}
-            <div className="bg-gradient-to-r from-destructive/10 to-destructive/5 border-l-4 border-destructive rounded-r-lg p-6">
+            <div className="bg-gradient-to-r from-amber-50 to-orange-50 border-l-4 border-amber-400 rounded-r-lg p-6">
               <div className="flex items-start gap-4">
-                <div className="flex items-center justify-center w-8 h-8 bg-destructive rounded-full flex-shrink-0 mt-1">
-                  <CreditCard className="h-4 w-4 text-destructive-foreground" />
+                <div className="flex items-center justify-center w-8 h-8 bg-amber-500 rounded-full flex-shrink-0 mt-1">
+                  <CreditCard className="h-4 w-4 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-lg mb-3 text-destructive">
+                  <h3 className="font-bold text-lg mb-3 text-amber-800">
                     Critical Payment Security
                   </h3>
                   <div className="space-y-3 text-sm">
                     <div className="bg-background/80 rounded-lg p-4 border">
-                      <h4 className="font-semibold mb-2 text-destructive">
+                      <h4 className="font-semibold mb-2 text-amber-700">
                         NEVER Make Payments Without Physical Inspection
                       </h4>
                       <ul className="space-y-2 text-foreground">
                         <li className="flex items-start gap-2">
-                          <div className="w-1.5 h-1.5 bg-destructive rounded-full mt-2 flex-shrink-0"></div>
+                          <div className="w-1.5 h-1.5 bg-amber-500 rounded-full mt-2 flex-shrink-0"></div>
                           <span>ALWAYS visit the property in person before making any payment</span>
                         </li>
                         <li className="flex items-start gap-2">
-                          <div className="w-1.5 h-1.5 bg-destructive rounded-full mt-2 flex-shrink-0"></div>
+                          <div className="w-1.5 h-1.5 bg-amber-500 rounded-full mt-2 flex-shrink-0"></div>
                           <span>NEVER send money, deposits, or fees to anyone you haven't met in person</span>
                         </li>
                         <li className="flex items-start gap-2">
-                          <div className="w-1.5 h-1.5 bg-destructive rounded-full mt-2 flex-shrink-0"></div>
+                          <div className="w-1.5 h-1.5 bg-amber-500 rounded-full mt-2 flex-shrink-0"></div>
                           <span>NEVER wire money or use gift cards, cryptocurrency, or cash apps</span>
                         </li>
                         <li className="flex items-start gap-2">
-                          <div className="w-1.5 h-1.5 bg-destructive rounded-full mt-2 flex-shrink-0"></div>
+                          <div className="w-1.5 h-1.5 bg-amber-500 rounded-full mt-2 flex-shrink-0"></div>
                           <span>VERIFY landlord identity by checking official documents</span>
                         </li>
                       </ul>

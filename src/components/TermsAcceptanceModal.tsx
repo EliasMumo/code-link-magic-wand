@@ -73,7 +73,7 @@ export const TermsAcceptanceModal = ({ open, onAccept, version }: TermsAcceptanc
           
           {/* Additional instruction if not checked */}
           {!isChecked && (
-            <p className="text-xs text-red-600 mt-2 text-center animate-fade-in">
+            <p className="text-xs text-amber-600 mt-2 text-center animate-fade-in">
               Please check the box above to accept the terms and conditions
             </p>
           )}
