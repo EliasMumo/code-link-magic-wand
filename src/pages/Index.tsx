@@ -8,6 +8,7 @@ import HeroSection from '@/components/HeroSection';
 import StatsSection from '@/components/StatsSection';
 import FeaturedProperties from '@/components/FeaturedProperties';
 import LandlordDashboard from '@/components/LandlordDashboard';
+import AdminDashboard from '@/components/AdminDashboard';
 import { Home } from 'lucide-react';
 import { useIndexLogic } from '@/hooks/useIndexLogic';
 
@@ -37,6 +38,7 @@ const Index = () => {
     handleSmartSearchResults,
     handleToggleFavorite,
     handleAddPropertyClick,
+    handleAdminClick,
     isFavorite
   } = useIndexLogic();
 
@@ -104,6 +106,12 @@ const Index = () => {
             onSubmit={handleAddProperty}
           />
         );
+      case 'admin':
+        return (
+          <AdminDashboard 
+            onClose={() => setCurrentView('home')}
+          />
+        );
       default:
         return (
           <div>
@@ -153,6 +161,7 @@ const Index = () => {
         onModeChange={() => {}} // Disabled since mode is now based on actual role
         onSearchClick={() => setCurrentView('search')}
         onAddPropertyClick={handleAddPropertyClick}
+        onAdminClick={handleAdminClick}
         userRole={userRole}
         currentView={currentView}
         onBackClick={handleBackFromSearch}

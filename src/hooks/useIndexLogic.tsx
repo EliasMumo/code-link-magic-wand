@@ -20,7 +20,7 @@ export const useIndexLogic = () => {
   const viewParam = urlParams.get('view');
   const initialView = (viewParam === 'add-property' || viewParam === 'search' || viewParam === 'detail') ? viewParam : 'home';
   
-  const [currentView, setCurrentView] = useState<'home' | 'search' | 'detail' | 'add-property'>(initialView as any);
+  const [currentView, setCurrentView] = useState<'home' | 'search' | 'detail' | 'add-property' | 'admin'>(initialView as any);
   const [selectedProperty, setSelectedProperty] = useState<any>(null);
   const [searchFilters, setSearchFilters] = useState({
     location: '',
@@ -96,6 +96,18 @@ export const useIndexLogic = () => {
       return;
     }
     setCurrentView('add-property');
+  };
+
+  const handleAdminClick = () => {
+    if (userRole !== 'admin') {
+      toast({
+        title: "Access Denied",
+        description: "Only admins can access the admin panel",
+        variant: "destructive",
+      });
+      return;
+    }
+    setCurrentView('admin');
   };
 
   // Filter available properties based on search criteria
@@ -177,6 +189,7 @@ export const useIndexLogic = () => {
     handleSmartSearchResults,
     handleToggleFavorite,
     handleAddPropertyClick,
+    handleAdminClick,
     isFavorite
   };
 };

@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_actions: {
+        Row: {
+          action_type: string
+          admin_id: string
+          created_at: string
+          details: Json | null
+          id: string
+          target_property_id: string | null
+          target_user_id: string | null
+        }
+        Insert: {
+          action_type: string
+          admin_id: string
+          created_at?: string
+          details?: Json | null
+          id?: string
+          target_property_id?: string | null
+          target_user_id?: string | null
+        }
+        Update: {
+          action_type?: string
+          admin_id?: string
+          created_at?: string
+          details?: Json | null
+          id?: string
+          target_property_id?: string | null
+          target_user_id?: string | null
+        }
+        Relationships: []
+      }
       favorites: {
         Row: {
           created_at: string | null
@@ -217,12 +247,16 @@ export type Database = {
       profiles: {
         Row: {
           avatar_url: string | null
+          ban_reason: string | null
+          banned_at: string | null
+          banned_by: string | null
           caretaker_phone: string | null
           created_at: string | null
           display_phone_preference: string | null
           email: string
           first_name: string
           id: string
+          is_banned: boolean | null
           is_verified: boolean | null
           last_name: string
           phone: string | null
@@ -233,12 +267,16 @@ export type Database = {
         }
         Insert: {
           avatar_url?: string | null
+          ban_reason?: string | null
+          banned_at?: string | null
+          banned_by?: string | null
           caretaker_phone?: string | null
           created_at?: string | null
           display_phone_preference?: string | null
           email: string
           first_name: string
           id: string
+          is_banned?: boolean | null
           is_verified?: boolean | null
           last_name: string
           phone?: string | null
@@ -249,12 +287,16 @@ export type Database = {
         }
         Update: {
           avatar_url?: string | null
+          ban_reason?: string | null
+          banned_at?: string | null
+          banned_by?: string | null
           caretaker_phone?: string | null
           created_at?: string | null
           display_phone_preference?: string | null
           email?: string
           first_name?: string
           id?: string
+          is_banned?: boolean | null
           is_verified?: boolean | null
           last_name?: string
           phone?: string | null
@@ -749,12 +791,28 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      ban_user: {
+        Args: { target_user_id: string; reason?: string }
+        Returns: undefined
+      }
+      get_current_user_role: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
       increment_inquiry_count: {
         Args: { property_uuid: string }
         Returns: undefined
       }
       increment_property_views: {
         Args: { property_uuid: string }
+        Returns: undefined
+      }
+      is_admin: {
+        Args: { user_id: string }
+        Returns: boolean
+      }
+      unban_user: {
+        Args: { target_user_id: string }
         Returns: undefined
       }
       user_needs_terms_acceptance: {

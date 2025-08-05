@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
-import { Home, Search, Plus, Menu, User, LogOut, Building2, Settings, BarChart3, Calculator, ArrowLeft } from 'lucide-react';
+import { Home, Search, Plus, Menu, User, LogOut, Building2, Settings, BarChart3, Calculator, ArrowLeft, Shield } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,6 +10,7 @@ interface NavigationProps {
   onModeChange: (mode: 'renter' | 'landlord') => void;
   onSearchClick: () => void;
   onAddPropertyClick: () => void;
+  onAdminClick?: () => void;
   userRole?: string;
   currentView?: string;
   onBackClick?: () => void;
@@ -21,6 +22,7 @@ const Navigation = ({
   onModeChange, 
   onSearchClick, 
   onAddPropertyClick, 
+  onAdminClick,
   userRole,
   currentView,
   onBackClick,
@@ -85,6 +87,12 @@ const Navigation = ({
               Search
             </Button>
 
+            {userRole === 'admin' && onAdminClick && (
+              <Button variant="outline" onClick={onAdminClick}>
+                <Shield className="h-4 w-4 mr-2" />
+                Admin Panel
+              </Button>
+            )}
             {userRole === 'landlord' && (
               <>
                 <Button 
