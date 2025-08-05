@@ -7,8 +7,8 @@ const corsHeaders = {
 
 interface EmailRequest {
   to: string;
-  subject: string;
-  message: string;
+  templateId: string;
+  mergeTags: Record<string, any>;
   name?: string;
 }
 
@@ -19,7 +19,7 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { to, subject, message, name }: EmailRequest = await req.json();
+    const { to, templateId, mergeTags, name }: EmailRequest = await req.json();
 
     const clientId = Deno.env.get('NOTIFICATIONAPI_CLIENT_ID');
     const clientSecret = Deno.env.get('NOTIFICATIONAPI_CLIENT_SECRET');
@@ -28,7 +28,11 @@ const handler = async (req: Request): Promise<Response> => {
       throw new Error('NotificationAPI credentials not configured');
     }
 
-    // Send email via NotificationAPI
+    if (!templateId) {
+      throw new Error('Template ID is required');
+    }
+
+    // Send email via NotificationAPI using custom template
     const response = await fetch('https://api.notificationapi.com/notifications', {
       method: 'POST',
       headers: {
@@ -36,16 +40,15 @@ const handler = async (req: Request): Promise<Response> => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        notificationId: 'email_notification',
+        notificationId: templateId,
         user: {
           id: to,
           email: to,
-          name: name || 'User'
+          name: name || mergeTags.name || 'User'
         },
         mergeTags: {
-          subject: subject,
-          message: message,
-          name: name || 'User'
+          ...mergeTags,
+          name: name || mergeTags.name || 'User'
         }
       }),
     });
