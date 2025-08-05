@@ -49,9 +49,17 @@ const PropertyCard = ({
       onClick={() => onClick(property)}
     >
       <div className="relative">
-        <div className="h-48 bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
-          <Home className="h-16 w-16 text-blue-400" />
-        </div>
+        {property.images && property.images.length > 0 ? (
+          <img 
+            src={property.images[0]} 
+            alt={property.title}
+            className="h-48 w-full object-cover"
+          />
+        ) : (
+          <div className="h-48 bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
+            <Home className="h-16 w-16 text-blue-400" />
+          </div>
+        )}
         <div className="absolute top-2 right-2 flex gap-2">
           {onToggleFavorite && (
             <Button
