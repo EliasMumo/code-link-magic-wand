@@ -10,6 +10,7 @@ import { Search, Filter, Save, Sparkles } from 'lucide-react';
 import AdvancedSearchFilters from './AdvancedSearchFilters';
 import SavedSearches from './SavedSearches';
 import SmartSearchInput from './SmartSearchInput';
+import LocationSearchInput from './LocationSearchInput';
 import { useSavedSearches } from '@/hooks/useSavedSearches';
 import { useSmartSearch } from '@/hooks/useSmartSearch';
 
@@ -150,11 +151,10 @@ const SearchFilters = ({ filters, onFiltersChange, onSearch, properties = [], on
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="location">Location</Label>
-              <Input
-                id="location"
-                placeholder="Enter location"
+              <LocationSearchInput
                 value={filters.location}
-                onChange={(e) => handleBasicFilterChange('location', e.target.value)}
+                onChange={(value) => handleBasicFilterChange('location', value)}
+                placeholder="Enter city, neighborhood, or address"
               />
             </div>
             <div>

@@ -22,10 +22,11 @@ const SmartSearchInput = ({ onSearch, loading = false, searchInsights }: SmartSe
   };
 
   const exampleQueries = [
-    "2 bedroom apartment near downtown with parking",
-    "pet-friendly house under $2500",
-    "furnished studio with gym access",
-    "family home with garden and good schools nearby"
+    "2 bedroom apartment in downtown with parking",
+    "pet-friendly house under $2500 near parks",
+    "furnished studio in university area with gym",
+    "family home with garden in quiet neighborhood",
+    "modern condo in financial district with amenities"
   ];
 
   return (
@@ -34,7 +35,7 @@ const SmartSearchInput = ({ onSearch, loading = false, searchInsights }: SmartSe
         <div className="flex-1 relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
           <Input
-            placeholder="Try: '2 bedroom apartment near downtown with parking'"
+            placeholder="Try: '2 bedroom apartment in downtown with parking'"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="pl-10"

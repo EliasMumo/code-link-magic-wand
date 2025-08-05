@@ -100,9 +100,20 @@ export const useIndexLogic = () => {
     setCurrentView('add-property');
   };
 
-  // Filter only available properties for featured properties
+  // Filter available properties based on search criteria
   const availableProperties = properties.filter(p => p.is_available);
-  const displayProperties = isSmartSearchActive ? smartSearchResults : availableProperties;
+  
+  // Apply location filter if specified
+  const filteredProperties = searchFilters.location 
+    ? availableProperties.filter(property => 
+        property.location?.toLowerCase().includes(searchFilters.location.toLowerCase()) ||
+        property.city?.toLowerCase().includes(searchFilters.location.toLowerCase()) ||
+        property.state?.toLowerCase().includes(searchFilters.location.toLowerCase()) ||
+        property.street_address?.toLowerCase().includes(searchFilters.location.toLowerCase())
+      )
+    : availableProperties;
+    
+  const displayProperties = isSmartSearchActive ? smartSearchResults : filteredProperties;
   const featuredProperties = availableProperties.slice(0, 3);
   const landlordProperties = properties.filter(p => p.landlord_id === user?.id).slice(0, 6);
 
@@ -127,7 +138,7 @@ export const useIndexLogic = () => {
     
     // Statistics
     propertiesCount: properties.length,
-    availablePropertiesCount: availableProperties.length,
+    availablePropertiesCount: filteredProperties.length,
     totalViews,
     totalInquiries,
     
