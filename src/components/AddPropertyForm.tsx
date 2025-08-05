@@ -19,6 +19,7 @@ const AddPropertyForm = ({ onBack, onSubmit }: AddPropertyFormProps) => {
   const [formData, setFormData] = useState<PropertyFormData>({
     title: '',
     price: '',
+    currency: 'USD',
     location: '',
     bedrooms: '',
     bathrooms: '',
@@ -94,6 +95,7 @@ const AddPropertyForm = ({ onBack, onSubmit }: AddPropertyFormProps) => {
         description: formData.description,
         location: formData.location,
         price: parseInt(formData.price),
+        currency: formData.currency,
         bedrooms: parseInt(formData.bedrooms),
         bathrooms: parseFloat(formData.bathrooms),
         property_type: formData.propertyType,

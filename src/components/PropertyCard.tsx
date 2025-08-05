@@ -4,12 +4,14 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { MapPin, Bed, Bath, Home, Heart, GitCompare, Video } from 'lucide-react';
+import { formatPrice } from '@/lib/currency';
 
 interface PropertyCardProps {
   property: {
     id: string;
     title: string;
     price: number;
+    currency?: string;
     location: string;
     bedrooms: number;
     bathrooms: number;
@@ -127,7 +129,7 @@ const PropertyCard = ({
         
         <div className="flex items-center justify-between">
           <span className="text-2xl font-bold text-blue-600">
-            ${property.price.toLocaleString()}/mo
+            {formatPrice(property.price, property.currency || 'USD')}/mo
           </span>
         </div>
       </CardContent>

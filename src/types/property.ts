@@ -2,6 +2,7 @@
 export interface PropertyFormData {
   title: string;
   price: string;
+  currency: string;
   location: string;
   bedrooms: string;
   bathrooms: string;

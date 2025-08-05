@@ -25,9 +25,9 @@ const PropertyFormFields = ({ formData, onInputChange }: PropertyFormFieldsProps
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
-          <Label htmlFor="price">Monthly Rent ($)</Label>
+          <Label htmlFor="price">Monthly Rent</Label>
           <Input
             id="price"
             type="number"
@@ -36,6 +36,28 @@ const PropertyFormFields = ({ formData, onInputChange }: PropertyFormFieldsProps
             placeholder="2500"
             required
           />
+        </div>
+        <div>
+          <Label htmlFor="currency">Currency</Label>
+          <Select value={formData.currency} onValueChange={(value) => onInputChange('currency', value)}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select currency" />
+            </SelectTrigger>
+            <SelectContent className="bg-background border shadow-lg z-50">
+              <SelectItem value="USD">USD ($)</SelectItem>
+              <SelectItem value="EUR">EUR (€)</SelectItem>
+              <SelectItem value="GBP">GBP (£)</SelectItem>
+              <SelectItem value="CAD">CAD ($)</SelectItem>
+              <SelectItem value="AUD">AUD ($)</SelectItem>
+              <SelectItem value="JPY">JPY (¥)</SelectItem>
+              <SelectItem value="CNY">CNY (¥)</SelectItem>
+              <SelectItem value="INR">INR (₹)</SelectItem>
+              <SelectItem value="KES">KES (KSh)</SelectItem>
+              <SelectItem value="NGN">NGN (₦)</SelectItem>
+              <SelectItem value="ZAR">ZAR (R)</SelectItem>
+              <SelectItem value="GHS">GHS (₵)</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
         <div>
           <Label htmlFor="location">Location</Label>
