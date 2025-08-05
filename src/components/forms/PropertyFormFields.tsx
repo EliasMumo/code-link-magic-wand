@@ -54,9 +54,16 @@ const PropertyFormFields = ({ formData, onInputChange }: PropertyFormFieldsProps
                 aria-expanded={currencyOpen}
                 className="w-full justify-between"
               >
-                {formData.currency
-                  ? `${formData.currency} (${WORLD_CURRENCIES.find(c => c.code === formData.currency)?.symbol}) - ${WORLD_CURRENCIES.find(c => c.code === formData.currency)?.name}`
-                  : "Select currency..."}
+                {formData.currency ? (
+                  (() => {
+                    const selectedCurrency = WORLD_CURRENCIES.find(c => c.code === formData.currency);
+                    return selectedCurrency 
+                      ? `${selectedCurrency.code} (${selectedCurrency.symbol}) - ${selectedCurrency.name}`
+                      : formData.currency;
+                  })()
+                ) : (
+                  "Select currency..."
+                )}
                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </Button>
             </PopoverTrigger>
@@ -65,12 +72,12 @@ const PropertyFormFields = ({ formData, onInputChange }: PropertyFormFieldsProps
                 <CommandInput placeholder="Search currency..." />
                 <CommandEmpty>No currency found.</CommandEmpty>
                 <CommandGroup className="max-h-64 overflow-auto">
-                  {WORLD_CURRENCIES.map((currency) => (
+                  {(WORLD_CURRENCIES || []).map((currency) => (
                     <CommandItem
                       key={currency.code}
-                      value={`${currency.code} ${currency.name} ${currency.symbol}`}
-                      onSelect={() => {
-                        onInputChange('currency', currency.code);
+                      value={currency.code}
+                      onSelect={(currentValue) => {
+                        onInputChange('currency', currentValue.toUpperCase());
                         setCurrencyOpen(false);
                       }}
                     >
