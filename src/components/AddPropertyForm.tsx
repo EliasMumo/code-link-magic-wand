@@ -87,21 +87,11 @@ const AddPropertyForm = ({ onBack, onSubmit }: AddPropertyFormProps) => {
 
     // Validate address fields
     if (!formData.streetAddress.trim() || !formData.city.trim() || !formData.state.trim() || !formData.country.trim()) {
-      alert('Please fill in all address fields for accurate mapping');
+      alert('Please fill in all address fields');
       return;
     }
 
     try {
-      // Geocode the address to get coordinates
-      const { geocodeAddress } = await import('@/lib/geocoding');
-      const geocodingResult = await geocodeAddress(
-        formData.streetAddress,
-        formData.city,
-        formData.state,
-        formData.country,
-        formData.postalCode
-      );
-
       // Convert images to base64 strings for storage
       const imagePromises = selectedImages.map(file => {
         return new Promise<string>((resolve) => {
@@ -122,8 +112,6 @@ const AddPropertyForm = ({ onBack, onSubmit }: AddPropertyFormProps) => {
         state: formData.state,
         country: formData.country,
         postal_code: formData.postalCode,
-        latitude: geocodingResult?.coordinates.latitude || null,
-        longitude: geocodingResult?.coordinates.longitude || null,
         price: parseInt(formData.price),
         currency: formData.currency,
         bedrooms: parseInt(formData.bedrooms),

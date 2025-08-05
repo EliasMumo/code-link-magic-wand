@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -8,7 +7,6 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { MapPin, Bed, Bath, Square, Calendar, ArrowLeft, Home, Heart, Star, Video, AlertTriangle } from 'lucide-react';
 import { formatPrice } from '@/lib/currency';
 import PropertyReviews from './PropertyReviews';
-import Map from './Map';
 import VideoPlayer from './VideoPlayer';
 
 interface PropertyDetailProps {
@@ -23,19 +21,6 @@ const PropertyDetail = ({ property, onBack, onToggleFavorite, isFavorite }: Prop
   const handleFavoriteClick = () => {
     onToggleFavorite?.(property.id);
   };
-
-  // Use stored coordinates if available, otherwise fallback to geocoding or default
-  const getCoordinatesForProperty = () => {
-    // If property has stored coordinates, use them
-    if (property.latitude && property.longitude) {
-      return { lat: property.latitude, lng: property.longitude };
-    }
-    
-    // Fallback to NYC center if no coordinates available
-    return { lat: 40.7128, lng: -74.0060 };
-  };
-
-  const coordinates = getCoordinatesForProperty();
 
   return (
     <div className="max-w-6xl mx-auto">
@@ -116,14 +101,13 @@ const PropertyDetail = ({ property, onBack, onToggleFavorite, isFavorite }: Prop
               </div>
               
               <Tabs defaultValue="description" className="w-full">
-                <TabsList className="grid w-full grid-cols-4">
+                <TabsList className="grid w-full grid-cols-3">
                   <TabsTrigger value="description">Description</TabsTrigger>
                   <TabsTrigger value="videos">
                     <Video className="h-4 w-4 mr-1" />
                     Videos
                   </TabsTrigger>
                   <TabsTrigger value="reviews">Reviews</TabsTrigger>
-                  <TabsTrigger value="map">Location</TabsTrigger>
                 </TabsList>
                 
                 <TabsContent value="description" className="mt-4">
@@ -176,29 +160,6 @@ const PropertyDetail = ({ property, onBack, onToggleFavorite, isFavorite }: Prop
                 
                 <TabsContent value="reviews" className="mt-4">
                   <PropertyReviews propertyId={property.id} />
-                </TabsContent>
-                
-                <TabsContent value="map" className="mt-4">
-                  <div className="space-y-4">
-                    <Map
-                      latitude={coordinates.lat}
-                      longitude={coordinates.lng}
-                      zoom={14}
-                      markers={[{
-                        latitude: coordinates.lat,
-                        longitude: coordinates.lng,
-                        title: property.title,
-                        price: property.price,
-                      }]}
-                      className="w-full h-80"
-                    />
-                    <div className="text-center">
-                      <p className="text-sm text-gray-600 flex items-center justify-center">
-                        <MapPin className="h-4 w-4 mr-1" />
-                        {property.location}
-                      </p>
-                    </div>
-                  </div>
                 </TabsContent>
               </Tabs>
             </CardContent>
