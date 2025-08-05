@@ -24,30 +24,18 @@ const PropertyDetail = ({ property, onBack, onToggleFavorite, isFavorite }: Prop
     onToggleFavorite?.(property.id);
   };
 
-  // Generate sample coordinates based on location for demo purposes
-  const getCoordinatesFromLocation = (location: string) => {
-    // This is a simple demo implementation
-    // In a real app, you'd use geocoding API
-    const locations: { [key: string]: { lat: number; lng: number } } = {
-      'downtown': { lat: 40.7831, lng: -73.9712 },
-      'brooklyn': { lat: 40.6782, lng: -73.9442 },
-      'manhattan': { lat: 40.7831, lng: -73.9712 },
-      'queens': { lat: 40.7282, lng: -73.7949 },
-      'bronx': { lat: 40.8448, lng: -73.8648 },
-    };
-    
-    const locationKey = location.toLowerCase();
-    for (const key in locations) {
-      if (locationKey.includes(key)) {
-        return locations[key];
-      }
+  // Use stored coordinates if available, otherwise fallback to geocoding or default
+  const getCoordinatesForProperty = () => {
+    // If property has stored coordinates, use them
+    if (property.latitude && property.longitude) {
+      return { lat: property.latitude, lng: property.longitude };
     }
     
-    // Default to NYC center
+    // Fallback to NYC center if no coordinates available
     return { lat: 40.7128, lng: -74.0060 };
   };
 
-  const coordinates = getCoordinatesFromLocation(property.location);
+  const coordinates = getCoordinatesForProperty();
 
   return (
     <div className="max-w-6xl mx-auto">

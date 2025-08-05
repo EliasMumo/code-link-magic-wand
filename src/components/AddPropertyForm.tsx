@@ -76,7 +76,7 @@ const AddPropertyForm = ({ onBack, onSubmit }: AddPropertyFormProps) => {
     setVideoUrls(prev => prev.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Validate required fields
@@ -85,20 +85,45 @@ const AddPropertyForm = ({ onBack, onSubmit }: AddPropertyFormProps) => {
       return;
     }
 
-    // Convert images to base64 strings for storage
-    const imagePromises = selectedImages.map(file => {
-      return new Promise<string>((resolve) => {
-        const reader = new FileReader();
-        reader.onload = (e) => resolve(e.target?.result as string);
-        reader.readAsDataURL(file);
-      });
-    });
+    // Validate address fields
+    if (!formData.streetAddress.trim() || !formData.city.trim() || !formData.state.trim() || !formData.country.trim()) {
+      alert('Please fill in all address fields for accurate mapping');
+      return;
+    }
 
-    Promise.all(imagePromises).then(imageBase64Array => {
+    try {
+      // Geocode the address to get coordinates
+      const { geocodeAddress } = await import('@/lib/geocoding');
+      const geocodingResult = await geocodeAddress(
+        formData.streetAddress,
+        formData.city,
+        formData.state,
+        formData.country,
+        formData.postalCode
+      );
+
+      // Convert images to base64 strings for storage
+      const imagePromises = selectedImages.map(file => {
+        return new Promise<string>((resolve) => {
+          const reader = new FileReader();
+          reader.onload = (e) => resolve(e.target?.result as string);
+          reader.readAsDataURL(file);
+        });
+      });
+
+      const imageBase64Array = await Promise.all(imagePromises);
+
       const propertyData = {
         title: formData.title,
         description: formData.description,
         location: formData.location,
+        street_address: formData.streetAddress,
+        city: formData.city,
+        state: formData.state,
+        country: formData.country,
+        postal_code: formData.postalCode,
+        latitude: geocodingResult?.coordinates.latitude || null,
+        longitude: geocodingResult?.coordinates.longitude || null,
         price: parseInt(formData.price),
         currency: formData.currency,
         bedrooms: parseInt(formData.bedrooms),
@@ -115,7 +140,10 @@ const AddPropertyForm = ({ onBack, onSubmit }: AddPropertyFormProps) => {
       };
       
       onSubmit(propertyData);
-    });
+    } catch (error) {
+      console.error('Error processing property data:', error);
+      alert('Error processing property data. Please try again.');
+    }
   };
 
   return (
