@@ -1,20 +1,38 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, Plus, Eye, MessageCircle, Edit, Trash2, Building2, TrendingUp } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useProperties } from '@/hooks/useProperties';
+import { useProperties, Property } from '@/hooks/useProperties';
 import { useAuth } from '@/hooks/useAuth';
+import EditPropertyModal from '@/components/EditPropertyModal';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 
 const PropertyManagement = () => {
   const navigate = useNavigate();
-  const { properties, loading } = useProperties();
+  const { properties, loading, updateProperty, deleteProperty } = useProperties();
   const { user } = useAuth();
+  const [editingProperty, setEditingProperty] = useState<Property | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   // Filter properties that belong to the current landlord
   const landlordProperties = properties.filter(p => p.landlord_id === user?.id);
+
+  const handleEditProperty = (property: Property) => {
+    setEditingProperty(property);
+    setIsEditModalOpen(true);
+  };
+
+  const handleCloseEditModal = () => {
+    setIsEditModalOpen(false);
+    setEditingProperty(null);
+  };
+
+  const handleDeleteProperty = async (propertyId: string) => {
+    await deleteProperty(propertyId);
+  };
 
   if (loading) {
     return (
@@ -162,17 +180,39 @@ const PropertyManagement = () => {
                         <Button 
                           variant="outline" 
                           size="sm"
+                          onClick={() => handleEditProperty(property)}
                           className="bg-white/50 border-primary/20 text-primary hover:bg-primary/10"
                         >
                           <Edit className="h-4 w-4" />
                         </Button>
-                        <Button 
-                          variant="outline" 
-                          size="sm"
-                          className="bg-white/50 border-destructive/20 text-destructive hover:bg-destructive/10"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button 
+                              variant="outline" 
+                              size="sm"
+                              className="bg-white/50 border-destructive/20 text-destructive hover:bg-destructive/10"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Delete Property</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Are you sure you want to delete "{property.title}"? This action cannot be undone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction 
+                                onClick={() => handleDeleteProperty(property.id)}
+                                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                              >
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       </div>
                     </div>
                   </div>
@@ -181,6 +221,13 @@ const PropertyManagement = () => {
             )}
           </CardContent>
         </Card>
+
+        <EditPropertyModal
+          property={editingProperty}
+          isOpen={isEditModalOpen}
+          onClose={handleCloseEditModal}
+          onUpdate={updateProperty}
+        />
       </div>
     </div>
   );

@@ -15,6 +15,8 @@ export interface Property {
   property_type: string;
   amenities: string[];
   images: string[];
+  videos: string[];
+  currency: string;
   is_furnished: boolean;
   is_pet_friendly: boolean;
   is_available: boolean;
@@ -155,6 +157,88 @@ export const useProperties = () => {
     }
   };
 
+  const updateProperty = async (propertyId: string, propertyData: Partial<Omit<Property, 'id' | 'created_at' | 'updated_at' | 'landlord_id'>>) => {
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to update a property",
+        variant: "destructive",
+      });
+      return false;
+    }
+
+    try {
+      const { data, error } = await supabase
+        .from('properties')
+        .update(propertyData)
+        .eq('id', propertyId)
+        .eq('landlord_id', user.id)
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      setProperties(prev => 
+        prev.map(p => p.id === propertyId ? data : p)
+      );
+      
+      toast({
+        title: "Success",
+        description: "Property updated successfully",
+      });
+
+      return true;
+    } catch (error: any) {
+      console.error('Error updating property:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update property",
+        variant: "destructive",
+      });
+      return false;
+    }
+  };
+
+  const deleteProperty = async (propertyId: string) => {
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to delete a property",
+        variant: "destructive",
+      });
+      return false;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('properties')
+        .delete()
+        .eq('id', propertyId)
+        .eq('landlord_id', user.id);
+
+      if (error) throw error;
+
+      setProperties(prev => 
+        prev.filter(p => p.id !== propertyId)
+      );
+      
+      toast({
+        title: "Success",
+        description: "Property deleted successfully",
+      });
+
+      return true;
+    } catch (error: any) {
+      console.error('Error deleting property:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete property",
+        variant: "destructive",
+      });
+      return false;
+    }
+  };
+
   useEffect(() => {
     fetchProperties();
   }, []);
@@ -170,6 +254,8 @@ export const useProperties = () => {
     loading,
     userRole,
     addProperty,
+    updateProperty,
+    deleteProperty,
     incrementPropertyViews,
     refetch: fetchProperties,
   };
