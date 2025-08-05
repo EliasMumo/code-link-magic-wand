@@ -15,14 +15,12 @@ interface VideoUploadProps {
 
 const VideoUpload = ({ videoUrls, onVideoUrlAdd, onVideoUrlRemove }: VideoUploadProps) => {
   const [uploading, setUploading] = useState(false);
+  const [isDragOver, setIsDragOver] = useState(false);
   const { user } = useAuth();
   const { toast } = useToast();
 
-  const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files || files.length === 0 || !user) {
-      return;
-    }
+  const processVideoFile = async (file: File) => {
+    if (!user) return;
 
     if (videoUrls.length >= 3) {
       toast({
@@ -33,8 +31,6 @@ const VideoUpload = ({ videoUrls, onVideoUrlAdd, onVideoUrlRemove }: VideoUpload
       return;
     }
 
-    const file = files[0];
-    
     // Check file size (max 100MB)
     if (file.size > 100 * 1024 * 1024) {
       toast({
@@ -77,9 +73,6 @@ const VideoUpload = ({ videoUrls, onVideoUrlAdd, onVideoUrlRemove }: VideoUpload
         title: "Video uploaded",
         description: "Your video has been uploaded successfully",
       });
-
-      // Reset the input
-      e.target.value = '';
     } catch (error: any) {
       console.error('Error uploading video:', error);
       toast({
@@ -89,6 +82,49 @@ const VideoUpload = ({ videoUrls, onVideoUrlAdd, onVideoUrlRemove }: VideoUpload
       });
     } finally {
       setUploading(false);
+    }
+  };
+
+  const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    const file = files[0];
+    await processVideoFile(file);
+
+    // Reset the input
+    e.target.value = '';
+  };
+
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(false);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDrop = async (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(false);
+
+    if (uploading || videoUrls.length >= 3) return;
+
+    const files = Array.from(e.dataTransfer.files);
+    const videoFiles = files.filter(file => file.type.startsWith('video/'));
+    
+    if (videoFiles.length > 0) {
+      await processVideoFile(videoFiles[0]);
     }
   };
 
@@ -140,17 +176,22 @@ const VideoUpload = ({ videoUrls, onVideoUrlAdd, onVideoUrlRemove }: VideoUpload
             htmlFor="video-upload"
             className={`
               flex items-center justify-center gap-2 p-3 border-2 border-dashed rounded-lg cursor-pointer
-              transition-colors hover:bg-muted
+              transition-all duration-200 hover:bg-muted
               ${uploading || videoUrls.length >= 3 ? 'opacity-50 cursor-not-allowed' : 'hover:border-primary'}
+              ${isDragOver ? 'border-primary bg-muted scale-105' : ''}
             `}
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
           >
             {uploading ? (
               <Loader2 className="h-5 w-5 animate-spin" />
             ) : (
-              <Upload className="h-5 w-5" />
+              <Upload className={`h-5 w-5 ${isDragOver ? 'animate-bounce' : ''}`} />
             )}
             <span className="text-sm">
-              {uploading ? 'Uploading...' : 'Click to upload video'}
+              {uploading ? 'Uploading...' : isDragOver ? 'Drop video here' : 'Click to upload video or drag and drop'}
             </span>
           </label>
         </div>
@@ -194,6 +235,7 @@ const VideoUpload = ({ videoUrls, onVideoUrlAdd, onVideoUrlRemove }: VideoUpload
         <p>• Maximum 3 videos per property</p>
         <p>• Video files must be under 100MB</p>
         <p>• Supported formats: MP4, WebM, MOV, AVI</p>
+        <p>• Drag and drop supported</p>
       </div>
     </div>
   );
