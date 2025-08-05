@@ -5,7 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { MapPin, Bed, Bath, Square, Calendar, Phone, Mail, ArrowLeft, Home, Heart, MessageCircle, Star, Video, AlertTriangle } from 'lucide-react';
+import { MapPin, Bed, Bath, Square, Calendar, Phone, Mail, ArrowLeft, Home, Heart, MessageCircle, Star, Video, AlertTriangle, User } from 'lucide-react';
+import { formatPrice } from '@/lib/currency';
 import PropertyReviews from './PropertyReviews';
 import InquiryForm from './InquiryForm';
 import Map from './Map';
@@ -222,7 +223,7 @@ const PropertyDetail = ({ property, onBack, onToggleFavorite, isFavorite }: Prop
           <Card>
             <CardHeader>
               <CardTitle className="text-2xl text-blue-600">
-                ${property.price.toLocaleString()}/month
+                {formatPrice(property.price, property.currency || 'USD')}/month
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -247,14 +248,28 @@ const PropertyDetail = ({ property, onBack, onToggleFavorite, isFavorite }: Prop
               <CardTitle>Landlord Contact</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <div className="flex items-center">
-                <Phone className="h-4 w-4 mr-2 text-gray-500" />
-                <span className="text-sm">(555) 123-4567</span>
-              </div>
-              <div className="flex items-center">
-                <Mail className="h-4 w-4 mr-2 text-gray-500" />
-                <span className="text-sm">landlord@example.com</span>
-              </div>
+              {property.landlord_phone && (
+                <div className="flex items-center">
+                  <Phone className="h-4 w-4 mr-2 text-gray-500" />
+                  <span className="text-sm">{property.landlord_phone}</span>
+                </div>
+              )}
+              {property.caretaker_phone && (
+                <div className="flex items-center">
+                  <User className="h-4 w-4 mr-2 text-gray-500" />
+                  <div className="flex flex-col">
+                    <span className="text-sm text-gray-600">Caretaker</span>
+                    <span className="text-sm">{property.caretaker_phone}</span>
+                  </div>
+                </div>
+              )}
+              {!property.landlord_phone && !property.caretaker_phone && (
+                <div className="text-center py-4">
+                  <Phone className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+                  <p className="text-gray-500 text-sm">No contact information available</p>
+                  <p className="text-gray-400 text-xs mt-1">Use the contact form to reach the landlord</p>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
