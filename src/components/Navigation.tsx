@@ -122,9 +122,9 @@ const Navigation = ({
 
             {/* Logout Button */}
             <Button 
-              variant="destructive" 
+              variant="outline" 
               onClick={handleSignOut}
-              className="bg-red-600 hover:bg-red-700 text-white px-3"
+              className="border-gray-300 bg-white hover:bg-gray-50 text-gray-700 hover:text-gray-900 px-3 transition-colors"
             >
               <LogOut className="h-4 w-4 mr-2" />
               Sign Out
@@ -135,10 +135,10 @@ const Navigation = ({
           <div className="md:hidden flex items-center space-x-2">
             {/* Mobile Logout Button - More Prominent */}
             <Button 
-              variant="destructive" 
+              variant="outline" 
               size="sm"
               onClick={handleSignOut}
-              className="bg-red-600 hover:bg-red-700 text-white"
+              className="border-gray-300 bg-white hover:bg-gray-50 text-gray-700 hover:text-gray-900 transition-colors"
             >
               <LogOut className="h-4 w-4" />
               <span className="ml-1 text-xs">Out</span>
