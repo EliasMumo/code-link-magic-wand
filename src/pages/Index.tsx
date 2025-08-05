@@ -1,7 +1,7 @@
 import React from 'react';
 import Navigation from '@/components/Navigation';
 import PropertyGrid from '@/components/PropertyGrid';
-import SearchFilters from '@/components/SearchFilters';
+import SimpleSearch from '@/components/SimpleSearch';
 import PropertyDetail from '@/components/PropertyDetail';
 import AddPropertyForm from '@/components/AddPropertyForm';
 import HeroSection from '@/components/HeroSection';
@@ -83,12 +83,10 @@ const Index = () => {
       case 'search':
         return (
           <div>
-            <SearchFilters 
+            <SimpleSearch 
               filters={searchFilters}
               onFiltersChange={setSearchFilters}
               onSearch={handleSearch}
-              properties={properties}
-              onSmartSearchResults={handleSmartSearchResults}
             />
             <PropertyGrid 
               properties={properties}

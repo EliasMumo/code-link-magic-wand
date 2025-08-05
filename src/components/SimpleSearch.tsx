@@ -1,0 +1,110 @@
+import React from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Slider } from '@/components/ui/slider';
+import { Search } from 'lucide-react';
+import LocationSearchInput from './LocationSearchInput';
+
+interface SimpleSearchProps {
+  filters: any;
+  onFiltersChange: (filters: any) => void;
+  onSearch: () => void;
+}
+
+const SimpleSearch = ({ filters, onFiltersChange, onSearch }: SimpleSearchProps) => {
+  const handleFilterChange = (key: string, value: any) => {
+    onFiltersChange({ ...filters, [key]: value });
+  };
+
+  return (
+    <Card className="w-full max-w-4xl mx-auto">
+      <CardHeader>
+        <CardTitle className="text-xl font-semibold">Find Your Perfect Home</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        {/* Location Search */}
+        <div>
+          <Label className="text-base font-medium mb-2 block">Where do you want to live?</Label>
+          <LocationSearchInput
+            value={filters.location || ''}
+            onChange={(value) => handleFilterChange('location', value)}
+            placeholder="Enter city, neighborhood, or area"
+          />
+        </div>
+
+        {/* Price Range */}
+        <div>
+          <Label className="text-base font-medium mb-3 block">
+            Price Range: ${filters.minPrice?.toLocaleString()} - ${filters.maxPrice?.toLocaleString()}/month
+          </Label>
+          <Slider
+            value={[filters.minPrice || 500, filters.maxPrice || 5000]}
+            onValueChange={(values) => {
+              handleFilterChange('minPrice', values[0]);
+              handleFilterChange('maxPrice', values[1]);
+            }}
+            max={8000}
+            min={500}
+            step={100}
+            className="mt-2"
+          />
+          <div className="flex justify-between text-sm text-gray-500 mt-1">
+            <span>$500</span>
+            <span>$8,000+</span>
+          </div>
+        </div>
+
+        {/* Property Type and Bedrooms Row */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <Label className="text-base font-medium mb-2 block">Property Type</Label>
+            <Select value={filters.propertyType || 'any'} onValueChange={(value) => handleFilterChange('propertyType', value)}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Any type" />
+              </SelectTrigger>
+              <SelectContent className="bg-white">
+                <SelectItem value="any">Any type</SelectItem>
+                <SelectItem value="apartment">Apartment</SelectItem>
+                <SelectItem value="house">House</SelectItem>
+                <SelectItem value="condo">Condo</SelectItem>
+                <SelectItem value="townhouse">Townhouse</SelectItem>
+                <SelectItem value="studio">Studio</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div>
+            <Label className="text-base font-medium mb-2 block">Bedrooms</Label>
+            <Select value={filters.bedrooms || 'any'} onValueChange={(value) => handleFilterChange('bedrooms', value)}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Any" />
+              </SelectTrigger>
+              <SelectContent className="bg-white">
+                <SelectItem value="any">Any</SelectItem>
+                <SelectItem value="0">Studio</SelectItem>
+                <SelectItem value="1">1 bedroom</SelectItem>
+                <SelectItem value="2">2 bedrooms</SelectItem>
+                <SelectItem value="3">3 bedrooms</SelectItem>
+                <SelectItem value="4">4+ bedrooms</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        {/* Search Button */}
+        <Button 
+          onClick={onSearch} 
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 text-lg"
+          size="lg"
+        >
+          <Search className="h-5 w-5 mr-2" />
+          Search Properties
+        </Button>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default SimpleSearch;
