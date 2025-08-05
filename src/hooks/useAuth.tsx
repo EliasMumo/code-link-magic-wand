@@ -99,9 +99,29 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const signOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      console.error('Sign out error:', error);
+    try {
+      // First clear local state
+      setUser(null);
+      setSession(null);
+      
+      // Then attempt to sign out from Supabase
+      const { error } = await supabase.auth.signOut({
+        scope: 'local' // This ensures we clear local session even if server call fails
+      });
+      
+      // If server logout fails but it's a session_not_found error, we still consider it successful
+      // since the session is already invalid on the server
+      if (error && !error.message.includes('session_not_found') && !error.message.includes('Session not found')) {
+        console.error('Sign out error:', error);
+        // Don't throw here, just log - the user state is already cleared
+      } else {
+        console.log('Successfully signed out');
+      }
+    } catch (error) {
+      console.error('Unexpected sign out error:', error);
+      // Even if something goes wrong, ensure local state is cleared
+      setUser(null);
+      setSession(null);
     }
   };
 

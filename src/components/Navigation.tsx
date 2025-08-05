@@ -34,8 +34,17 @@ const Navigation = ({
   console.log('Navigation component - userRole:', userRole, 'userName:', userName);
 
   const handleSignOut = async () => {
-    await signOut();
-    navigate('/auth');
+    try {
+      await signOut();
+      // Add a small delay to ensure state is cleared
+      setTimeout(() => {
+        navigate('/auth');
+      }, 100);
+    } catch (error) {
+      console.error('Error during sign out:', error);
+      // Even if sign out fails, redirect to auth page
+      navigate('/auth');
+    }
   };
 
   const handleNavigation = (path: string) => {
