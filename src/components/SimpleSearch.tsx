@@ -33,6 +33,7 @@ const SimpleSearch = ({ filters, onFiltersChange, onSearch }: SimpleSearchProps)
               placeholder="Enter city, neighborhood, or area"
               value={filters.location || ''}
               onChange={(e) => handleFilterChange('location', e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && onSearch()}
               className="pl-10"
             />
           </div>
