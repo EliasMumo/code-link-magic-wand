@@ -99,14 +99,70 @@ const PropertyFormFields = ({ formData, onInputChange }: PropertyFormFieldsProps
           </div>
         </div>
         <div>
-          <Label htmlFor="location">Location</Label>
+          <Label htmlFor="location">Full Address (for display)</Label>
           <Input
             id="location"
             value={formData.location}
             onChange={(e) => onInputChange('location', e.target.value)}
-            placeholder="123 Main St, City, State"
+            placeholder="Complete address as you want it displayed"
             required
           />
+        </div>
+      </div>
+
+      <div className="space-y-4">
+        <Label className="text-lg font-semibold">Detailed Location (for accurate mapping)</Label>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor="streetAddress">Street Address</Label>
+            <Input
+              id="streetAddress"
+              value={formData.streetAddress}
+              onChange={(e) => onInputChange('streetAddress', e.target.value)}
+              placeholder="123 Main Street, Apt 4B"
+              required
+            />
+          </div>
+          <div>
+            <Label htmlFor="city">City</Label>
+            <Input
+              id="city"
+              value={formData.city}
+              onChange={(e) => onInputChange('city', e.target.value)}
+              placeholder="New York"
+              required
+            />
+          </div>
+          <div>
+            <Label htmlFor="state">State/Province</Label>
+            <Input
+              id="state"
+              value={formData.state}
+              onChange={(e) => onInputChange('state', e.target.value)}
+              placeholder="NY"
+              required
+            />
+          </div>
+          <div>
+            <Label htmlFor="country">Country</Label>
+            <Input
+              id="country"
+              value={formData.country}
+              onChange={(e) => onInputChange('country', e.target.value)}
+              placeholder="United States"
+              required
+            />
+          </div>
+          <div>
+            <Label htmlFor="postalCode">Postal/ZIP Code</Label>
+            <Input
+              id="postalCode"
+              value={formData.postalCode}
+              onChange={(e) => onInputChange('postalCode', e.target.value)}
+              placeholder="10001"
+              required
+            />
+          </div>
         </div>
       </div>
 

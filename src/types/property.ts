@@ -4,6 +4,11 @@ export interface PropertyFormData {
   price: string;
   currency: string;
   location: string;
+  streetAddress: string;
+  city: string;
+  state: string;
+  country: string;
+  postalCode: string;
   bedrooms: string;
   bathrooms: string;
   propertyType: string;
