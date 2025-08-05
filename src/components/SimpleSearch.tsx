@@ -1,10 +1,10 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Search } from 'lucide-react';
-import LocationSearchInput from './LocationSearchInput';
+import { Search, MapPin } from 'lucide-react';
 
 interface SimpleSearchProps {
   filters: any;
@@ -26,11 +26,16 @@ const SimpleSearch = ({ filters, onFiltersChange, onSearch }: SimpleSearchProps)
         {/* Location Search */}
         <div>
           <Label className="text-base font-medium mb-2 block">Where do you want to live?</Label>
-          <LocationSearchInput
-            value={filters.location || ''}
-            onChange={(value) => handleFilterChange('location', value)}
-            placeholder="Enter city, neighborhood, or area"
-          />
+          <div className="relative">
+            <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Enter city, neighborhood, or area"
+              value={filters.location || ''}
+              onChange={(e) => handleFilterChange('location', e.target.value)}
+              className="pl-10"
+            />
+          </div>
         </div>
 
         {/* Property Type and Bedrooms Row */}
