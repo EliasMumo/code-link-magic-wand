@@ -95,10 +95,10 @@ const PropertyFormFields = ({ formData, onInputChange }: PropertyFormFieldsProps
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="1">1</SelectItem>
-              <SelectItem value="1.5">1.5</SelectItem>
               <SelectItem value="2">2</SelectItem>
-              <SelectItem value="2.5">2.5</SelectItem>
-              <SelectItem value="3">3+</SelectItem>
+              <SelectItem value="3">3</SelectItem>
+              <SelectItem value="4">4</SelectItem>
+              <SelectItem value="5">5+</SelectItem>
             </SelectContent>
           </Select>
         </div>
