@@ -129,14 +129,12 @@ const PropertyDetail = ({ property, onBack, onToggleFavorite, isFavorite }: Prop
               </div>
               
               <Tabs defaultValue="description" className="w-full">
-                <TabsList className={`grid w-full ${property.videos && property.videos.length > 0 ? 'grid-cols-4' : 'grid-cols-3'}`}>
+                <TabsList className="grid w-full grid-cols-4">
                   <TabsTrigger value="description">Description</TabsTrigger>
-                  {property.videos && property.videos.length > 0 && (
-                    <TabsTrigger value="videos">
-                      <Video className="h-4 w-4 mr-1" />
-                      Videos
-                    </TabsTrigger>
-                  )}
+                  <TabsTrigger value="videos">
+                    <Video className="h-4 w-4 mr-1" />
+                    Videos
+                  </TabsTrigger>
                   <TabsTrigger value="reviews">Reviews</TabsTrigger>
                   <TabsTrigger value="map">Location</TabsTrigger>
                 </TabsList>
@@ -163,10 +161,10 @@ const PropertyDetail = ({ property, onBack, onToggleFavorite, isFavorite }: Prop
                   </div>
                 </TabsContent>
 
-                {property.videos && property.videos.length > 0 && (
-                  <TabsContent value="videos" className="mt-4">
-                    <div className="space-y-4">
-                      <h3 className="text-lg font-semibold mb-4">Property Videos</h3>
+                <TabsContent value="videos" className="mt-4">
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold mb-4">Property Videos</h3>
+                    {property.videos && property.videos.length > 0 ? (
                       <div className="grid gap-4">
                         {property.videos.map((videoUrl: string, index: number) => (
                           <div key={index} className="space-y-2">
@@ -179,9 +177,15 @@ const PropertyDetail = ({ property, onBack, onToggleFavorite, isFavorite }: Prop
                           </div>
                         ))}
                       </div>
-                    </div>
-                  </TabsContent>
-                )}
+                    ) : (
+                      <div className="text-center py-8">
+                        <Video className="h-12 w-12 text-gray-400 mx-auto mb-3" />
+                        <p className="text-gray-500 text-lg font-medium">No videos available</p>
+                        <p className="text-gray-400 text-sm mt-1">The landlord hasn't uploaded any videos for this property yet.</p>
+                      </div>
+                    )}
+                  </div>
+                </TabsContent>
                 
                 <TabsContent value="reviews" className="mt-4">
                   <PropertyReviews propertyId={property.id} />
