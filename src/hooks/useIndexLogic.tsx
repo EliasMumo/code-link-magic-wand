@@ -24,8 +24,6 @@ export const useIndexLogic = () => {
   const [selectedProperty, setSelectedProperty] = useState<any>(null);
   const [searchFilters, setSearchFilters] = useState({
     location: '',
-    minPrice: 1000,
-    maxPrice: 3000,
     bedrooms: 'any',
     propertyType: 'any'
   });
@@ -103,15 +101,38 @@ export const useIndexLogic = () => {
   // Filter available properties based on search criteria
   const availableProperties = properties.filter(p => p.is_available);
   
-  // Apply location filter if specified
-  const filteredProperties = searchFilters.location 
-    ? availableProperties.filter(property => 
+  // Apply search filters
+  const filteredProperties = availableProperties.filter(property => {
+    // Location filter
+    if (searchFilters.location) {
+      const locationMatch = 
         property.location?.toLowerCase().includes(searchFilters.location.toLowerCase()) ||
         property.city?.toLowerCase().includes(searchFilters.location.toLowerCase()) ||
         property.state?.toLowerCase().includes(searchFilters.location.toLowerCase()) ||
-        property.street_address?.toLowerCase().includes(searchFilters.location.toLowerCase())
-      )
-    : availableProperties;
+        property.street_address?.toLowerCase().includes(searchFilters.location.toLowerCase());
+      if (!locationMatch) return false;
+    }
+    
+    // Property type filter
+    if (searchFilters.propertyType && searchFilters.propertyType !== 'any') {
+      if (property.property_type?.toLowerCase() !== searchFilters.propertyType.toLowerCase()) {
+        return false;
+      }
+    }
+    
+    // Bedrooms filter
+    if (searchFilters.bedrooms && searchFilters.bedrooms !== 'any') {
+      const bedroomCount = parseInt(searchFilters.bedrooms);
+      if (bedroomCount === 4) {
+        // 4+ bedrooms
+        if (property.bedrooms < 4) return false;
+      } else {
+        if (property.bedrooms !== bedroomCount) return false;
+      }
+    }
+    
+    return true;
+  });
     
   const displayProperties = isSmartSearchActive ? smartSearchResults : filteredProperties;
   const featuredProperties = availableProperties.slice(0, 3);

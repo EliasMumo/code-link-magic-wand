@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Slider } from '@/components/ui/slider';
 import { Search } from 'lucide-react';
 import LocationSearchInput from './LocationSearchInput';
 
@@ -32,28 +31,6 @@ const SimpleSearch = ({ filters, onFiltersChange, onSearch }: SimpleSearchProps)
             onChange={(value) => handleFilterChange('location', value)}
             placeholder="Enter city, neighborhood, or area"
           />
-        </div>
-
-        {/* Price Range */}
-        <div>
-          <Label className="text-base font-medium mb-3 block">
-            Price Range: ${filters.minPrice?.toLocaleString()} - ${filters.maxPrice?.toLocaleString()}/month
-          </Label>
-          <Slider
-            value={[filters.minPrice || 500, filters.maxPrice || 5000]}
-            onValueChange={(values) => {
-              handleFilterChange('minPrice', values[0]);
-              handleFilterChange('maxPrice', values[1]);
-            }}
-            max={8000}
-            min={500}
-            step={100}
-            className="mt-2"
-          />
-          <div className="flex justify-between text-sm text-gray-500 mt-1">
-            <span>$500</span>
-            <span>$8,000+</span>
-          </div>
         </div>
 
         {/* Property Type and Bedrooms Row */}
