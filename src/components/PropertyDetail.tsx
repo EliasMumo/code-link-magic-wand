@@ -5,10 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { MapPin, Bed, Bath, Square, Calendar, Phone, Mail, ArrowLeft, Home, Heart, MessageCircle, Star, Video, AlertTriangle, User } from 'lucide-react';
+import { MapPin, Bed, Bath, Square, Calendar, ArrowLeft, Home, Heart, Star, Video, AlertTriangle } from 'lucide-react';
 import { formatPrice } from '@/lib/currency';
 import PropertyReviews from './PropertyReviews';
-import InquiryForm from './InquiryForm';
 import Map from './Map';
 import VideoPlayer from './VideoPlayer';
 
@@ -20,7 +19,6 @@ interface PropertyDetailProps {
 }
 
 const PropertyDetail = ({ property, onBack, onToggleFavorite, isFavorite }: PropertyDetailProps) => {
-  const [showInquiryForm, setShowInquiryForm] = useState(false);
 
   const handleFavoriteClick = () => {
     onToggleFavorite?.(property.id);
@@ -232,57 +230,11 @@ const PropertyDetail = ({ property, onBack, onToggleFavorite, isFavorite }: Prop
                 <span className="text-sm">Available Now</span>
               </div>
               
-              <Button 
-                className="w-full" 
-                size="lg"
-                onClick={() => setShowInquiryForm(true)}
-              >
-                <MessageCircle className="h-4 w-4 mr-2" />
-                Contact Landlord
-              </Button>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader>
-              <CardTitle>Landlord Contact</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {property.landlord_phone && (
-                <div className="flex items-center">
-                  <Phone className="h-4 w-4 mr-2 text-gray-500" />
-                  <span className="text-sm">{property.landlord_phone}</span>
-                </div>
-              )}
-              {property.caretaker_phone && (
-                <div className="flex items-center">
-                  <User className="h-4 w-4 mr-2 text-gray-500" />
-                  <div className="flex flex-col">
-                    <span className="text-sm text-gray-600">Caretaker</span>
-                    <span className="text-sm">{property.caretaker_phone}</span>
-                  </div>
-                </div>
-              )}
-              {!property.landlord_phone && !property.caretaker_phone && (
-                <div className="text-center py-4">
-                  <Phone className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-                  <p className="text-gray-500 text-sm">No contact information available</p>
-                  <p className="text-gray-400 text-xs mt-1">Use the contact form to reach the landlord</p>
-                </div>
-              )}
             </CardContent>
           </Card>
         </div>
       </div>
 
-      {showInquiryForm && (
-        <InquiryForm
-          propertyId={property.id}
-          landlordId={property.landlord_id}
-          propertyTitle={property.title}
-          onClose={() => setShowInquiryForm(false)}
-        />
-      )}
     </div>
   );
 };
