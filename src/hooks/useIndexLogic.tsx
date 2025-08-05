@@ -105,11 +105,14 @@ export const useIndexLogic = () => {
   const filteredProperties = availableProperties.filter(property => {
     // Location filter
     if (searchFilters.location) {
+      const searchTerm = searchFilters.location.toLowerCase();
       const locationMatch = 
-        property.location?.toLowerCase().includes(searchFilters.location.toLowerCase()) ||
-        property.city?.toLowerCase().includes(searchFilters.location.toLowerCase()) ||
-        property.state?.toLowerCase().includes(searchFilters.location.toLowerCase()) ||
-        property.street_address?.toLowerCase().includes(searchFilters.location.toLowerCase());
+        property.location?.toLowerCase().includes(searchTerm) ||
+        property.city?.toLowerCase().includes(searchTerm) ||
+        property.state?.toLowerCase().includes(searchTerm) ||
+        property.street_address?.toLowerCase().includes(searchTerm) ||
+        property.title?.toLowerCase().includes(searchTerm) ||
+        property.description?.toLowerCase().includes(searchTerm);
       if (!locationMatch) return false;
     }
     
