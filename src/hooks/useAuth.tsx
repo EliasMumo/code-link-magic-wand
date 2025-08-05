@@ -3,8 +3,6 @@ import { useState, useEffect, createContext, useContext, ReactNode } from 'react
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 
-import { useDisclaimerAcceptance } from '@/hooks/useDisclaimerAcceptance';
-import { DisclaimerModal } from '@/components/DisclaimerModal';
 
 interface AuthContextType {
   user: User | null;
@@ -37,12 +35,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   
   console.log('AuthProvider rendering - user:', user, 'loading:', loading);
   
-  // Disclaimer handling
-  const { 
-    needsDisclaimer, 
-    loading: disclaimerLoading, 
-    acceptDisclaimer 
-  } = useDisclaimerAcceptance(user?.id);
 
   useEffect(() => {
     // Set up auth state listener
@@ -154,13 +146,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   return (
     <AuthContext.Provider value={value}>
       {children}
-      {/* Show disclaimer only - terms are now handled inline during signup */}
-      {user && needsDisclaimer && !loading && !disclaimerLoading && (
-        <DisclaimerModal
-          open={true}
-          onAccept={acceptDisclaimer}
-        />
-      )}
+      {/* Disclaimer modal removed - no more annoying popups on login */}
     </AuthContext.Provider>
   );
 };
