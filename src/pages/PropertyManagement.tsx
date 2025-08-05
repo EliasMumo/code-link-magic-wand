@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Plus, Eye, MessageCircle, Edit, Trash2, Building2, TrendingUp } from 'lucide-react';
+import { ArrowLeft, Plus, Eye, MessageCircle, Edit, Trash2, Building2, TrendingUp, ToggleLeft, ToggleRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useProperties, Property } from '@/hooks/useProperties';
 import { useAuth } from '@/hooks/useAuth';
@@ -12,7 +12,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 
 const PropertyManagement = () => {
   const navigate = useNavigate();
-  const { properties, loading, updateProperty, deleteProperty } = useProperties();
+  const { properties, loading, updateProperty, deleteProperty, togglePropertyAvailability } = useProperties();
   const { user } = useAuth();
   const [editingProperty, setEditingProperty] = useState<Property | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -32,6 +32,10 @@ const PropertyManagement = () => {
 
   const handleDeleteProperty = async (propertyId: string) => {
     await deleteProperty(propertyId);
+  };
+
+  const handleToggleAvailability = async (propertyId: string, currentAvailability: boolean) => {
+    await togglePropertyAvailability(propertyId, currentAvailability);
   };
 
   if (loading) {
@@ -175,8 +179,21 @@ const PropertyManagement = () => {
                             ${property.price}/month
                           </span>
                         </div>
-                      </div>
-                      <div className="flex items-center gap-3">
+                       </div>
+                       <div className="flex items-center gap-3">
+                         <Button 
+                           variant="outline" 
+                           size="sm"
+                           onClick={() => handleToggleAvailability(property.id, property.is_available)}
+                           className={`bg-white/50 border ${property.is_available ? 'border-green-500/20 text-green-600 hover:bg-green-50' : 'border-gray-400/20 text-gray-600 hover:bg-gray-50'}`}
+                           title={property.is_available ? 'Mark as Unavailable' : 'Mark as Available'}
+                         >
+                           {property.is_available ? (
+                             <ToggleRight className="h-4 w-4" />
+                           ) : (
+                             <ToggleLeft className="h-4 w-4" />
+                           )}
+                         </Button>
                         <Button 
                           variant="outline" 
                           size="sm"

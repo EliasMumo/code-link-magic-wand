@@ -239,6 +239,48 @@ export const useProperties = () => {
     }
   };
 
+  const togglePropertyAvailability = async (propertyId: string, currentAvailability: boolean) => {
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to update property availability",
+        variant: "destructive",
+      });
+      return false;
+    }
+
+    try {
+      const { data, error } = await supabase
+        .from('properties')
+        .update({ is_available: !currentAvailability })
+        .eq('id', propertyId)
+        .eq('landlord_id', user.id)
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      setProperties(prev => 
+        prev.map(p => p.id === propertyId ? data : p)
+      );
+      
+      toast({
+        title: "Success",
+        description: `Property marked as ${!currentAvailability ? 'available' : 'unavailable'}`,
+      });
+
+      return true;
+    } catch (error: any) {
+      console.error('Error updating property availability:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update property availability",
+        variant: "destructive",
+      });
+      return false;
+    }
+  };
+
   useEffect(() => {
     fetchProperties();
   }, []);
@@ -256,6 +298,7 @@ export const useProperties = () => {
     addProperty,
     updateProperty,
     deleteProperty,
+    togglePropertyAvailability,
     incrementPropertyViews,
     refetch: fetchProperties,
   };
