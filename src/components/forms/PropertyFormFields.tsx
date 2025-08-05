@@ -1,16 +1,11 @@
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/components/ui/command';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Button } from '@/components/ui/button';
-import { Check, ChevronsUpDown } from 'lucide-react';
 import { PropertyFormData } from '@/types/property';
 import { WORLD_CURRENCIES } from '@/lib/currency';
-import { cn } from '@/lib/utils';
 
 interface PropertyFormFieldsProps {
   formData: PropertyFormData;
@@ -18,7 +13,21 @@ interface PropertyFormFieldsProps {
 }
 
 const PropertyFormFields = ({ formData, onInputChange }: PropertyFormFieldsProps) => {
-  const [currencyOpen, setCurrencyOpen] = useState(false);
+  const [currencySearch, setCurrencySearch] = useState('');
+
+  // Filter currencies based on search
+  const filteredCurrencies = useMemo(() => {
+    if (!currencySearch.trim()) {
+      return WORLD_CURRENCIES.slice(0, 20); // Show first 20 popular currencies by default
+    }
+    
+    const searchLower = currencySearch.toLowerCase();
+    return WORLD_CURRENCIES.filter(currency =>
+      currency.code.toLowerCase().includes(searchLower) ||
+      currency.name.toLowerCase().includes(searchLower) ||
+      currency.symbol.includes(searchLower)
+    );
+  }, [currencySearch]);
   return (
     <>
       <div>
@@ -46,47 +55,31 @@ const PropertyFormFields = ({ formData, onInputChange }: PropertyFormFieldsProps
         </div>
         <div>
           <Label htmlFor="currency">Currency</Label>
-          <Popover open={currencyOpen} onOpenChange={setCurrencyOpen}>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                role="combobox"
-                aria-expanded={currencyOpen}
-                className="w-full justify-between"
-              >
-                {formData.currency ? (
-                  (() => {
+          <div className="space-y-2">
+            <Input
+              placeholder="Search currencies..."
+              value={currencySearch}
+              onChange={(e) => setCurrencySearch(e.target.value)}
+              className="w-full"
+            />
+            <Select 
+              value={formData.currency} 
+              onValueChange={(value) => onInputChange('currency', value)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select currency">
+                  {formData.currency && (() => {
                     const selectedCurrency = WORLD_CURRENCIES.find(c => c.code === formData.currency);
                     return selectedCurrency 
                       ? `${selectedCurrency.code} (${selectedCurrency.symbol}) - ${selectedCurrency.name}`
                       : formData.currency;
-                  })()
-                ) : (
-                  "Select currency..."
-                )}
-                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-full p-0" side="bottom" align="start">
-              <Command>
-                <CommandInput placeholder="Search currency..." />
-                <CommandEmpty>No currency found.</CommandEmpty>
-                <CommandGroup className="max-h-64 overflow-auto">
-                  {(WORLD_CURRENCIES || []).map((currency) => (
-                    <CommandItem
-                      key={currency.code}
-                      value={currency.code}
-                      onSelect={(currentValue) => {
-                        onInputChange('currency', currentValue.toUpperCase());
-                        setCurrencyOpen(false);
-                      }}
-                    >
-                      <Check
-                        className={cn(
-                          "mr-2 h-4 w-4",
-                          formData.currency === currency.code ? "opacity-100" : "opacity-0"
-                        )}
-                      />
+                  })()}
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent className="max-h-64">
+                {filteredCurrencies.length > 0 ? (
+                  filteredCurrencies.map((currency) => (
+                    <SelectItem key={currency.code} value={currency.code}>
                       <div className="flex flex-col">
                         <div className="flex items-center gap-2">
                           <span className="font-medium">{currency.code}</span>
@@ -94,12 +87,16 @@ const PropertyFormFields = ({ formData, onInputChange }: PropertyFormFieldsProps
                         </div>
                         <span className="text-xs text-muted-foreground">{currency.name}</span>
                       </div>
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </Command>
-            </PopoverContent>
-          </Popover>
+                    </SelectItem>
+                  ))
+                ) : (
+                  <SelectItem value="" disabled>
+                    No currencies found
+                  </SelectItem>
+                )}
+              </SelectContent>
+            </Select>
+          </div>
         </div>
         <div>
           <Label htmlFor="location">Location</Label>
