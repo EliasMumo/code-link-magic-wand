@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Plus } from 'lucide-react';
+import { Plus, Building2 } from 'lucide-react';
 import PropertyGrid from '@/components/PropertyGrid';
 
 interface LandlordDashboardProps {
@@ -25,13 +25,23 @@ const LandlordDashboard = ({
     <div className="mb-12">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-gray-900">Your Properties</h2>
-        <Button 
-          onClick={onAddPropertyClick}
-          className="bg-blue-600 hover:bg-blue-700"
-        >
-          <Plus className="mr-2 h-4 w-4" />
-          Add New Property
-        </Button>
+        <div className="flex gap-3">
+          <Button 
+            onClick={() => window.location.href = '/properties'}
+            variant="outline"
+            className="border-blue-600 text-blue-600 hover:bg-blue-50"
+          >
+            <Building2 className="mr-2 h-4 w-4" />
+            Manage All Properties
+          </Button>
+          <Button 
+            onClick={onAddPropertyClick}
+            className="bg-blue-600 hover:bg-blue-700"
+          >
+            <Plus className="mr-2 h-4 w-4" />
+            Add New Property
+          </Button>
+        </div>
       </div>
       <PropertyGrid 
         properties={properties}

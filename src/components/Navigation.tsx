@@ -77,14 +77,24 @@ const Navigation = ({
             </Button>
 
             {userRole === 'landlord' && (
-              <Button 
-                variant="ghost" 
-                onClick={onAddPropertyClick}
-                className="flex items-center px-3"
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                Add Property
-              </Button>
+              <>
+                <Button 
+                  variant="ghost" 
+                  onClick={() => handleNavigation('/properties')}
+                  className="flex items-center px-3"
+                >
+                  <Building2 className="h-4 w-4 mr-2" />
+                  Manage Properties
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  onClick={onAddPropertyClick}
+                  className="flex items-center px-3"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Property
+                </Button>
+              </>
             )}
 
             {/* User Menu */}
