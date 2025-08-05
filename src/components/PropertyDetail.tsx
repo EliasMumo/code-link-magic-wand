@@ -4,10 +4,11 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { MapPin, Bed, Bath, Square, Calendar, ArrowLeft, Home, Heart, Star, Video, AlertTriangle } from 'lucide-react';
+import { MapPin, Bed, Bath, Square, Calendar, ArrowLeft, Home, Heart, Star, Video, AlertTriangle, Camera } from 'lucide-react';
 import { formatPrice } from '@/lib/currency';
 import PropertyReviews from './PropertyReviews';
 import VideoPlayer from './VideoPlayer';
+import ImageGallery from './ImageGallery';
 
 interface PropertyDetailProps {
   property: any;
@@ -44,17 +45,11 @@ const PropertyDetail = ({ property, onBack, onToggleFavorite, isFavorite }: Prop
         <div className="lg:col-span-2">
           <Card>
             <div className="h-64 rounded-t-lg overflow-hidden">
-              {property.images && property.images.length > 0 ? (
-                <img 
-                  src={property.images[0]} 
-                  alt={property.title}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="h-full bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
-                  <Home className="h-24 w-24 text-blue-400" />
-                </div>
-              )}
+              <ImageGallery 
+                images={property.images || []}
+                title={property.title}
+                className="h-full"
+              />
             </div>
             <CardContent className="p-6">
               <div className="flex items-start justify-between mb-4">
@@ -101,8 +96,12 @@ const PropertyDetail = ({ property, onBack, onToggleFavorite, isFavorite }: Prop
               </div>
               
               <Tabs defaultValue="description" className="w-full">
-                <TabsList className="grid w-full grid-cols-3">
+                <TabsList className="grid w-full grid-cols-4">
                   <TabsTrigger value="description">Description</TabsTrigger>
+                  <TabsTrigger value="photos">
+                    <Camera className="h-4 w-4 mr-1" />
+                    Photos
+                  </TabsTrigger>
                   <TabsTrigger value="videos">
                     <Video className="h-4 w-4 mr-1" />
                     Videos
@@ -127,6 +126,31 @@ const PropertyDetail = ({ property, onBack, onToggleFavorite, isFavorite }: Prop
                             <span key={index} className="text-sm text-gray-600">• {amenity}</span>
                           ))}
                         </div>
+                      </div>
+                    )}
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="photos" className="mt-4">
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold mb-4">Property Photos</h3>
+                    {property.images && property.images.length > 0 ? (
+                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        {property.images.map((image: string, index: number) => (
+                          <div key={index} className="aspect-square overflow-hidden rounded-lg cursor-pointer hover:opacity-80 transition-opacity">
+                            <img 
+                              src={image} 
+                              alt={`${property.title} - Photo ${index + 1}`}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-8">
+                        <Camera className="h-12 w-12 text-gray-400 mx-auto mb-3" />
+                        <p className="text-gray-500 text-lg font-medium">No photos available</p>
+                        <p className="text-gray-400 text-sm mt-1">The landlord hasn't uploaded any photos for this property yet.</p>
                       </div>
                     )}
                   </div>

@@ -3,8 +3,9 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { MapPin, Bed, Bath, Home, Heart, GitCompare, Video } from 'lucide-react';
+import { MapPin, Bed, Bath, Home, Heart, GitCompare, Video, Camera } from 'lucide-react';
 import { formatPrice } from '@/lib/currency';
+import ImageGallery from './ImageGallery';
 
 interface PropertyCardProps {
   property: {
@@ -51,17 +52,11 @@ const PropertyCard = ({
       onClick={() => onClick(property)}
     >
       <div className="relative">
-        {property.images && property.images.length > 0 ? (
-          <img 
-            src={property.images[0]} 
-            alt={property.title}
-            className="h-48 w-full object-cover"
-          />
-        ) : (
-          <div className="h-48 bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
-            <Home className="h-16 w-16 text-blue-400" />
-          </div>
-        )}
+        <ImageGallery 
+          images={property.images || []}
+          title={property.title}
+          className="h-48"
+        />
         <div className="absolute top-2 right-2 flex gap-2">
           {onToggleFavorite && (
             <Button
@@ -118,6 +113,12 @@ const PropertyCard = ({
               <Bath className="h-4 w-4 mr-1" />
               <span>{property.bathrooms}</span>
             </div>
+            {property.images && property.images.length > 0 && (
+              <div className="flex items-center">
+                <Camera className="h-4 w-4 mr-1 text-primary" />
+                <span>{property.images.length}</span>
+              </div>
+            )}
             {property.videos && property.videos.length > 0 && (
               <div className="flex items-center">
                 <Video className="h-4 w-4 mr-1 text-primary" />
