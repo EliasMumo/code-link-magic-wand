@@ -24,7 +24,6 @@ const InquiryForm = ({ propertyId, landlordId, propertyTitle, onClose }: Inquiry
 
   const inquiryTypes = [
     { value: 'general', label: 'General Inquiry' },
-    { value: 'viewing', label: 'Schedule Viewing' },
     { value: 'application', label: 'Application Process' },
     { value: 'lease_terms', label: 'Lease Terms' },
     { value: 'amenities', label: 'Amenities & Features' },

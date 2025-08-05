@@ -225,10 +225,6 @@ const PropertyDetail = ({ property, onBack, onToggleFavorite, isFavorite }: Prop
                 <MessageCircle className="h-4 w-4 mr-2" />
                 Contact Landlord
               </Button>
-              
-              <Button variant="outline" className="w-full">
-                Schedule Viewing
-              </Button>
             </CardContent>
           </Card>
           
