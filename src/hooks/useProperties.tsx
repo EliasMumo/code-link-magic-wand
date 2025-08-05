@@ -140,6 +140,7 @@ export const useProperties = () => {
       toast({
         title: "Success",
         description: "Property added successfully",
+        variant: "success",
       });
 
       return data;
@@ -192,6 +193,7 @@ export const useProperties = () => {
       toast({
         title: "Success",
         description: "Property updated successfully",
+        variant: "success",
       });
 
       return true;
@@ -232,6 +234,7 @@ export const useProperties = () => {
       toast({
         title: "Success",
         description: "Property deleted successfully",
+        variant: "success",
       });
 
       return true;
@@ -274,6 +277,7 @@ export const useProperties = () => {
       toast({
         title: "Success",
         description: `Property marked as ${!currentAvailability ? 'available' : 'unavailable'}`,
+        variant: "success",
       });
 
       return true;

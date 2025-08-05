@@ -52,6 +52,7 @@ export const useFavorites = () => {
       toast({
         title: "Added to Favorites",
         description: "Property has been added to your favorites",
+        variant: "info",
       });
     } catch (error: any) {
       console.error('Error adding to favorites:', error);
@@ -79,6 +80,7 @@ export const useFavorites = () => {
       toast({
         title: "Removed from Favorites",
         description: "Property has been removed from your favorites",
+        variant: "info",
       });
     } catch (error: any) {
       console.error('Error removing from favorites:', error);

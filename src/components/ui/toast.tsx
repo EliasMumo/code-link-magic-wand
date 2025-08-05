@@ -23,19 +23,19 @@ const ToastViewport = React.forwardRef<
 ToastViewport.displayName = ToastPrimitives.Viewport.displayName
 
 const toastVariants = cva(
-  "group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-lg border p-6 pr-8 shadow-xl backdrop-blur-sm transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full data-[state=open]:sm:slide-in-from-bottom-full",
+  "group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-lg border-2 p-6 pr-8 shadow-2xl backdrop-blur-sm transition-all duration-300 data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full data-[state=open]:sm:slide-in-from-bottom-full data-[state=open]:scale-in",
   {
     variants: {
       variant: {
-        default: "border-border/50 bg-background/95 text-foreground shadow-lg ring-1 ring-black/5 dark:ring-white/5",
+        default: "border-blue-200 bg-blue-50/95 text-blue-900 shadow-blue-200/50 ring-2 ring-blue-500/30 dark:border-blue-800 dark:bg-blue-950/95 dark:text-blue-50 dark:shadow-blue-900/50 dark:ring-blue-400/30",
         destructive:
-          "destructive group border-red-500/50 bg-red-50/95 text-red-900 shadow-lg ring-1 ring-red-500/20 dark:bg-red-950/95 dark:text-red-50 dark:ring-red-500/30",
+          "destructive group border-red-300 bg-red-50/95 text-red-900 shadow-red-200/50 ring-2 ring-red-500/40 dark:border-red-700 dark:bg-red-950/95 dark:text-red-50 dark:shadow-red-900/50 dark:ring-red-400/40",
         success:
-          "border-green-500/50 bg-green-50/95 text-green-900 shadow-lg ring-1 ring-green-500/20 dark:bg-green-950/95 dark:text-green-50 dark:ring-green-500/30",
+          "border-green-300 bg-green-50/95 text-green-900 shadow-green-200/50 ring-2 ring-green-500/40 dark:border-green-700 dark:bg-green-950/95 dark:text-green-50 dark:shadow-green-900/50 dark:ring-green-400/40",
         warning:
-          "border-yellow-500/50 bg-yellow-50/95 text-yellow-900 shadow-lg ring-1 ring-yellow-500/20 dark:bg-yellow-950/95 dark:text-yellow-50 dark:ring-yellow-500/30",
+          "border-yellow-300 bg-yellow-50/95 text-yellow-900 shadow-yellow-200/50 ring-2 ring-yellow-500/40 dark:border-yellow-700 dark:bg-yellow-950/95 dark:text-yellow-50 dark:shadow-yellow-900/50 dark:ring-yellow-400/40",
         info:
-          "border-blue-500/50 bg-blue-50/95 text-blue-900 shadow-lg ring-1 ring-blue-500/20 dark:bg-blue-950/95 dark:text-blue-50 dark:ring-blue-500/30",
+          "border-blue-300 bg-blue-100/95 text-blue-900 shadow-blue-300/60 ring-2 ring-blue-600/50 dark:border-blue-600 dark:bg-blue-900/95 dark:text-blue-50 dark:shadow-blue-800/60 dark:ring-blue-400/50",
       },
     },
     defaultVariants: {
