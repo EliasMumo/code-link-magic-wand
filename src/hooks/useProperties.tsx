@@ -9,6 +9,13 @@ export interface Property {
   title: string;
   description: string;
   location: string;
+  street_address: string | null;
+  city: string | null;
+  state: string | null;
+  country: string | null;
+  postal_code: string | null;
+  latitude: number | null;
+  longitude: number | null;
   price: number;
   bedrooms: number;
   bathrooms: number;

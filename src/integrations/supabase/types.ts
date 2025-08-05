@@ -271,6 +271,8 @@ export type Database = {
           bathrooms: number
           bedrooms: number
           caretaker_phone: string | null
+          city: string | null
+          country: string | null
           created_at: string | null
           currency: string
           description: string | null
@@ -285,8 +287,11 @@ export type Database = {
           location: string
           longitude: number | null
           neighborhood_info: Json | null
+          postal_code: string | null
           price: number
           property_type: string
+          state: string | null
+          street_address: string | null
           title: string
           updated_at: string | null
           videos: string[] | null
@@ -297,6 +302,8 @@ export type Database = {
           bathrooms: number
           bedrooms: number
           caretaker_phone?: string | null
+          city?: string | null
+          country?: string | null
           created_at?: string | null
           currency?: string
           description?: string | null
@@ -311,8 +318,11 @@ export type Database = {
           location: string
           longitude?: number | null
           neighborhood_info?: Json | null
+          postal_code?: string | null
           price: number
           property_type: string
+          state?: string | null
+          street_address?: string | null
           title: string
           updated_at?: string | null
           videos?: string[] | null
@@ -323,6 +333,8 @@ export type Database = {
           bathrooms?: number
           bedrooms?: number
           caretaker_phone?: string | null
+          city?: string | null
+          country?: string | null
           created_at?: string | null
           currency?: string
           description?: string | null
@@ -337,8 +349,11 @@ export type Database = {
           location?: string
           longitude?: number | null
           neighborhood_info?: Json | null
+          postal_code?: string | null
           price?: number
           property_type?: string
+          state?: string | null
+          street_address?: string | null
           title?: string
           updated_at?: string | null
           videos?: string[] | null
