@@ -51,13 +51,21 @@ const Auth = () => {
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!acceptedTerms) {
+      alert('Please accept the Terms and Conditions to continue.');
+      return;
+    }
+    
     setIsLoading(true);
     
     const { error } = await signUp(signUpData.email, signUpData.password, {
       first_name: signUpData.firstName,
       last_name: signUpData.lastName,
       phone: signUpData.phone,
-      role: signUpData.role
+      role: signUpData.role,
+      terms_accepted: true,
+      terms_accepted_at: new Date().toISOString()
     });
     
     setIsLoading(false);

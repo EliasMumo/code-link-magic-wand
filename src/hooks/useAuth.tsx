@@ -3,9 +3,7 @@ import { useState, useEffect, createContext, useContext, ReactNode } from 'react
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 
-import { useTermsAcceptance } from '@/hooks/useTermsAcceptance';
 import { useDisclaimerAcceptance } from '@/hooks/useDisclaimerAcceptance';
-import { TermsAcceptanceModal } from '@/components/TermsAcceptanceModal';
 import { DisclaimerModal } from '@/components/DisclaimerModal';
 
 interface AuthContextType {
@@ -39,14 +37,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   
   console.log('AuthProvider rendering - user:', user, 'loading:', loading);
   
-  // Terms acceptance handling
-  const { 
-    needsAcceptance, 
-    currentTermsVersion, 
-    loading: termsLoading, 
-    acceptTerms 
-  } = useTermsAcceptance(user?.id);
-
   // Disclaimer handling
   const { 
     needsDisclaimer, 
@@ -144,22 +134,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   return (
     <AuthContext.Provider value={value}>
       {children}
-      {/* Show disclaimer first, then terms */}
+      {/* Show disclaimer only - terms are now handled inline during signup */}
       {user && needsDisclaimer && !loading && !disclaimerLoading && (
         <DisclaimerModal
           open={true}
           onAccept={acceptDisclaimer}
         />
-      )}
-      {user && !needsDisclaimer && needsAcceptance && !loading && !termsLoading && (
-        <>
-          {console.log('Rendering TermsAcceptanceModal - needsAcceptance:', needsAcceptance, 'termsLoading:', termsLoading, 'needsDisclaimer:', needsDisclaimer)}
-          <TermsAcceptanceModal
-            open={true}
-            onAccept={acceptTerms}
-            version={currentTermsVersion?.version}
-          />
-        </>
       )}
     </AuthContext.Provider>
   );
