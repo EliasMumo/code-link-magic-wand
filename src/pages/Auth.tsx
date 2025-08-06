@@ -11,6 +11,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { Home, ArrowLeft, Check, X, Shield, AlertTriangle } from 'lucide-react';
 import { TermsAndConditions } from '@/components/TermsAndConditions';
+import { useToast } from '@/hooks/use-toast';
 
 const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -42,6 +43,7 @@ const Auth = () => {
   
   const { signIn, signUp, user, resetPassword } = useAuth();
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   useEffect(() => {
     if (user) {
@@ -97,17 +99,29 @@ const Auth = () => {
     e.preventDefault();
     
     if (!acceptedTerms) {
-      alert('Please accept the Terms and Conditions to continue.');
+      toast({
+        title: "Terms Required",
+        description: "Please accept the Terms and Conditions to continue.",
+        variant: "destructive"
+      });
       return;
     }
     
     if (signUpData.password !== signUpData.confirmPassword) {
-      alert('Passwords do not match.');
+      toast({
+        title: "Password Mismatch",
+        description: "Passwords do not match.",
+        variant: "destructive"
+      });
       return;
     }
 
     if (passwordStrength.score < 3) {
-      alert('Please use a stronger password. Your password should be at least "Good" strength.');
+      toast({
+        title: "Weak Password",
+        description: "Please use a stronger password. Your password should be at least 'Good' strength.",
+        variant: "destructive"
+      });
       return;
     }
     
@@ -123,9 +137,17 @@ const Auth = () => {
     });
     
     if (error) {
-      alert(`Signup failed: ${error.message}`);
+      toast({
+        title: "Signup Failed",
+        description: error.message,
+        variant: "destructive"
+      });
     } else {
-      alert('Account created successfully! Please check your email for a confirmation link before signing in.');
+      toast({
+        title: "Account Created!",
+        description: "Please check your email for a confirmation link before signing in.",
+        variant: "default"
+      });
       // Reset form on success
       setSignUpData({
         email: '',
