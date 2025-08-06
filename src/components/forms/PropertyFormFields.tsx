@@ -166,7 +166,7 @@ const PropertyFormFields = ({ formData, onInputChange }: PropertyFormFieldsProps
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div>
           <Label htmlFor="bedrooms">Bedrooms</Label>
           <Select value={formData.bedrooms} onValueChange={(value) => onInputChange('bedrooms', value)}>
@@ -210,6 +210,18 @@ const PropertyFormFields = ({ formData, onInputChange }: PropertyFormFieldsProps
               <SelectItem value="townhouse">Townhouse</SelectItem>
             </SelectContent>
           </Select>
+        </div>
+        <div>
+          <Label htmlFor="vacancyCount">Available Units</Label>
+          <Input
+            id="vacancyCount"
+            type="number"
+            min="0"
+            value={formData.vacancyCount}
+            onChange={(e) => onInputChange('vacancyCount', e.target.value)}
+            placeholder="1"
+            required
+          />
         </div>
       </div>
 

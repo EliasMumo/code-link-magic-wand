@@ -37,6 +37,7 @@ const EditPropertyModal = ({ property, isOpen, onClose, onUpdate }: EditProperty
     caretakerPhone: '',
     isFurnished: false,
     isPetFriendly: false,
+    vacancyCount: '1'
   });
 
   const [images, setImages] = useState<string[]>([]);
@@ -66,6 +67,7 @@ const EditPropertyModal = ({ property, isOpen, onClose, onUpdate }: EditProperty
         caretakerPhone: property.caretaker_phone || '',
         isFurnished: property.is_furnished,
         isPetFriendly: property.is_pet_friendly,
+        vacancyCount: (property as any).vacancy_count?.toString() || '1'
       });
       setImages(property.images || []);
       setImagePreviewUrls(property.images || []);
@@ -124,6 +126,7 @@ const EditPropertyModal = ({ property, isOpen, onClose, onUpdate }: EditProperty
       caretaker_phone: formData.caretakerPhone || null,
       is_furnished: formData.isFurnished,
       is_pet_friendly: formData.isPetFriendly,
+      vacancy_count: parseInt(formData.vacancyCount) || 1,
       images: finalImages,
       videos,
     };

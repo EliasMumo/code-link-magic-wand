@@ -34,7 +34,8 @@ const AddPropertyForm = ({ onBack, onSubmit }: AddPropertyFormProps) => {
     landlordPhone: '',
     caretakerPhone: '',
     isFurnished: false,
-    isPetFriendly: false
+    isPetFriendly: false,
+    vacancyCount: '1'
   });
 
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
@@ -123,6 +124,7 @@ const AddPropertyForm = ({ onBack, onSubmit }: AddPropertyFormProps) => {
         is_furnished: formData.isFurnished,
         is_pet_friendly: formData.isPetFriendly,
         is_available: true,
+        vacancy_count: parseInt(formData.vacancyCount) || 1,
         landlord_phone: formData.landlordPhone,
         caretaker_phone: formData.caretakerPhone || null
       };

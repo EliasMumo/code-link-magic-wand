@@ -18,4 +18,5 @@ export interface PropertyFormData {
   caretakerPhone: string;
   isFurnished: boolean;
   isPetFriendly: boolean;
+  vacancyCount: string;
 }

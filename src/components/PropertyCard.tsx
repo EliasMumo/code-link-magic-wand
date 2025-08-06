@@ -3,7 +3,7 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { MapPin, Bed, Bath, Home, Heart, GitCompare, Video, Camera } from 'lucide-react';
+import { MapPin, Bed, Bath, Home, Heart, GitCompare, Video, Camera, Users } from 'lucide-react';
 import { formatPrice } from '@/lib/currency';
 import ImageGallery from './ImageGallery';
 
@@ -18,6 +18,7 @@ interface PropertyCardProps {
     bathrooms: number;
     property_type: string;
     is_available: boolean;
+    vacancy_count?: number;
     images?: string[];
     videos?: string[];
   };
@@ -82,9 +83,16 @@ const PropertyCard = ({
               />
             </Button>
           )}
-          <Badge variant={property.is_available ? 'default' : 'secondary'}>
-            {property.is_available ? 'Available' : 'Rented'}
-          </Badge>
+          <div className="flex gap-1">
+            <Badge variant={property.is_available ? 'default' : 'secondary'}>
+              {property.is_available ? 'Available' : 'Rented'}
+            </Badge>
+            {property.is_available && property.vacancy_count !== undefined && property.vacancy_count > 0 && (
+              <Badge variant="outline" className="bg-white/90 text-xs">
+                {property.vacancy_count} unit{property.vacancy_count !== 1 ? 's' : ''}
+              </Badge>
+            )}
+          </div>
         </div>
         <div className="absolute bottom-2 left-2">
           <Badge variant="outline" className="bg-white/90">
@@ -132,6 +140,12 @@ const PropertyCard = ({
           <span className="text-2xl font-bold text-blue-600">
             {formatPrice(property.price, property.currency || 'USD')}/mo
           </span>
+          {property.is_available && property.vacancy_count !== undefined && property.vacancy_count > 1 && (
+            <div className="flex items-center text-sm text-gray-600">
+              <Users className="h-4 w-4 mr-1" />
+              <span>{property.vacancy_count} available</span>
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>
