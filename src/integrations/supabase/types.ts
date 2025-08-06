@@ -336,6 +336,7 @@ export type Database = {
           street_address: string | null
           title: string
           updated_at: string | null
+          vacancy_count: number | null
           videos: string[] | null
           view_count: number | null
         }
@@ -367,6 +368,7 @@ export type Database = {
           street_address?: string | null
           title: string
           updated_at?: string | null
+          vacancy_count?: number | null
           videos?: string[] | null
           view_count?: number | null
         }
@@ -398,6 +400,7 @@ export type Database = {
           street_address?: string | null
           title?: string
           updated_at?: string | null
+          vacancy_count?: number | null
           videos?: string[] | null
           view_count?: number | null
         }
