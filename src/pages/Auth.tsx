@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-import { Home, ArrowLeft, Check, X } from 'lucide-react';
+import { Home, ArrowLeft, Check, X, Shield, AlertTriangle } from 'lucide-react';
 import { TermsAndConditions } from '@/components/TermsAndConditions';
 
 const Auth = () => {
@@ -28,6 +28,17 @@ const Auth = () => {
   });
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [passwordsMatch, setPasswordsMatch] = useState<boolean | null>(null);
+  const [passwordStrength, setPasswordStrength] = useState({
+    score: 0,
+    feedback: '',
+    requirements: {
+      length: false,
+      uppercase: false,
+      lowercase: false,
+      number: false,
+      special: false
+    }
+  });
   
   const { signIn, signUp, user, resetPassword } = useAuth();
   const navigate = useNavigate();
@@ -37,6 +48,37 @@ const Auth = () => {
       navigate('/');
     }
   }, [user, navigate]);
+
+  // Password strength validation function
+  const validatePasswordStrength = (password: string) => {
+    const requirements = {
+      length: password.length >= 8,
+      uppercase: /[A-Z]/.test(password),
+      lowercase: /[a-z]/.test(password),
+      number: /\d/.test(password),
+      special: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+    };
+
+    const metRequirements = Object.values(requirements).filter(Boolean).length;
+    let score = 0;
+    let feedback = '';
+
+    if (metRequirements <= 2) {
+      score = 1;
+      feedback = 'Weak';
+    } else if (metRequirements <= 3) {
+      score = 2;
+      feedback = 'Fair';
+    } else if (metRequirements <= 4) {
+      score = 3;
+      feedback = 'Good';
+    } else {
+      score = 4;
+      feedback = 'Strong';
+    }
+
+    return { score, feedback, requirements };
+  };
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,6 +103,11 @@ const Auth = () => {
     
     if (signUpData.password !== signUpData.confirmPassword) {
       alert('Passwords do not match.');
+      return;
+    }
+
+    if (passwordStrength.score < 3) {
+      alert('Please use a stronger password. Your password should be at least "Good" strength.');
       return;
     }
     
@@ -90,6 +137,18 @@ const Auth = () => {
         role: 'tenant'
       });
       setAcceptedTerms(false);
+      setPasswordStrength({
+        score: 0,
+        feedback: '',
+        requirements: {
+          length: false,
+          uppercase: false,
+          lowercase: false,
+          number: false,
+          special: false
+        }
+      });
+      setPasswordsMatch(null);
     }
     
     setIsLoading(false);
@@ -306,6 +365,10 @@ const Auth = () => {
                         const newPassword = e.target.value;
                         setSignUpData({ ...signUpData, password: newPassword });
                         
+                        // Validate password strength
+                        const strength = validatePasswordStrength(newPassword);
+                        setPasswordStrength(strength);
+                        
                         // Check password match if confirm password exists
                         if (signUpData.confirmPassword) {
                           setPasswordsMatch(newPassword === signUpData.confirmPassword);
@@ -315,6 +378,96 @@ const Auth = () => {
                       }}
                       required
                     />
+                    
+                    {/* Password strength indicator */}
+                    {signUpData.password && (
+                      <div className="mt-2 space-y-2">
+                        <div className="flex items-center gap-2">
+                          <div className="flex-1">
+                            <div className="flex justify-between items-center mb-1">
+                              <span className="text-sm font-medium">Password Strength</span>
+                              <span className={`text-sm font-medium ${
+                                passwordStrength.score === 1 ? 'text-red-600' :
+                                passwordStrength.score === 2 ? 'text-orange-500' :
+                                passwordStrength.score === 3 ? 'text-yellow-600' :
+                                passwordStrength.score === 4 ? 'text-green-600' : 'text-gray-400'
+                              }`}>
+                                {passwordStrength.feedback}
+                              </span>
+                            </div>
+                            <div className="flex gap-1">
+                              {[1, 2, 3, 4].map((level) => (
+                                <div
+                                  key={level}
+                                  className={`h-2 flex-1 rounded ${
+                                    level <= passwordStrength.score
+                                      ? level === 1 ? 'bg-red-500' :
+                                        level === 2 ? 'bg-orange-500' :
+                                        level === 3 ? 'bg-yellow-500' :
+                                        'bg-green-500'
+                                      : 'bg-gray-200'
+                                  }`}
+                                />
+                              ))}
+                            </div>
+                          </div>
+                          {passwordStrength.score >= 3 ? (
+                            <Shield className="h-5 w-5 text-green-600" />
+                          ) : (
+                            <AlertTriangle className="h-5 w-5 text-orange-500" />
+                          )}
+                        </div>
+                        
+                        {/* Password requirements checklist */}
+                        <div className="grid grid-cols-2 gap-1 text-xs">
+                          <div className={`flex items-center gap-1 ${
+                            passwordStrength.requirements.length ? 'text-green-600' : 'text-gray-500'
+                          }`}>
+                            {passwordStrength.requirements.length ? 
+                              <Check className="h-3 w-3" /> : 
+                              <X className="h-3 w-3" />
+                            }
+                            <span>8+ characters</span>
+                          </div>
+                          <div className={`flex items-center gap-1 ${
+                            passwordStrength.requirements.uppercase ? 'text-green-600' : 'text-gray-500'
+                          }`}>
+                            {passwordStrength.requirements.uppercase ? 
+                              <Check className="h-3 w-3" /> : 
+                              <X className="h-3 w-3" />
+                            }
+                            <span>Uppercase</span>
+                          </div>
+                          <div className={`flex items-center gap-1 ${
+                            passwordStrength.requirements.lowercase ? 'text-green-600' : 'text-gray-500'
+                          }`}>
+                            {passwordStrength.requirements.lowercase ? 
+                              <Check className="h-3 w-3" /> : 
+                              <X className="h-3 w-3" />
+                            }
+                            <span>Lowercase</span>
+                          </div>
+                          <div className={`flex items-center gap-1 ${
+                            passwordStrength.requirements.number ? 'text-green-600' : 'text-gray-500'
+                          }`}>
+                            {passwordStrength.requirements.number ? 
+                              <Check className="h-3 w-3" /> : 
+                              <X className="h-3 w-3" />
+                            }
+                            <span>Number</span>
+                          </div>
+                          <div className={`flex items-center gap-1 ${
+                            passwordStrength.requirements.special ? 'text-green-600' : 'text-gray-500'
+                          }`}>
+                            {passwordStrength.requirements.special ? 
+                              <Check className="h-3 w-3" /> : 
+                              <X className="h-3 w-3" />
+                            }
+                            <span>Special char</span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                   <div>
                     <Label htmlFor="confirm-password">Confirm Password</Label>
@@ -376,7 +529,7 @@ const Auth = () => {
                     </div>
                   </div>
                   
-                  <Button type="submit" className="w-full" disabled={isLoading || !acceptedTerms}>
+                  <Button type="submit" className="w-full" disabled={isLoading || !acceptedTerms || passwordStrength.score < 3}>
                     {isLoading ? 'Creating Account...' : 'Sign Up'}
                   </Button>
                 </form>
