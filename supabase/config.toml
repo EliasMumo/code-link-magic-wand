@@ -12,9 +12,9 @@ enable_signup = true
 double_confirm_changes = true
 enable_confirmations = true
 
-# Custom SMTP settings - Zoho Mail
+# Custom SMTP settings - Zepto Mail
 [auth.email.smtp]
-host = "smtp.zoho.com"
+host = "smtp.zeptomail.com"
 port = 587
 user = ""
 pass = ""
