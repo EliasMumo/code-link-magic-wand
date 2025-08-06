@@ -74,6 +74,23 @@ const Auth = () => {
       terms_accepted_at: new Date().toISOString()
     });
     
+    if (error) {
+      alert(`Signup failed: ${error.message}`);
+    } else {
+      alert('Account created successfully! Please check your email for a confirmation link before signing in.');
+      // Reset form on success
+      setSignUpData({
+        email: '',
+        password: '',
+        confirmPassword: '',
+        firstName: '',
+        lastName: '',
+        phone: '',
+        role: 'tenant'
+      });
+      setAcceptedTerms(false);
+    }
+    
     setIsLoading(false);
   };
 
