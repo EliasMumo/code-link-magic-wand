@@ -1,14 +1,31 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://dwellmerge.com/sitemap.xml
+
+# Crawl-delay for general bots
+Crawl-delay: 1
+
+# Allow important search engine bots
 User-agent: Googlebot
 Allow: /
+Crawl-delay: 0
 
 User-agent: Bingbot
 Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
+
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 1
 
 User-agent: Twitterbot
 Allow: /
 
 User-agent: facebookexternalhit
-Allow: /
-
-User-agent: *
 Allow: /
