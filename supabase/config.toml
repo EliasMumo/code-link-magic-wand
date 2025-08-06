@@ -16,7 +16,7 @@ enable_confirmations = true
 [auth.email.smtp]
 host = "smtp.zeptomail.com"
 port = 587
-user = ""
-pass = ""
+user = "env(ZEPTO_MAIL_SMTP_USER)"
+pass = "env(ZEPTO_MAIL_SMTP_PASS)"
 admin_email = "admin@dwellmerge.com"
 sender_name = "DwellMerge"
