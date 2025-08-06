@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-import { Home, ArrowLeft } from 'lucide-react';
+import { Home, ArrowLeft, Check, X } from 'lucide-react';
 import { TermsAndConditions } from '@/components/TermsAndConditions';
 
 const Auth = () => {
@@ -27,6 +27,7 @@ const Auth = () => {
     role: 'tenant'
   });
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [passwordsMatch, setPasswordsMatch] = useState<boolean | null>(null);
   
   const { signIn, signUp, user, resetPassword } = useAuth();
   const navigate = useNavigate();
@@ -301,7 +302,17 @@ const Auth = () => {
                       id="signup-password"
                       type="password"
                       value={signUpData.password}
-                      onChange={(e) => setSignUpData({ ...signUpData, password: e.target.value })}
+                      onChange={(e) => {
+                        const newPassword = e.target.value;
+                        setSignUpData({ ...signUpData, password: newPassword });
+                        
+                        // Check password match if confirm password exists
+                        if (signUpData.confirmPassword) {
+                          setPasswordsMatch(newPassword === signUpData.confirmPassword);
+                        } else {
+                          setPasswordsMatch(null);
+                        }
+                      }}
                       required
                     />
                   </div>
@@ -311,9 +322,37 @@ const Auth = () => {
                       id="confirm-password"
                       type="password"
                       value={signUpData.confirmPassword}
-                      onChange={(e) => setSignUpData({ ...signUpData, confirmPassword: e.target.value })}
+                      onChange={(e) => {
+                        const newConfirmPassword = e.target.value;
+                        setSignUpData({ ...signUpData, confirmPassword: newConfirmPassword });
+                        
+                        // Check password match
+                        if (newConfirmPassword && signUpData.password) {
+                          setPasswordsMatch(signUpData.password === newConfirmPassword);
+                        } else {
+                          setPasswordsMatch(null);
+                        }
+                      }}
                       required
                     />
+                    {/* Password match indicator */}
+                    {passwordsMatch !== null && signUpData.confirmPassword && (
+                      <div className={`flex items-center gap-2 mt-2 text-sm ${
+                        passwordsMatch ? 'text-green-600' : 'text-red-600'
+                      }`}>
+                        {passwordsMatch ? (
+                          <>
+                            <Check className="h-4 w-4" />
+                            <span>Passwords match</span>
+                          </>
+                        ) : (
+                          <>
+                            <X className="h-4 w-4" />
+                            <span>Passwords do not match</span>
+                          </>
+                        )}
+                      </div>
+                    )}
                   </div>
                   
                   <div className="space-y-4">
