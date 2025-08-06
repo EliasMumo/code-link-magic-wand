@@ -1,8 +1,8 @@
 project_id = "gnolgoyhqbqilkgaakgj"
 
 [auth]
-site_url = "https://comfy-home-spot.lovable.app"
-additional_redirect_urls = ["https://comfy-home-spot.lovable.app"]
+site_url = "https://dwellmerge.com"
+additional_redirect_urls = ["https://dwellmerge.com", "https://www.dwellmerge.com", "https://dwellmerge.vercel.app"]
 jwt_expiry = 3600
 enable_signup = true
 enable_confirmations = true
