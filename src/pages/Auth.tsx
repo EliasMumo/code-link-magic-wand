@@ -20,6 +20,7 @@ const Auth = () => {
   const [signUpData, setSignUpData] = useState({
     email: '',
     password: '',
+    confirmPassword: '',
     firstName: '',
     lastName: '',
     phone: '',
@@ -54,6 +55,11 @@ const Auth = () => {
     
     if (!acceptedTerms) {
       alert('Please accept the Terms and Conditions to continue.');
+      return;
+    }
+    
+    if (signUpData.password !== signUpData.confirmPassword) {
+      alert('Passwords do not match.');
       return;
     }
     
@@ -279,6 +285,16 @@ const Auth = () => {
                       type="password"
                       value={signUpData.password}
                       onChange={(e) => setSignUpData({ ...signUpData, password: e.target.value })}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="confirm-password">Confirm Password</Label>
+                    <Input
+                      id="confirm-password"
+                      type="password"
+                      value={signUpData.confirmPassword}
+                      onChange={(e) => setSignUpData({ ...signUpData, confirmPassword: e.target.value })}
                       required
                     />
                   </div>
