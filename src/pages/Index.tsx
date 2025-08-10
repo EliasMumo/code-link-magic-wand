@@ -9,6 +9,9 @@ import StatsSection from '@/components/StatsSection';
 import FeaturedProperties from '@/components/FeaturedProperties';
 import LandlordDashboard from '@/components/LandlordDashboard';
 import AdminDashboard from '@/components/AdminDashboard';
+import FeatureHighlights from '@/components/FeatureHighlights';
+import TestimonialsSection from '@/components/TestimonialsSection';
+import CTASection from '@/components/CTASection';
 import { Home } from 'lucide-react';
 import { useIndexLogic } from '@/hooks/useIndexLogic';
 
@@ -149,13 +152,18 @@ const Index = () => {
                 loading={propertiesLoading}
               />
             )}
+
+            {/* Enhanced landing page sections */}
+            <FeatureHighlights />
+            <TestimonialsSection />
+            <CTASection onGetStarted={() => setCurrentView('search')} />
           </div>
         );
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       <Navigation 
         userMode={userMode}
         onModeChange={() => {}} // Disabled since mode is now based on actual role
