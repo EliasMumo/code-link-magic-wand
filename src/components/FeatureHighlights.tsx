@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, MapPin, Calculator, MessageCircle, Heart, TrendingUp } from 'lucide-react';
+import { Search, MapPin, MessageCircle, Heart, TrendingUp, Shield } from 'lucide-react';
 
 const features = [
   {
@@ -13,9 +13,9 @@ const features = [
     description: "Detailed neighborhood insights, commute times, and local amenities"
   },
   {
-    icon: Calculator,
-    title: "Rent Calculator",
-    description: "Get accurate rent estimates and affordability calculations"
+    icon: Shield,
+    title: "Secure Platform",
+    description: "Verified listings and secure communication for peace of mind"
   },
   {
     icon: MessageCircle,

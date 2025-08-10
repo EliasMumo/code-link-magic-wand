@@ -8,7 +8,7 @@ import Auth from '@/pages/Auth';
 import PropertyManagement from '@/pages/PropertyManagement';
 import Settings from '@/pages/Settings';
 import Analytics from '@/pages/Analytics';
-import RentCalculatorPage from '@/pages/RentCalculatorPage';
+
 import NotFound from '@/pages/NotFound';
 
 const queryClient = new QueryClient();
@@ -25,7 +25,7 @@ function App() {
               <Route path="/properties" element={<PropertyManagement />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/analytics" element={<Analytics />} />
-              <Route path="/rent-calculator" element={<RentCalculatorPage />} />
+              
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Toaster />

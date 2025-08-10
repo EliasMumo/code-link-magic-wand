@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
-import { Home, Search, Plus, Menu, User, LogOut, Building2, Settings, BarChart3, Calculator, ArrowLeft, Shield } from 'lucide-react';
+import { Home, Search, Plus, Menu, User, LogOut, Building2, Settings, BarChart3, ArrowLeft, Shield } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 
@@ -123,10 +123,6 @@ const Navigation = ({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48 bg-white border shadow-lg">
-                <DropdownMenuItem onClick={() => handleNavigation('/rent-calculator')}>
-                  <Calculator className="h-4 w-4 mr-2" />
-                  Rent Calculator
-                </DropdownMenuItem>
                 {userRole === 'landlord' && (
                   <>
                     <DropdownMenuItem onClick={() => handleNavigation('/properties')}>
@@ -181,10 +177,6 @@ const Navigation = ({
                 <DropdownMenuItem onClick={onSearchClick}>
                   <Search className="h-4 w-4 mr-2" />
                   Search Properties
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleNavigation('/rent-calculator')}>
-                  <Calculator className="h-4 w-4 mr-2" />
-                  Rent Calculator
                 </DropdownMenuItem>
                 {userRole === 'landlord' && (
                   <>
