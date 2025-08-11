@@ -10,7 +10,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { Home, ArrowLeft, Check, X, Shield, AlertTriangle } from 'lucide-react';
-import { TermsAndConditions } from '@/components/TermsAndConditions';
+
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -621,11 +621,13 @@ const Auth = () => {
                   </div>
                   
                   <div className="space-y-4">
-                    <div>
-                      <Label className="text-sm font-semibold">Terms and Conditions</Label>
-                      <TermsAndConditions />
-                    </div>
-                    
+                    <p className="text-sm text-muted-foreground">
+                      By signing up, you agree to our{' '}
+                      <a href="/terms" className="text-primary underline" target="_blank" rel="noopener noreferrer">
+                        Terms and Conditions
+                      </a>.
+                    </p>
+
                     <div className="flex items-center space-x-2">
                       <Checkbox
                         id="terms"
@@ -636,7 +638,7 @@ const Auth = () => {
                         htmlFor="terms"
                         className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                       >
-                        I agree to the Terms and Conditions above
+                        I agree to the Terms and Conditions
                       </Label>
                     </div>
                   </div>
