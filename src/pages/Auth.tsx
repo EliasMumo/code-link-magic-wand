@@ -27,6 +27,7 @@ const Auth = () => {
     lastName: '',
     role: 'tenant'
   });
+  const [googleSignInRole, setGoogleSignInRole] = useState<'tenant' | 'landlord'>('tenant');
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [passwordsMatch, setPasswordsMatch] = useState<boolean | null>(null);
   const [passwordStrength, setPasswordStrength] = useState({
@@ -194,7 +195,10 @@ const Auth = () => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/`
+          redirectTo: `${window.location.origin}/`,
+          queryParams: {
+            role: googleSignInRole
+          }
         }
       });
       
@@ -339,7 +343,20 @@ const Auth = () => {
                     </div>
                   </div>
                   
-                  <div className="space-y-2">
+                  <div className="space-y-3">
+                    <div>
+                      <Label htmlFor="google-role">Sign up as</Label>
+                      <Select value={googleSignInRole} onValueChange={(value: 'tenant' | 'landlord') => setGoogleSignInRole(value)}>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="tenant">Tenant (Looking for rentals)</SelectItem>
+                          <SelectItem value="landlord">Landlord (Renting out property)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
                     <Button
                       type="button"
                       variant="outline"
@@ -365,13 +382,8 @@ const Auth = () => {
                           fill="#EA4335"
                         />
                       </svg>
-                      Continue with Google
+                      Continue with Google as {googleSignInRole === 'tenant' ? 'Tenant' : 'Landlord'}
                     </Button>
-                    
-                    <p className="text-xs text-amber-600 bg-amber-50 p-2 rounded border border-amber-200">
-                      <strong>Note for Landlords:</strong> Google sign-in creates a basic tenant account. 
-                      Please use the regular sign-up form above to properly set your role as a landlord.
-                    </p>
                   </div>
                   
                   <div className="text-center">
