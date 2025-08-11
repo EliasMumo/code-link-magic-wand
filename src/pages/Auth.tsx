@@ -46,26 +46,37 @@ const Auth = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    const applyRoleAndNavigate = async () => {
+    const applyPostOAuthUpdates = async () => {
       if (!user) return;
       const url = new URL(window.location.href);
       const oauthRole = url.searchParams.get('oauth_role');
+      const termsAccepted = url.searchParams.get('terms_accepted');
+      const termsAcceptedAt = url.searchParams.get('terms_accepted_at');
+
+      const updateData: any = {};
       if (oauthRole === 'tenant' || oauthRole === 'landlord') {
+        updateData.role = oauthRole;
+      }
+      if (termsAccepted === '1' || termsAccepted === 'true') {
+        updateData.terms_accepted = true;
+        if (termsAcceptedAt) updateData.terms_accepted_at = termsAcceptedAt;
+      }
+
+      if (Object.keys(updateData).length > 0) {
         try {
-          await supabase
-            .from('profiles')
-            .update({ role: oauthRole } as any)
-            .eq('id', user.id);
+          await supabase.from('profiles').update(updateData).eq('id', user.id);
         } catch (e) {
-          console.error('Failed to set role after OAuth:', e);
+          console.error('Failed to apply post-OAuth updates:', e);
         } finally {
           url.searchParams.delete('oauth_role');
-          window.history.replaceState({}, '', url.pathname + url.search + url.hash);
+          url.searchParams.delete('terms_accepted');
+          url.searchParams.delete('terms_accepted_at');
+          window.history.replaceState({}, '', url.pathname + (url.search ? url.search : '') + url.hash);
         }
       }
       navigate('/');
     };
-    applyRoleAndNavigate();
+    applyPostOAuthUpdates();
   }, [user, navigate]);
 
   // Password strength validation function
@@ -233,9 +244,19 @@ const Auth = () => {
   };
 
   const handleGoogleSignUp = async (role: 'tenant' | 'landlord') => {
+    if (!acceptedTerms) {
+      toast({
+        title: 'Terms Required',
+        description: 'Please accept the Terms and Conditions to continue.',
+        variant: 'destructive'
+      });
+      return;
+    }
+
     setIsLoading(true);
     try {
-      const redirectUrl = `${window.location.origin}/auth?oauth_role=${role}`;
+      const acceptedAt = new Date().toISOString();
+      const redirectUrl = `${window.location.origin}/auth?oauth_role=${role}&terms_accepted=1&terms_accepted_at=${encodeURIComponent(acceptedAt)}`;
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
@@ -679,7 +700,7 @@ const Auth = () => {
                       variant="outline"
                       className="w-full"
                       onClick={() => handleGoogleSignUp('tenant')}
-                      disabled={isLoading}
+                      disabled={isLoading || !acceptedTerms}
                     >
                       <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
                         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
@@ -694,7 +715,7 @@ const Auth = () => {
                       variant="outline"
                       className="w-full"
                       onClick={() => handleGoogleSignUp('landlord')}
-                      disabled={isLoading}
+                      disabled={isLoading || !acceptedTerms}
                     >
                       <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
                         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
