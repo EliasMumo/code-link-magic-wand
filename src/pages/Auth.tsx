@@ -25,7 +25,6 @@ const Auth = () => {
     confirmPassword: '',
     firstName: '',
     lastName: '',
-    phone: '',
     role: 'tenant'
   });
   const [acceptedTerms, setAcceptedTerms] = useState(false);
@@ -131,7 +130,6 @@ const Auth = () => {
     const { error } = await signUp(signUpData.email, signUpData.password, {
       first_name: signUpData.firstName,
       last_name: signUpData.lastName,
-      phone: signUpData.phone,
       role: signUpData.role,
       terms_accepted: true,
       terms_accepted_at: new Date().toISOString()
@@ -156,7 +154,6 @@ const Auth = () => {
         confirmPassword: '',
         firstName: '',
         lastName: '',
-        phone: '',
         role: 'tenant'
       });
       setAcceptedTerms(false);
@@ -429,15 +426,6 @@ const Auth = () => {
                       value={signUpData.email}
                       onChange={(e) => setSignUpData({ ...signUpData, email: e.target.value })}
                       required
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="phone">Phone Number</Label>
-                    <Input
-                      id="phone"
-                      type="tel"
-                      value={signUpData.phone}
-                      onChange={(e) => setSignUpData({ ...signUpData, phone: e.target.value })}
                     />
                   </div>
                   <div>
