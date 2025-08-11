@@ -409,12 +409,11 @@ const Auth = () => {
                       />
                     </div>
                     <div>
-                      <Label htmlFor="last-name">Last Name</Label>
+                      <Label htmlFor="last-name">Last Name (optional)</Label>
                       <Input
                         id="last-name"
                         value={signUpData.lastName}
                         onChange={(e) => setSignUpData({ ...signUpData, lastName: e.target.value })}
-                        required
                       />
                     </div>
                   </div>
