@@ -37,12 +37,39 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   
 
   useEffect(() => {
+    const processOAuthRole = (uid: string) => {
+      setTimeout(async () => {
+        try {
+          const stored = localStorage.getItem('oauthRole');
+          if (stored === 'tenant' || stored === 'landlord') {
+            localStorage.removeItem('oauthRole');
+            const { data, error } = await supabase
+              .from('profiles')
+              .select('role')
+              .eq('id', uid)
+              .single();
+            if (!error && data && data.role !== stored) {
+              await supabase
+                .from('profiles')
+                .update({ role: stored })
+                .eq('id', uid);
+            }
+          }
+        } catch (e) {
+          console.error('OAuth role processing error:', e);
+        }
+      }, 0);
+    };
+
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
+        if (session?.user) {
+          processOAuthRole(session.user.id);
+        }
       }
     );
 
@@ -51,6 +78,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
+      if (session?.user) {
+        processOAuthRole(session.user.id);
+      }
     });
 
     return () => subscription.unsubscribe();
