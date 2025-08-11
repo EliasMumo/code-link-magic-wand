@@ -41,6 +41,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setTimeout(async () => {
         try {
           const stored = localStorage.getItem('oauthRole');
+          console.log('Processing OAuth role - stored role:', stored, 'for user:', uid);
           if (stored === 'tenant' || stored === 'landlord') {
             localStorage.removeItem('oauthRole');
             const { data, error } = await supabase
@@ -48,11 +49,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
               .select('role')
               .eq('id', uid)
               .single();
+            console.log('Current profile role:', data?.role, 'error:', error);
             if (!error && data && data.role !== stored) {
-              await supabase
+              console.log('Updating role from', data.role, 'to', stored);
+              const { error: updateError } = await supabase
                 .from('profiles')
                 .update({ role: stored })
                 .eq('id', uid);
+              console.log('Role update result:', updateError ? 'error' : 'success', updateError);
             }
           }
         } catch (e) {
@@ -64,10 +68,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
+        console.log('Auth state change:', event, 'session:', !!session, 'user:', !!session?.user);
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
         if (session?.user) {
+          console.log('Processing OAuth role for user:', session.user.id);
           processOAuthRole(session.user.id);
         }
       }
