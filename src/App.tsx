@@ -5,10 +5,10 @@ import { Toaster } from '@/components/ui/toaster';
 import { AuthProvider } from '@/hooks/useAuth';
 import Index from '@/pages/Index';
 import Auth from '@/pages/Auth';
+import Terms from '@/pages/Terms';
 import PropertyManagement from '@/pages/PropertyManagement';
 import Settings from '@/pages/Settings';
 import Analytics from '@/pages/Analytics';
-
 import NotFound from '@/pages/NotFound';
 
 const queryClient = new QueryClient();
@@ -22,6 +22,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/auth" element={<Auth />} />
+              <Route path="/terms" element={<Terms />} />
               <Route path="/properties" element={<PropertyManagement />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/analytics" element={<Analytics />} />

@@ -593,26 +593,27 @@ const Auth = () => {
                     )}
                   </div>
                   
-                  <div className="space-y-4">
-                    <div>
-                      <Label className="text-sm font-semibold">Terms and Conditions</Label>
-                      <TermsAndConditions />
-                    </div>
-                    
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="terms"
-                        checked={acceptedTerms}
-                        onCheckedChange={(checked) => setAcceptedTerms(checked as boolean)}
-                      />
-                      <Label
-                        htmlFor="terms"
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                      >
-                        I agree to the Terms and Conditions above
-                      </Label>
-                    </div>
-                  </div>
+                   <div className="flex items-center space-x-2">
+                     <Checkbox
+                       id="terms"
+                       checked={acceptedTerms}
+                       onCheckedChange={(checked) => setAcceptedTerms(checked as boolean)}
+                     />
+                     <Label
+                       htmlFor="terms"
+                       className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                     >
+                       I agree to the{' '}
+                       <a 
+                         href="/terms" 
+                         target="_blank" 
+                         rel="noopener noreferrer" 
+                         className="text-blue-600 hover:text-blue-500 underline"
+                       >
+                         Terms and Conditions
+                       </a>
+                     </Label>
+                   </div>
                   
                   <Button type="submit" className="w-full" disabled={isLoading || !acceptedTerms || passwordStrength.score < 3}>
                     {isLoading ? 'Creating Account...' : 'Sign Up'}
