@@ -8,8 +8,7 @@ import Auth from '@/pages/Auth';
 import PropertyManagement from '@/pages/PropertyManagement';
 import Settings from '@/pages/Settings';
 import Analytics from '@/pages/Analytics';
-import Terms from '@/pages/Terms';
- 
+
 import NotFound from '@/pages/NotFound';
 
 const queryClient = new QueryClient();
@@ -26,7 +25,6 @@ function App() {
               <Route path="/properties" element={<PropertyManagement />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/analytics" element={<Analytics />} />
-              <Route path="/terms" element={<Terms />} />
               
               <Route path="*" element={<NotFound />} />
             </Routes>
