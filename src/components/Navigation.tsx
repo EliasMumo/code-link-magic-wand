@@ -70,10 +70,10 @@ const Navigation = ({
                 <ArrowLeft className="h-4 w-4" />
               </Button>
             )}
-            <div className="flex items-center">
-              <Home className="h-8 w-8 text-blue-600" />
-              <span className="ml-2 text-xl font-bold text-gray-900">DwellMerge</span>
-            </div>
+            <button type="button" onClick={() => handleNavigation('/')} className="flex items-center" aria-label="Go to homepage">
+              <img src="/lovable-uploads/8e816a01-f75c-4da7-8655-a3ed189b8e79.png" alt="DwellMerge logo" className="h-8 w-auto" />
+              <span className="sr-only">DwellMerge</span>
+            </button>
           </div>
 
           {/* Desktop Navigation */}
