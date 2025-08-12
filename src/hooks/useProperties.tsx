@@ -108,10 +108,11 @@ export const useProperties = () => {
     }
 
     try {
-      // First, update the landlord's profile with their phone number
+      // First, update the landlord's profile with their phone number and caretaker phone
+      const { landlord_phone, caretaker_phone, ...propertyInsertData } = propertyData as any;
       const { error: profileError } = await supabase
         .from('profiles')
-        .update({ phone: propertyData.landlord_phone })
+        .update({ phone: landlord_phone, caretaker_phone: caretaker_phone ?? null })
         .eq('id', user.id);
 
       if (profileError) {
@@ -119,8 +120,7 @@ export const useProperties = () => {
         // Continue anyway as this is not critical
       }
 
-      // Create the property data without the landlord_phone field
-      const { landlord_phone, ...propertyInsertData } = propertyData;
+      // Insert the property without any phone fields
       
       const { data, error } = await supabase
         .from('properties')
@@ -176,9 +176,22 @@ export const useProperties = () => {
     }
 
     try {
+      const { caretaker_phone, ...propertyUpdateData } = (propertyData as any) ?? {};
+
+      // If caretaker_phone is provided, update it on the landlord's profile instead of properties
+      if (typeof caretaker_phone !== 'undefined') {
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .update({ caretaker_phone })
+          .eq('id', user.id);
+        if (profileError) {
+          console.error('Error updating caretaker phone on profile:', profileError);
+        }
+      }
+
       const { data, error } = await supabase
         .from('properties')
-        .update(propertyData)
+        .update(propertyUpdateData)
         .eq('id', propertyId)
         .eq('landlord_id', user.id)
         .select()

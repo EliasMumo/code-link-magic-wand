@@ -9,6 +9,8 @@ import VideoUpload from '@/components/forms/VideoUpload';
 import { PropertyFormData } from '@/types/property';
 import { Label } from '@/components/ui/label';
 import { Upload, X } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 
 interface EditPropertyModalProps {
   property: Property | null;
@@ -18,6 +20,7 @@ interface EditPropertyModalProps {
 }
 
 const EditPropertyModal = ({ property, isOpen, onClose, onUpdate }: EditPropertyModalProps) => {
+  const { user } = useAuth();
   const [formData, setFormData] = useState<PropertyFormData>({
     title: '',
     price: '',
@@ -75,6 +78,21 @@ const EditPropertyModal = ({ property, isOpen, onClose, onUpdate }: EditProperty
     }
   }, [property]);
 
+  useEffect(() => {
+    const loadProfilePhones = async () => {
+      if (!user || !isOpen) return;
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('phone, caretaker_phone')
+        .eq('id', user.id)
+        .single();
+      if (!error && data) {
+        setFormData(prev => ({ ...prev, landlordPhone: data.phone || '', caretakerPhone: data.caretaker_phone || '' }));
+      }
+    };
+    loadProfilePhones();
+  }, [user, isOpen]);
+
   const handleInputChange = (key: string, value: string | boolean) => {
     setFormData(prev => ({ ...prev, [key]: value }));
   };
@@ -112,7 +130,22 @@ const EditPropertyModal = ({ property, isOpen, onClose, onUpdate }: EditProperty
     
     // Use existing images if no new ones are selected
     const finalImages = selectedImages.length > 0 ? imagePreviewUrls : images;
-    
+
+    // Update phones on profile instead of properties to avoid public exposure
+    try {
+      if (user) {
+        await supabase
+          .from('profiles')
+          .update({
+            phone: formData.landlordPhone || null,
+            caretaker_phone: formData.caretakerPhone || null,
+          })
+          .eq('id', user.id);
+      }
+    } catch (e) {
+      console.error('Failed updating profile phones:', e);
+    }
+
     const updateData = {
       title: formData.title,
       price: parseFloat(formData.price),
@@ -123,7 +156,6 @@ const EditPropertyModal = ({ property, isOpen, onClose, onUpdate }: EditProperty
       property_type: formData.propertyType,
       description: formData.description,
       amenities: formData.amenities.split(',').map(a => a.trim()).filter(Boolean),
-      caretaker_phone: formData.caretakerPhone || null,
       is_furnished: formData.isFurnished,
       is_pet_friendly: formData.isPetFriendly,
       vacancy_count: parseInt(formData.vacancyCount) || 1,
