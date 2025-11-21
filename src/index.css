@@ -117,4 +117,18 @@
       linear-gradient(to bottom, hsl(var(--border) / 0.3) 1px, transparent 1px);
     background-size: 40px 40px;
   }
+  
+  @keyframes toast-progress {
+    from {
+      transform: scaleX(1);
+    }
+    to {
+      transform: scaleX(0);
+    }
+  }
+  
+  .toast-progress {
+    animation: toast-progress 5s linear forwards;
+    transform-origin: left;
+  }
 }
