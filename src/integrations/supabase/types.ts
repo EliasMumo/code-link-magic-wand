@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.12 (cd3cf9e)"
@@ -416,7 +416,7 @@ export type Database = {
       }
       property_analytics: {
         Row: {
-          avg_time_on_market: unknown | null
+          avg_time_on_market: unknown
           conversion_rate: number | null
           created_at: string | null
           favorites_count: number | null
@@ -429,7 +429,7 @@ export type Database = {
           views_count: number | null
         }
         Insert: {
-          avg_time_on_market?: unknown | null
+          avg_time_on_market?: unknown
           conversion_rate?: number | null
           created_at?: string | null
           favorites_count?: number | null
@@ -442,7 +442,7 @@ export type Database = {
           views_count?: number | null
         }
         Update: {
-          avg_time_on_market?: unknown | null
+          avg_time_on_market?: unknown
           conversion_rate?: number | null
           created_at?: string | null
           favorites_count?: number | null
@@ -491,7 +491,7 @@ export type Database = {
       property_views: {
         Row: {
           id: string
-          ip_address: unknown | null
+          ip_address: unknown
           property_id: string
           user_agent: string | null
           user_id: string | null
@@ -499,7 +499,7 @@ export type Database = {
         }
         Insert: {
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           property_id: string
           user_agent?: string | null
           user_id?: string | null
@@ -507,7 +507,7 @@ export type Database = {
         }
         Update: {
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           property_id?: string
           user_agent?: string | null
           user_id?: string | null
@@ -795,13 +795,10 @@ export type Database = {
     }
     Functions: {
       ban_user: {
-        Args: { target_user_id: string; reason?: string }
+        Args: { reason?: string; target_user_id: string }
         Returns: undefined
       }
-      get_current_user_role: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
+      get_current_user_role: { Args: never; Returns: string }
       increment_inquiry_count: {
         Args: { property_uuid: string }
         Returns: undefined
@@ -810,14 +807,8 @@ export type Database = {
         Args: { property_uuid: string }
         Returns: undefined
       }
-      is_admin: {
-        Args: { user_id: string }
-        Returns: boolean
-      }
-      unban_user: {
-        Args: { target_user_id: string }
-        Returns: undefined
-      }
+      is_admin: { Args: { user_id: string }; Returns: boolean }
+      unban_user: { Args: { target_user_id: string }; Returns: undefined }
       user_needs_terms_acceptance: {
         Args: { user_id: string }
         Returns: boolean
