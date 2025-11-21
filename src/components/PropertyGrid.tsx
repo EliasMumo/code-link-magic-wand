@@ -4,6 +4,7 @@ import PropertyCard from './PropertyCard';
 import PropertyComparison from './PropertyComparison';
 import { usePropertyComparisons } from '@/hooks/usePropertyComparisons';
 import { useProperties } from '@/hooks/useProperties';
+import { ScrollReveal, ScrollRevealStagger, ScrollRevealItem } from '@/components/ScrollReveal';
 
 interface PropertyGridProps {
   properties: any[];
@@ -21,10 +22,10 @@ const PropertyGrid = ({ properties, onPropertyClick, onToggleFavorite, isFavorit
       <div className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[...Array(6)].map((_, index) => (
-            <div key={index} className="bg-white rounded-lg shadow-md p-4 animate-pulse">
-              <div className="h-48 bg-gray-200 rounded mb-4"></div>
-              <div className="h-4 bg-gray-200 rounded mb-2"></div>
-              <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+            <div key={index} className="bg-card rounded-lg shadow-md p-4 animate-pulse">
+              <div className="h-48 bg-muted rounded mb-4"></div>
+              <div className="h-4 bg-muted rounded mb-2"></div>
+              <div className="h-4 bg-muted rounded w-3/4"></div>
             </div>
           ))}
         </div>
@@ -34,9 +35,11 @@ const PropertyGrid = ({ properties, onPropertyClick, onToggleFavorite, isFavorit
 
   if (properties.length === 0) {
     return (
-      <div className="text-center py-12">
-        <p className="text-gray-500 text-lg">No properties found</p>
-      </div>
+      <ScrollReveal variant="fadeUp">
+        <div className="text-center py-12">
+          <p className="text-muted-foreground text-lg">No properties found</p>
+        </div>
+      </ScrollReveal>
     );
   }
 
@@ -49,28 +52,31 @@ const PropertyGrid = ({ properties, onPropertyClick, onToggleFavorite, isFavorit
     <div className="space-y-6">
       {/* Property Comparison */}
       {currentComparison.length > 0 && (
-        <PropertyComparison
-          properties={comparisonProperties}
-          onRemoveProperty={removeFromComparison}
-          onClearAll={clearComparison}
-          onSaveComparison={saveComparison}
-        />
+        <ScrollReveal variant="fadeDown">
+          <PropertyComparison
+            properties={comparisonProperties}
+            onRemoveProperty={removeFromComparison}
+            onClearAll={clearComparison}
+            onSaveComparison={saveComparison}
+          />
+        </ScrollReveal>
       )}
 
       {/* Property Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <ScrollRevealStagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" staggerDelay={0.1}>
         {properties.map((property) => (
-          <PropertyCard
-            key={property.id}
-            property={property}
-            onClick={onPropertyClick}
-            onToggleFavorite={onToggleFavorite}
-            isFavorite={isFavorite ? isFavorite(property.id) : false}
-            onAddToComparison={addToComparison}
-            isInComparison={currentComparison.includes(property.id)}
-          />
+          <ScrollRevealItem key={property.id}>
+            <PropertyCard
+              property={property}
+              onClick={onPropertyClick}
+              onToggleFavorite={onToggleFavorite}
+              isFavorite={isFavorite ? isFavorite(property.id) : false}
+              onAddToComparison={addToComparison}
+              isInComparison={currentComparison.includes(property.id)}
+            />
+          </ScrollRevealItem>
         ))}
-      </div>
+      </ScrollRevealStagger>
     </div>
   );
 };
