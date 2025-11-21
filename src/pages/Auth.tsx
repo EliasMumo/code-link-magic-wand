@@ -282,37 +282,41 @@ const Auth = () => {
 
   if (showForgotPassword) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full space-y-8">
-          <div className="text-center">
+      <div className="min-h-screen bg-gradient-to-br from-background via-accent/10 to-primary/5 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid-pattern opacity-5" />
+        <div className="max-w-md w-full space-y-8 relative z-10 animate-fade-in">
+          <div className="text-center space-y-4">
             <div className="flex justify-center">
-              <Home className="h-12 w-12 text-blue-600" />
+              <div className="rounded-full bg-primary/10 p-4 shadow-lg animate-scale-in">
+                <Home className="h-12 w-12 text-primary" />
+              </div>
             </div>
-            <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
+            <h2 className="mt-6 text-3xl font-bold text-foreground">
               Reset your password
             </h2>
-            <p className="mt-2 text-sm text-gray-600">
+            <p className="mt-2 text-sm text-muted-foreground">
               Enter your email address and we'll send you a link to reset your password
             </p>
           </div>
 
-          <Card>
+          <Card className="border-border/50 shadow-elegant backdrop-blur-sm bg-card/95">
             <CardHeader>
-              <CardTitle>Forgot Password</CardTitle>
+              <CardTitle className="text-2xl">Forgot Password</CardTitle>
               <CardDescription>
                 We'll send you a password reset link
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleForgotPassword} className="space-y-4">
-                <div>
-                  <Label htmlFor="forgot-email">Email</Label>
+              <form onSubmit={handleForgotPassword} className="space-y-6">
+                <div className="space-y-2">
+                  <Label htmlFor="forgot-email" className="text-sm font-medium">Email</Label>
                   <Input
                     id="forgot-email"
                     type="email"
                     value={forgotPasswordEmail}
                     onChange={(e) => setForgotPasswordEmail(e.target.value)}
                     placeholder="Enter your email address"
+                    className="h-11 transition-shadow focus:shadow-elegant"
                     required
                   />
                 </div>
@@ -320,13 +324,13 @@ const Auth = () => {
                   <Button
                     type="button"
                     variant="outline"
-                    className="flex-1"
+                    className="flex-1 h-11 transition-all hover:scale-[1.02]"
                     onClick={() => setShowForgotPassword(false)}
                   >
                     <ArrowLeft className="h-4 w-4 mr-2" />
                     Back to Sign In
                   </Button>
-                  <Button type="submit" className="flex-1" disabled={isLoading}>
+                  <Button type="submit" className="flex-1 h-11 shadow-elegant transition-all hover:scale-[1.02]" disabled={isLoading}>
                     {isLoading ? 'Sending...' : 'Send Reset Link'}
                   </Button>
                 </div>
@@ -339,57 +343,62 @@ const Auth = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div className="text-center">
+    <div className="min-h-screen bg-gradient-to-br from-background via-accent/10 to-primary/5 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <div className="absolute inset-0 bg-grid-pattern opacity-5" />
+      <div className="max-w-md w-full space-y-8 relative z-10 animate-fade-in">
+        <div className="text-center space-y-4">
           <div className="flex justify-center">
-            <Home className="h-12 w-12 text-blue-600" />
+            <div className="rounded-full bg-primary/10 p-4 shadow-lg animate-scale-in">
+              <Home className="h-12 w-12 text-primary" />
+            </div>
           </div>
-          <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
+          <h2 className="mt-6 text-3xl font-bold text-foreground">
             Welcome to DwellMerge
           </h2>
-          <p className="mt-2 text-sm text-gray-600">
+          <p className="mt-2 text-sm text-muted-foreground">
             Find your perfect rental home or list your property
           </p>
         </div>
 
         <Tabs defaultValue="signin" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="signin">Sign In</TabsTrigger>
-            <TabsTrigger value="signup">Sign Up</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 bg-muted/50 backdrop-blur-sm p-1 h-12">
+            <TabsTrigger value="signin" className="data-[state=active]:shadow-elegant transition-all">Sign In</TabsTrigger>
+            <TabsTrigger value="signup" className="data-[state=active]:shadow-elegant transition-all">Sign Up</TabsTrigger>
           </TabsList>
           
-          <TabsContent value="signin">
-            <Card>
-              <CardHeader>
-                <CardTitle>Sign In</CardTitle>
+          <TabsContent value="signin" className="mt-6">
+            <Card className="border-border/50 shadow-elegant backdrop-blur-sm bg-card/95">
+              <CardHeader className="space-y-2">
+                <CardTitle className="text-2xl">Sign In</CardTitle>
                 <CardDescription>
                   Enter your credentials to access your account
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSignIn} className="space-y-4">
-                  <div>
-                    <Label htmlFor="signin-email">Email</Label>
+                <form onSubmit={handleSignIn} className="space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="signin-email" className="text-sm font-medium">Email</Label>
                     <Input
                       id="signin-email"
                       type="email"
                       value={signInData.email}
                       onChange={(e) => setSignInData({ ...signInData, email: e.target.value })}
+                      className="h-11 transition-shadow focus:shadow-elegant"
                       required
                     />
                   </div>
-                  <div>
-                    <Label htmlFor="signin-password">Password</Label>
+                  <div className="space-y-2">
+                    <Label htmlFor="signin-password" className="text-sm font-medium">Password</Label>
                     <Input
                       id="signin-password"
                       type="password"
                       value={signInData.password}
                       onChange={(e) => setSignInData({ ...signInData, password: e.target.value })}
+                      className="h-11 transition-shadow focus:shadow-elegant"
                       required
                     />
                   </div>
-                  <Button type="submit" className="w-full" disabled={isLoading}>
+                  <Button type="submit" className="w-full h-11 shadow-elegant transition-all hover:scale-[1.02]" disabled={isLoading}>
                     {isLoading ? 'Signing In...' : 'Sign In'}
                   </Button>
                   
@@ -404,11 +413,11 @@ const Auth = () => {
                     </div>
                   </div>
                   
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     <Button
                       type="button"
                       variant="outline"
-                      className="w-full"
+                      className="w-full h-11 transition-all hover:scale-[1.02] hover:shadow-soft"
                       onClick={handleGoogleSignIn}
                       disabled={isLoading}
                     >
@@ -433,17 +442,17 @@ const Auth = () => {
                       Continue with Google
                     </Button>
                     
-                    <p className="text-xs text-amber-600 bg-amber-50 p-2 rounded border border-amber-200">
+                    <div className="text-xs text-amber-700 bg-amber-50/80 dark:bg-amber-950/30 dark:text-amber-400 p-3 rounded-lg border border-amber-200/50 dark:border-amber-800/50 backdrop-blur-sm">
                       <strong>Note for Landlords:</strong> Google sign-in creates a basic tenant account. 
                       Please use the regular sign-up form above to properly set your role as a landlord.
-                    </p>
+                    </div>
                   </div>
                   
                   <div className="text-center">
                     <button
                       type="button"
                       onClick={() => setShowForgotPassword(true)}
-                      className="text-sm text-blue-600 hover:text-blue-500 underline"
+                      className="text-sm text-primary hover:text-primary/80 underline underline-offset-4 transition-colors font-medium"
                     >
                       Forgot your password?
                     </button>
@@ -453,49 +462,52 @@ const Auth = () => {
             </Card>
           </TabsContent>
           
-          <TabsContent value="signup">
-            <Card>
-              <CardHeader>
-                <CardTitle>Sign Up</CardTitle>
+          <TabsContent value="signup" className="mt-6">
+            <Card className="border-border/50 shadow-elegant backdrop-blur-sm bg-card/95">
+              <CardHeader className="space-y-2">
+                <CardTitle className="text-2xl">Sign Up</CardTitle>
                 <CardDescription>
                   Create a new account to get started
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSignUp} className="space-y-4">
+                <form onSubmit={handleSignUp} className="space-y-5">
                   <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="first-name">First Name</Label>
+                    <div className="space-y-2">
+                      <Label htmlFor="first-name" className="text-sm font-medium">First Name</Label>
                       <Input
                         id="first-name"
                         value={signUpData.firstName}
                         onChange={(e) => setSignUpData({ ...signUpData, firstName: e.target.value })}
+                        className="h-11 transition-shadow focus:shadow-elegant"
                         required
                       />
                     </div>
-                    <div>
-                      <Label htmlFor="last-name">Last Name (optional)</Label>
+                    <div className="space-y-2">
+                      <Label htmlFor="last-name" className="text-sm font-medium">Last Name (optional)</Label>
                       <Input
                         id="last-name"
                         value={signUpData.lastName}
                         onChange={(e) => setSignUpData({ ...signUpData, lastName: e.target.value })}
+                        className="h-11 transition-shadow focus:shadow-elegant"
                       />
                     </div>
                   </div>
-                  <div>
-                    <Label htmlFor="signup-email">Email</Label>
+                  <div className="space-y-2">
+                    <Label htmlFor="signup-email" className="text-sm font-medium">Email</Label>
                     <Input
                       id="signup-email"
                       type="email"
                       value={signUpData.email}
                       onChange={(e) => setSignUpData({ ...signUpData, email: e.target.value })}
+                      className="h-11 transition-shadow focus:shadow-elegant"
                       required
                     />
                   </div>
-                  <div>
-                    <Label htmlFor="role">I am a</Label>
+                  <div className="space-y-2">
+                    <Label htmlFor="role" className="text-sm font-medium">I am a</Label>
                     <Select value={signUpData.role} onValueChange={(value) => setSignUpData({ ...signUpData, role: value })}>
-                      <SelectTrigger>
+                      <SelectTrigger className="h-11">
                         <SelectValue placeholder="Select your role" />
                       </SelectTrigger>
                       <SelectContent>
@@ -504,8 +516,8 @@ const Auth = () => {
                       </SelectContent>
                     </Select>
                   </div>
-                  <div>
-                    <Label htmlFor="signup-password">Password</Label>
+                  <div className="space-y-2">
+                    <Label htmlFor="signup-password" className="text-sm font-medium">Password</Label>
                     <Input
                       id="signup-password"
                       type="password"
@@ -525,101 +537,102 @@ const Auth = () => {
                           setPasswordsMatch(null);
                         }
                       }}
+                      className="h-11 transition-shadow focus:shadow-elegant"
                       required
                     />
                     
                     {/* Password strength indicator */}
                     {signUpData.password && (
-                      <div className="mt-2 space-y-2">
-                        <div className="flex items-center gap-2">
+                      <div className="mt-3 space-y-3 p-3 rounded-lg bg-muted/30 border border-border/50">
+                        <div className="flex items-center gap-3">
                           <div className="flex-1">
-                            <div className="flex justify-between items-center mb-1">
-                              <span className="text-sm font-medium">Password Strength</span>
-                              <span className={`text-sm font-medium ${
-                                passwordStrength.score === 1 ? 'text-red-600' :
+                            <div className="flex justify-between items-center mb-2">
+                              <span className="text-xs font-semibold text-muted-foreground">Password Strength</span>
+                              <span className={`text-xs font-bold ${
+                                passwordStrength.score === 1 ? 'text-destructive' :
                                 passwordStrength.score === 2 ? 'text-orange-500' :
-                                passwordStrength.score === 3 ? 'text-yellow-600' :
-                                passwordStrength.score === 4 ? 'text-green-600' : 'text-gray-400'
+                                passwordStrength.score === 3 ? 'text-yellow-600 dark:text-yellow-500' :
+                                passwordStrength.score === 4 ? 'text-green-600 dark:text-green-500' : 'text-muted-foreground'
                               }`}>
                                 {passwordStrength.feedback}
                               </span>
                             </div>
-                            <div className="flex gap-1">
+                            <div className="flex gap-1.5">
                               {[1, 2, 3, 4].map((level) => (
                                 <div
                                   key={level}
-                                  className={`h-2 flex-1 rounded ${
+                                  className={`h-2 flex-1 rounded-full transition-all ${
                                     level <= passwordStrength.score
-                                      ? level === 1 ? 'bg-red-500' :
-                                        level === 2 ? 'bg-orange-500' :
-                                        level === 3 ? 'bg-yellow-500' :
-                                        'bg-green-500'
-                                      : 'bg-gray-200'
+                                      ? level === 1 ? 'bg-destructive shadow-sm' :
+                                        level === 2 ? 'bg-orange-500 shadow-sm' :
+                                        level === 3 ? 'bg-yellow-500 shadow-sm' :
+                                        'bg-green-500 shadow-sm'
+                                      : 'bg-border'
                                   }`}
                                 />
                               ))}
                             </div>
                           </div>
                           {passwordStrength.score >= 3 ? (
-                            <Shield className="h-5 w-5 text-green-600" />
+                            <Shield className="h-5 w-5 text-green-600 dark:text-green-500" />
                           ) : (
                             <AlertTriangle className="h-5 w-5 text-orange-500" />
                           )}
                         </div>
                         
                         {/* Password requirements checklist */}
-                        <div className="grid grid-cols-2 gap-1 text-xs">
-                          <div className={`flex items-center gap-1 ${
-                            passwordStrength.requirements.length ? 'text-green-600' : 'text-gray-500'
+                        <div className="grid grid-cols-2 gap-2 text-xs">
+                          <div className={`flex items-center gap-1.5 transition-colors ${
+                            passwordStrength.requirements.length ? 'text-green-600 dark:text-green-500' : 'text-muted-foreground'
                           }`}>
                             {passwordStrength.requirements.length ? 
-                              <Check className="h-3 w-3" /> : 
-                              <X className="h-3 w-3" />
+                              <Check className="h-3.5 w-3.5" /> : 
+                              <X className="h-3.5 w-3.5" />
                             }
-                            <span>8+ characters</span>
+                            <span className="font-medium">8+ characters</span>
                           </div>
-                          <div className={`flex items-center gap-1 ${
-                            passwordStrength.requirements.uppercase ? 'text-green-600' : 'text-gray-500'
+                          <div className={`flex items-center gap-1.5 transition-colors ${
+                            passwordStrength.requirements.uppercase ? 'text-green-600 dark:text-green-500' : 'text-muted-foreground'
                           }`}>
                             {passwordStrength.requirements.uppercase ? 
-                              <Check className="h-3 w-3" /> : 
-                              <X className="h-3 w-3" />
+                              <Check className="h-3.5 w-3.5" /> : 
+                              <X className="h-3.5 w-3.5" />
                             }
-                            <span>Uppercase</span>
+                            <span className="font-medium">Uppercase</span>
                           </div>
-                          <div className={`flex items-center gap-1 ${
-                            passwordStrength.requirements.lowercase ? 'text-green-600' : 'text-gray-500'
+                          <div className={`flex items-center gap-1.5 transition-colors ${
+                            passwordStrength.requirements.lowercase ? 'text-green-600 dark:text-green-500' : 'text-muted-foreground'
                           }`}>
                             {passwordStrength.requirements.lowercase ? 
-                              <Check className="h-3 w-3" /> : 
-                              <X className="h-3 w-3" />
+                              <Check className="h-3.5 w-3.5" /> : 
+                              <X className="h-3.5 w-3.5" />
                             }
-                            <span>Lowercase</span>
+                            <span className="font-medium">Lowercase</span>
                           </div>
-                          <div className={`flex items-center gap-1 ${
-                            passwordStrength.requirements.number ? 'text-green-600' : 'text-gray-500'
+                          <div className={`flex items-center gap-1.5 transition-colors ${
+                            passwordStrength.requirements.number ? 'text-green-600 dark:text-green-500' : 'text-muted-foreground'
                           }`}>
                             {passwordStrength.requirements.number ? 
-                              <Check className="h-3 w-3" /> : 
-                              <X className="h-3 w-3" />
+                              <Check className="h-3.5 w-3.5" /> : 
+                              <X className="h-3.5 w-3.5" />
                             }
-                            <span>Number</span>
+                            <span className="font-medium">Number</span>
                           </div>
-                          <div className={`flex items-center gap-1 ${
-                            passwordStrength.requirements.special ? 'text-green-600' : 'text-gray-500'
+                          <div className={`flex items-center gap-1.5 transition-colors ${
+                            passwordStrength.requirements.special ? 'text-green-600 dark:text-green-500' : 'text-muted-foreground'
                           }`}>
                             {passwordStrength.requirements.special ? 
-                              <Check className="h-3 w-3" /> : 
-                              <X className="h-3 w-3" />
+                              <Check className="h-3.5 w-3.5" /> : 
+                              <X className="h-3.5 w-3.5" />
                             }
-                            <span>Special char</span>
+                            <span className="font-medium">Special char</span>
                           </div>
                         </div>
                       </div>
                     )}
                   </div>
-                  <div>
-                    <Label htmlFor="confirm-password">Confirm Password</Label>
+                  <div className="space-y-2">
+                    <Label htmlFor="confirm-password" className="text-sm font-medium">Confirm Password</Label>
                     <Input
                       id="confirm-password"
                       type="password"
@@ -635,12 +648,13 @@ const Auth = () => {
                           setPasswordsMatch(null);
                         }
                       }}
+                      className="h-11 transition-shadow focus:shadow-elegant"
                       required
                     />
                     {/* Password match indicator */}
                     {passwordsMatch !== null && signUpData.confirmPassword && (
-                      <div className={`flex items-center gap-2 mt-2 text-sm ${
-                        passwordsMatch ? 'text-green-600' : 'text-red-600'
+                      <div className={`flex items-center gap-2 mt-2 text-sm font-medium transition-colors ${
+                        passwordsMatch ? 'text-green-600 dark:text-green-500' : 'text-destructive'
                       }`}>
                         {passwordsMatch ? (
                           <>
@@ -657,48 +671,49 @@ const Auth = () => {
                     )}
                   </div>
                   
-                   <div className="flex items-center space-x-2">
+                   <div className="flex items-center space-x-3 p-3 rounded-lg bg-muted/20 border border-border/50 transition-all hover:bg-muted/30">
                      <Checkbox
                        id="terms"
                        checked={acceptedTerms}
                        onCheckedChange={(checked) => setAcceptedTerms(checked as boolean)}
+                       className="data-[state=checked]:bg-primary data-[state=checked]:border-primary"
                      />
                      <Label
                        htmlFor="terms"
-                       className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                       className="text-sm font-medium leading-relaxed cursor-pointer peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                      >
                        I agree to the{' '}
                        <a 
                          href="/terms" 
                          target="_blank" 
                          rel="noopener noreferrer" 
-                         className="text-blue-600 hover:text-blue-500 underline"
+                         className="text-primary hover:text-primary/80 underline underline-offset-4 font-semibold transition-colors"
                        >
                          Terms and Conditions
                        </a>
                      </Label>
                    </div>
                   
-                  <Button type="submit" className="w-full" disabled={isLoading || !acceptedTerms || passwordStrength.score < 3}>
+                  <Button type="submit" className="w-full h-12 text-base shadow-elegant transition-all hover:scale-[1.02]" disabled={isLoading || !acceptedTerms || passwordStrength.score < 3}>
                     {isLoading ? 'Creating Account...' : 'Sign Up'}
                   </Button>
 
-                  <div className="relative mt-6">
+                  <div className="relative my-6">
                     <div className="absolute inset-0 flex items-center">
-                      <span className="w-full border-t" />
+                      <span className="w-full border-t border-border/50" />
                     </div>
                     <div className="relative flex justify-center text-xs uppercase">
-                      <span className="bg-background px-2 text-muted-foreground">
+                      <span className="bg-card px-3 text-muted-foreground font-semibold">
                         Or sign up with
                       </span>
                     </div>
                   </div>
 
-                  <div className="space-y-2 mt-2">
+                  <div className="space-y-3">
                     <Button
                       type="button"
                       variant="outline"
-                      className="w-full"
+                      className="w-full h-11 transition-all hover:scale-[1.02] hover:shadow-soft"
                       onClick={() => handleGoogleSignUp('tenant')}
                       disabled={isLoading || !acceptedTerms}
                     >
@@ -713,7 +728,7 @@ const Auth = () => {
                     <Button
                       type="button"
                       variant="outline"
-                      className="w-full"
+                      className="w-full h-11 transition-all hover:scale-[1.02] hover:shadow-soft"
                       onClick={() => handleGoogleSignUp('landlord')}
                       disabled={isLoading || !acceptedTerms}
                     >
