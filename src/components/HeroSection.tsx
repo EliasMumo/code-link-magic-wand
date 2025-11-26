@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Search, Plus, Home, Users, Shield, Star } from 'lucide-react';
 import { ScrollReveal, ScrollRevealStagger, ScrollRevealItem } from '@/components/ScrollReveal';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 interface HeroSectionProps {
   userMode: 'renter' | 'landlord';
@@ -10,18 +11,46 @@ interface HeroSectionProps {
 }
 
 const HeroSection = ({ userMode, onSearchClick, onAddPropertyClick }: HeroSectionProps) => {
+  const heroRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"]
+  });
+  
+  const y1 = useTransform(scrollYProgress, [0, 1], [0, -150]);
+  const y2 = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  const y3 = useTransform(scrollYProgress, [0, 1], [0, -80]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+
   return (
-    <div className="relative rounded-3xl p-16 mb-12 overflow-hidden shadow-elegant" style={{ background: 'var(--gradient-hero)' }}>
+    <div ref={heroRef} className="relative rounded-3xl p-16 mb-12 overflow-hidden shadow-elegant" style={{ background: 'var(--gradient-hero)' }}>
       {/* Sophisticated background pattern */}
-      <div className="absolute inset-0 opacity-[0.03]" style={{
-        backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0)`,
-        backgroundSize: '40px 40px'
-      }}></div>
+      <motion.div 
+        className="absolute inset-0 opacity-[0.03]" 
+        style={{
+          backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0)`,
+          backgroundSize: '40px 40px',
+          y: y3
+        }}
+      ></motion.div>
       
-      {/* Elegant decorative elements */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -translate-y-48 translate-x-48"></div>
-      <div className="absolute bottom-0 left-0 w-80 h-80 rounded-full blur-3xl translate-y-40 -translate-x-40" style={{ background: 'var(--gradient-gold)', opacity: 0.08 }}></div>
-      <div className="absolute top-1/3 right-1/4 w-64 h-64 bg-secondary/5 rounded-full blur-2xl"></div>
+      {/* Elegant decorative elements with parallax */}
+      <motion.div 
+        className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -translate-y-48 translate-x-48"
+        style={{ y: y1, opacity }}
+      ></motion.div>
+      <motion.div 
+        className="absolute bottom-0 left-0 w-80 h-80 rounded-full blur-3xl translate-y-40 -translate-x-40" 
+        style={{ 
+          background: 'var(--gradient-gold)', 
+          opacity: 0.08,
+          y: y2
+        }}
+      ></motion.div>
+      <motion.div 
+        className="absolute top-1/3 right-1/4 w-64 h-64 bg-secondary/5 rounded-full blur-2xl"
+        style={{ y: y3, opacity }}
+      ></motion.div>
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/5"></div>
       
       <div className="relative z-10">
