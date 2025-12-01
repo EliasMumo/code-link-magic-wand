@@ -55,7 +55,7 @@ const Navigation = ({
   };
 
   return (
-    <nav className="bg-white shadow-lg sticky top-0 z-50">
+    <nav className="bg-card/95 backdrop-blur-md border-b border-border/50 sticky top-0 z-50 shadow-soft">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Logo and Title */}
@@ -65,30 +65,34 @@ const Navigation = ({
                 variant="ghost"
                 size="sm"
                 onClick={onBackClick}
-                className="mr-2"
+                className="mr-2 text-foreground hover:text-accent hover:bg-accent/10"
               >
                 <ArrowLeft className="h-4 w-4" />
               </Button>
             )}
-            <button type="button" onClick={() => handleNavigation('/')} className="flex items-center" aria-label="Go to homepage">
-              <img src="/lovable-uploads/8e816a01-f75c-4da7-8655-a3ed189b8e79.png" alt="DwellMerge logo" className="h-8 w-auto" />
+            <button type="button" onClick={() => handleNavigation('/')} className="flex items-center group" aria-label="Go to homepage">
+              <img src="/lovable-uploads/8e816a01-f75c-4da7-8655-a3ed189b8e79.png" alt="DwellMerge logo" className="h-8 w-auto transition-transform duration-300 group-hover:scale-105" />
               <span className="sr-only">DwellMerge</span>
             </button>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-2">
+          <div className="hidden md:flex items-center space-x-1">
             <Button 
               variant="ghost" 
               onClick={onSearchClick}
-              className="flex items-center px-3"
+              className="flex items-center px-4 text-foreground hover:text-accent hover:bg-accent/10 transition-all duration-200"
             >
               <Search className="h-4 w-4 mr-2" />
               Search
             </Button>
 
             {userRole === 'admin' && onAdminClick && (
-              <Button variant="outline" onClick={onAdminClick}>
+              <Button 
+                variant="outline" 
+                onClick={onAdminClick}
+                className="border-accent/30 text-accent hover:bg-accent hover:text-white transition-all duration-200"
+              >
                 <Shield className="h-4 w-4 mr-2" />
                 Admin Panel
               </Button>
@@ -98,7 +102,7 @@ const Navigation = ({
                 <Button 
                   variant="ghost" 
                   onClick={() => handleNavigation('/properties')}
-                  className="flex items-center px-3"
+                  className="flex items-center px-4 text-foreground hover:text-accent hover:bg-accent/10 transition-all duration-200"
                 >
                   <Building2 className="h-4 w-4 mr-2" />
                   Manage Properties
@@ -106,7 +110,7 @@ const Navigation = ({
                 <Button 
                   variant="ghost" 
                   onClick={onAddPropertyClick}
-                  className="flex items-center px-3"
+                  className="flex items-center px-4 text-foreground hover:text-accent hover:bg-accent/10 transition-all duration-200"
                 >
                   <Plus className="h-4 w-4 mr-2" />
                   Add Property
@@ -117,26 +121,35 @@ const Navigation = ({
             {/* User Menu */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex items-center px-3">
+                <Button variant="ghost" className="flex items-center px-4 text-foreground hover:text-accent hover:bg-accent/10 transition-all duration-200">
                   <User className="h-4 w-4 mr-2" />
                   {userName || 'User'}
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48 bg-white border shadow-lg">
+              <DropdownMenuContent align="end" className="w-48 bg-card border border-border/50 shadow-elegant">
                 {userRole === 'landlord' && (
                   <>
-                    <DropdownMenuItem onClick={() => handleNavigation('/properties')}>
+                    <DropdownMenuItem 
+                      onClick={() => handleNavigation('/properties')}
+                      className="text-foreground hover:text-accent hover:bg-accent/10 cursor-pointer transition-colors"
+                    >
                       <Building2 className="h-4 w-4 mr-2" />
                       My Properties
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleNavigation('/analytics')}>
+                    <DropdownMenuItem 
+                      onClick={() => handleNavigation('/analytics')}
+                      className="text-foreground hover:text-accent hover:bg-accent/10 cursor-pointer transition-colors"
+                    >
                       <BarChart3 className="h-4 w-4 mr-2" />
                       Analytics
                     </DropdownMenuItem>
                   </>
                 )}
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => handleNavigation('/settings')}>
+                <DropdownMenuSeparator className="bg-border/50" />
+                <DropdownMenuItem 
+                  onClick={() => handleNavigation('/settings')}
+                  className="text-foreground hover:text-accent hover:bg-accent/10 cursor-pointer transition-colors"
+                >
                   <Settings className="h-4 w-4 mr-2" />
                   Settings
                 </DropdownMenuItem>
@@ -147,7 +160,7 @@ const Navigation = ({
             <Button 
               variant="outline" 
               onClick={handleSignOut}
-              className="border-gray-300 bg-white hover:bg-gray-50 text-gray-700 hover:text-gray-900 px-3 transition-colors"
+              className="border-foreground/20 bg-transparent hover:bg-foreground hover:text-card text-foreground px-4 transition-all duration-200"
             >
               <LogOut className="h-4 w-4 mr-2" />
               Sign Out
@@ -161,7 +174,7 @@ const Navigation = ({
               variant="outline" 
               size="sm"
               onClick={handleSignOut}
-              className="border-gray-300 bg-white hover:bg-gray-50 text-gray-700 hover:text-gray-900 transition-colors"
+              className="border-foreground/20 bg-transparent hover:bg-foreground hover:text-card text-foreground transition-all duration-200"
             >
               <LogOut className="h-4 w-4" />
               <span className="ml-1 text-xs">Out</span>
@@ -169,33 +182,48 @@ const Navigation = ({
             
             <DropdownMenu open={isMenuOpen} onOpenChange={setIsMenuOpen}>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm">
+                <Button variant="ghost" size="sm" className="text-foreground hover:text-accent hover:bg-accent/10">
                   <Menu className="h-5 w-5" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48 bg-white border shadow-lg">
-                <DropdownMenuItem onClick={onSearchClick}>
+              <DropdownMenuContent align="end" className="w-48 bg-card border border-border/50 shadow-elegant">
+                <DropdownMenuItem 
+                  onClick={onSearchClick}
+                  className="text-foreground hover:text-accent hover:bg-accent/10 cursor-pointer transition-colors"
+                >
                   <Search className="h-4 w-4 mr-2" />
                   Search Properties
                 </DropdownMenuItem>
                 {userRole === 'landlord' && (
                   <>
-                    <DropdownMenuItem onClick={onAddPropertyClick}>
+                    <DropdownMenuItem 
+                      onClick={onAddPropertyClick}
+                      className="text-foreground hover:text-accent hover:bg-accent/10 cursor-pointer transition-colors"
+                    >
                       <Plus className="h-4 w-4 mr-2" />
                       Add Property
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleNavigation('/properties')}>
+                    <DropdownMenuItem 
+                      onClick={() => handleNavigation('/properties')}
+                      className="text-foreground hover:text-accent hover:bg-accent/10 cursor-pointer transition-colors"
+                    >
                       <Building2 className="h-4 w-4 mr-2" />
                       My Properties
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleNavigation('/analytics')}>
+                    <DropdownMenuItem 
+                      onClick={() => handleNavigation('/analytics')}
+                      className="text-foreground hover:text-accent hover:bg-accent/10 cursor-pointer transition-colors"
+                    >
                       <BarChart3 className="h-4 w-4 mr-2" />
                       Analytics
                     </DropdownMenuItem>
                   </>
                 )}
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => handleNavigation('/settings')}>
+                <DropdownMenuSeparator className="bg-border/50" />
+                <DropdownMenuItem 
+                  onClick={() => handleNavigation('/settings')}
+                  className="text-foreground hover:text-accent hover:bg-accent/10 cursor-pointer transition-colors"
+                >
                   <Settings className="h-4 w-4 mr-2" />
                   Settings
                 </DropdownMenuItem>
