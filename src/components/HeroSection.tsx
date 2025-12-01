@@ -56,10 +56,10 @@ const HeroSection = ({ userMode, onSearchClick, onAddPropertyClick }: HeroSectio
       <div className="relative z-10">
         <div className="text-center mb-12">
           <ScrollReveal variant="fadeDown" delay={0.1}>
-            <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold mb-8" style={{ 
+            <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold mb-8 border border-accent/30" style={{ 
               background: 'var(--gradient-gold)',
               boxShadow: 'var(--shadow-gold)',
-              color: 'hsl(var(--primary-foreground))'
+              color: 'hsl(0 0% 100%)'
             }}>
               <Star className="h-4 w-4 fill-current" />
               Premium Property Solutions
@@ -89,7 +89,7 @@ const HeroSection = ({ userMode, onSearchClick, onAddPropertyClick }: HeroSectio
                     style={{
                       background: 'var(--gradient-gold)',
                       boxShadow: 'var(--shadow-gold)',
-                      color: 'hsl(var(--primary-foreground))'
+                      color: 'hsl(0 0% 100%)'
                     }}
                   >
                     <Search className="h-6 w-6 mr-3" />
@@ -121,7 +121,7 @@ const HeroSection = ({ userMode, onSearchClick, onAddPropertyClick }: HeroSectio
                     style={{
                       background: 'var(--gradient-gold)',
                       boxShadow: 'var(--shadow-gold)',
-                      color: 'hsl(var(--primary-foreground))'
+                      color: 'hsl(0 0% 100%)'
                     }}
                   >
                     <Plus className="h-6 w-6 mr-3" />
@@ -141,7 +141,7 @@ const HeroSection = ({ userMode, onSearchClick, onAddPropertyClick }: HeroSectio
                 background: 'var(--gradient-gold)',
                 boxShadow: 'var(--shadow-gold)'
               }}>
-                <Home className="h-10 w-10" style={{ color: 'hsl(var(--primary-foreground))' }} />
+                <Home className="h-10 w-10 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-foreground mb-4 tracking-tight">Quality Properties</h3>
               <p className="text-muted-foreground leading-relaxed font-light">Verified listings with detailed information and high-quality photos</p>
@@ -154,7 +154,7 @@ const HeroSection = ({ userMode, onSearchClick, onAddPropertyClick }: HeroSectio
                 background: 'var(--gradient-gold)',
                 boxShadow: 'var(--shadow-gold)'
               }}>
-                <Shield className="h-10 w-10" style={{ color: 'hsl(var(--primary-foreground))' }} />
+                <Shield className="h-10 w-10 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-foreground mb-4 tracking-tight">Secure Platform</h3>
               <p className="text-muted-foreground leading-relaxed font-light">Safe and secure transactions with verified users and properties</p>
@@ -167,7 +167,7 @@ const HeroSection = ({ userMode, onSearchClick, onAddPropertyClick }: HeroSectio
                 background: 'var(--gradient-gold)',
                 boxShadow: 'var(--shadow-gold)'
               }}>
-                <Users className="h-10 w-10" style={{ color: 'hsl(var(--primary-foreground))' }} />
+                <Users className="h-10 w-10 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-foreground mb-4 tracking-tight">Community Focused</h3>
               <p className="text-muted-foreground leading-relaxed font-light">Connect with neighbors and build lasting relationships</p>
