@@ -282,16 +282,18 @@ const Auth = () => {
 
   if (showForgotPassword) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-accent/10 to-primary/5 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid-pattern opacity-5" />
+      <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden" style={{ background: 'var(--gradient-hero)' }}>
+        <div className="absolute inset-0 bg-grid-pattern opacity-[0.03]" />
+        {/* Decorative gold accent line */}
+        <div className="absolute top-0 left-0 right-0 h-1 bg-accent" />
         <div className="max-w-md w-full space-y-8 relative z-10 animate-fade-in">
           <div className="text-center space-y-4">
             <div className="flex justify-center">
-              <div className="rounded-full bg-primary/10 p-4 shadow-lg animate-scale-in">
-                <Home className="h-12 w-12 text-primary" />
+              <div className="rounded-full p-5 animate-scale-in border-2 border-accent/30" style={{ background: 'var(--gradient-gold)', boxShadow: 'var(--shadow-gold)' }}>
+                <Home className="h-10 w-10 text-background" />
               </div>
             </div>
-            <h2 className="mt-6 text-3xl font-bold text-foreground">
+            <h2 className="mt-6 text-3xl font-bold text-foreground tracking-tight">
               Reset your password
             </h2>
             <p className="mt-2 text-sm text-muted-foreground">
@@ -299,24 +301,24 @@ const Auth = () => {
             </p>
           </div>
 
-          <Card className="border-border/50 shadow-elegant backdrop-blur-sm bg-card/95">
-            <CardHeader>
-              <CardTitle className="text-2xl">Forgot Password</CardTitle>
-              <CardDescription>
+          <Card className="border-accent/20 shadow-elegant backdrop-blur-sm bg-card/98">
+            <CardHeader className="border-b border-border/30 pb-6">
+              <CardTitle className="text-2xl font-semibold">Forgot Password</CardTitle>
+              <CardDescription className="text-muted-foreground">
                 We'll send you a password reset link
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-6">
               <form onSubmit={handleForgotPassword} className="space-y-6">
                 <div className="space-y-2">
-                  <Label htmlFor="forgot-email" className="text-sm font-medium">Email</Label>
+                  <Label htmlFor="forgot-email" className="text-sm font-medium text-foreground">Email</Label>
                   <Input
                     id="forgot-email"
                     type="email"
                     value={forgotPasswordEmail}
                     onChange={(e) => setForgotPasswordEmail(e.target.value)}
                     placeholder="Enter your email address"
-                    className="h-11 transition-shadow focus:shadow-elegant"
+                    className="h-12 transition-all focus:border-accent focus:ring-accent/20 bg-background/50"
                     required
                   />
                 </div>
@@ -324,13 +326,18 @@ const Auth = () => {
                   <Button
                     type="button"
                     variant="outline"
-                    className="flex-1 h-11 transition-all hover:scale-[1.02]"
+                    className="flex-1 h-12 transition-all hover:border-accent hover:text-accent"
                     onClick={() => setShowForgotPassword(false)}
                   >
                     <ArrowLeft className="h-4 w-4 mr-2" />
-                    Back to Sign In
+                    Back
                   </Button>
-                  <Button type="submit" className="flex-1 h-11 shadow-elegant transition-all hover:scale-[1.02]" disabled={isLoading}>
+                  <Button 
+                    type="submit" 
+                    className="flex-1 h-12 font-semibold transition-all hover:scale-[1.02] text-primary-foreground" 
+                    style={{ background: 'var(--gradient-gold)', boxShadow: 'var(--shadow-gold)' }}
+                    disabled={isLoading}
+                  >
                     {isLoading ? 'Sending...' : 'Send Reset Link'}
                   </Button>
                 </div>
@@ -343,71 +350,78 @@ const Auth = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-accent/10 to-primary/5 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      <div className="absolute inset-0 bg-grid-pattern opacity-5" />
+    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden" style={{ background: 'var(--gradient-hero)' }}>
+      <div className="absolute inset-0 bg-grid-pattern opacity-[0.03]" />
+      {/* Decorative gold accent line */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-accent" />
       <div className="max-w-md w-full space-y-8 relative z-10 animate-fade-in">
         <div className="text-center space-y-4">
           <div className="flex justify-center">
-            <div className="rounded-full bg-primary/10 p-4 shadow-lg animate-scale-in">
-              <Home className="h-12 w-12 text-primary" />
+            <div className="rounded-full p-5 animate-scale-in border-2 border-accent/30" style={{ background: 'var(--gradient-gold)', boxShadow: 'var(--shadow-gold)' }}>
+              <Home className="h-10 w-10 text-background" />
             </div>
           </div>
-          <h2 className="mt-6 text-3xl font-bold text-foreground">
+          <h2 className="mt-6 text-3xl font-bold text-foreground tracking-tight">
             Welcome to DwellMerge
           </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p className="mt-2 text-sm text-muted-foreground max-w-xs mx-auto">
             Find your perfect rental home or list your property
           </p>
         </div>
 
         <Tabs defaultValue="signin" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 bg-muted/50 backdrop-blur-sm p-1 h-12">
-            <TabsTrigger value="signin" className="data-[state=active]:shadow-elegant transition-all">Sign In</TabsTrigger>
-            <TabsTrigger value="signup" className="data-[state=active]:shadow-elegant transition-all">Sign Up</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 bg-secondary/50 backdrop-blur-sm p-1.5 h-14 rounded-xl border border-border/30">
+            <TabsTrigger value="signin" className="data-[state=active]:bg-card data-[state=active]:shadow-elegant data-[state=active]:text-accent transition-all rounded-lg font-semibold">Sign In</TabsTrigger>
+            <TabsTrigger value="signup" className="data-[state=active]:bg-card data-[state=active]:shadow-elegant data-[state=active]:text-accent transition-all rounded-lg font-semibold">Sign Up</TabsTrigger>
           </TabsList>
           
           <TabsContent value="signin" className="mt-6">
-            <Card className="border-border/50 shadow-elegant backdrop-blur-sm bg-card/95">
-              <CardHeader className="space-y-2">
-                <CardTitle className="text-2xl">Sign In</CardTitle>
-                <CardDescription>
+            <Card className="border-accent/20 shadow-elegant backdrop-blur-sm bg-card/98">
+              <CardHeader className="space-y-2 border-b border-border/30 pb-6">
+                <CardTitle className="text-2xl font-semibold">Sign In</CardTitle>
+                <CardDescription className="text-muted-foreground">
                   Enter your credentials to access your account
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-6">
                 <form onSubmit={handleSignIn} className="space-y-6">
                   <div className="space-y-2">
-                    <Label htmlFor="signin-email" className="text-sm font-medium">Email</Label>
+                    <Label htmlFor="signin-email" className="text-sm font-medium text-foreground">Email</Label>
                     <Input
                       id="signin-email"
                       type="email"
                       value={signInData.email}
                       onChange={(e) => setSignInData({ ...signInData, email: e.target.value })}
-                      className="h-11 transition-shadow focus:shadow-elegant"
+                      className="h-12 transition-all focus:border-accent focus:ring-accent/20 bg-background/50"
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="signin-password" className="text-sm font-medium">Password</Label>
+                    <Label htmlFor="signin-password" className="text-sm font-medium text-foreground">Password</Label>
                     <Input
                       id="signin-password"
                       type="password"
                       value={signInData.password}
                       onChange={(e) => setSignInData({ ...signInData, password: e.target.value })}
-                      className="h-11 transition-shadow focus:shadow-elegant"
+                      className="h-12 transition-all focus:border-accent focus:ring-accent/20 bg-background/50"
                       required
                     />
                   </div>
-                  <Button type="submit" className="w-full h-11 shadow-elegant transition-all hover:scale-[1.02]" disabled={isLoading}>
+                  <Button 
+                    type="submit" 
+                    className="w-full h-12 font-semibold transition-all hover:scale-[1.02] text-primary-foreground" 
+                    style={{ background: 'var(--gradient-gold)', boxShadow: 'var(--shadow-gold)' }}
+                    disabled={isLoading}
+                  >
                     {isLoading ? 'Signing In...' : 'Sign In'}
                   </Button>
                   
-                  <div className="relative">
+                  <div className="relative my-6">
                     <div className="absolute inset-0 flex items-center">
-                      <span className="w-full border-t" />
+                      <span className="w-full border-t border-border/50" />
                     </div>
                     <div className="relative flex justify-center text-xs uppercase">
-                      <span className="bg-background px-2 text-muted-foreground">
+                      <span className="bg-card px-3 text-muted-foreground font-semibold">
                         Or continue with
                       </span>
                     </div>
@@ -417,11 +431,11 @@ const Auth = () => {
                     <Button
                       type="button"
                       variant="outline"
-                      className="w-full h-11 transition-all hover:scale-[1.02] hover:shadow-soft"
+                      className="w-full h-12 transition-all hover:scale-[1.02] hover:border-accent hover:bg-accent/5 font-medium"
                       onClick={handleGoogleSignIn}
                       disabled={isLoading}
                     >
-                      <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
+                      <svg className="mr-2 h-5 w-5" viewBox="0 0 24 24">
                         <path
                           d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                           fill="#4285F4"
@@ -442,17 +456,17 @@ const Auth = () => {
                       Continue with Google
                     </Button>
                     
-                    <div className="text-xs text-amber-700 bg-amber-50/80 dark:bg-amber-950/30 dark:text-amber-400 p-3 rounded-lg border border-amber-200/50 dark:border-amber-800/50 backdrop-blur-sm">
-                      <strong>Note for Landlords:</strong> Google sign-in creates a basic tenant account. 
-                      Please use the regular sign-up form above to properly set your role as a landlord.
+                    <div className="text-xs text-accent bg-accent/10 p-3 rounded-lg border border-accent/20">
+                      <strong className="text-foreground">Note for Landlords:</strong> <span className="text-muted-foreground">Google sign-in creates a basic tenant account. 
+                      Please use the sign-up form to properly set your role as a landlord.</span>
                     </div>
                   </div>
                   
-                  <div className="text-center">
+                  <div className="text-center pt-2">
                     <button
                       type="button"
                       onClick={() => setShowForgotPassword(true)}
-                      className="text-sm text-primary hover:text-primary/80 underline underline-offset-4 transition-colors font-medium"
+                      className="text-sm text-accent hover:text-accent/80 underline underline-offset-4 transition-colors font-medium"
                     >
                       Forgot your password?
                     </button>
@@ -463,51 +477,51 @@ const Auth = () => {
           </TabsContent>
           
           <TabsContent value="signup" className="mt-6">
-            <Card className="border-border/50 shadow-elegant backdrop-blur-sm bg-card/95">
-              <CardHeader className="space-y-2">
-                <CardTitle className="text-2xl">Sign Up</CardTitle>
-                <CardDescription>
+            <Card className="border-accent/20 shadow-elegant backdrop-blur-sm bg-card/98">
+              <CardHeader className="space-y-2 border-b border-border/30 pb-6">
+                <CardTitle className="text-2xl font-semibold">Sign Up</CardTitle>
+                <CardDescription className="text-muted-foreground">
                   Create a new account to get started
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-6">
                 <form onSubmit={handleSignUp} className="space-y-5">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="first-name" className="text-sm font-medium">First Name</Label>
+                      <Label htmlFor="first-name" className="text-sm font-medium text-foreground">First Name</Label>
                       <Input
                         id="first-name"
                         value={signUpData.firstName}
                         onChange={(e) => setSignUpData({ ...signUpData, firstName: e.target.value })}
-                        className="h-11 transition-shadow focus:shadow-elegant"
+                        className="h-12 transition-all focus:border-accent focus:ring-accent/20 bg-background/50"
                         required
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="last-name" className="text-sm font-medium">Last Name (optional)</Label>
+                      <Label htmlFor="last-name" className="text-sm font-medium text-foreground">Last Name</Label>
                       <Input
                         id="last-name"
                         value={signUpData.lastName}
                         onChange={(e) => setSignUpData({ ...signUpData, lastName: e.target.value })}
-                        className="h-11 transition-shadow focus:shadow-elegant"
+                        className="h-12 transition-all focus:border-accent focus:ring-accent/20 bg-background/50"
                       />
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="signup-email" className="text-sm font-medium">Email</Label>
+                    <Label htmlFor="signup-email" className="text-sm font-medium text-foreground">Email</Label>
                     <Input
                       id="signup-email"
                       type="email"
                       value={signUpData.email}
                       onChange={(e) => setSignUpData({ ...signUpData, email: e.target.value })}
-                      className="h-11 transition-shadow focus:shadow-elegant"
+                      className="h-12 transition-all focus:border-accent focus:ring-accent/20 bg-background/50"
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="role" className="text-sm font-medium">I am a</Label>
+                    <Label htmlFor="role" className="text-sm font-medium text-foreground">I am a</Label>
                     <Select value={signUpData.role} onValueChange={(value) => setSignUpData({ ...signUpData, role: value })}>
-                      <SelectTrigger className="h-11">
+                      <SelectTrigger className="h-12 focus:border-accent focus:ring-accent/20 bg-background/50">
                         <SelectValue placeholder="Select your role" />
                       </SelectTrigger>
                       <SelectContent>
@@ -517,7 +531,7 @@ const Auth = () => {
                     </Select>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="signup-password" className="text-sm font-medium">Password</Label>
+                    <Label htmlFor="signup-password" className="text-sm font-medium text-foreground">Password</Label>
                     <Input
                       id="signup-password"
                       type="password"
@@ -537,13 +551,13 @@ const Auth = () => {
                           setPasswordsMatch(null);
                         }
                       }}
-                      className="h-11 transition-shadow focus:shadow-elegant"
+                      className="h-12 transition-all focus:border-accent focus:ring-accent/20 bg-background/50"
                       required
                     />
                     
                     {/* Password strength indicator */}
                     {signUpData.password && (
-                      <div className="mt-3 space-y-3 p-3 rounded-lg bg-muted/30 border border-border/50">
+                      <div className="mt-3 space-y-3 p-4 rounded-lg bg-secondary/30 border border-border/30">
                         <div className="flex items-center gap-3">
                           <div className="flex-1">
                             <div className="flex justify-between items-center mb-2">
@@ -632,7 +646,7 @@ const Auth = () => {
                     )}
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="confirm-password" className="text-sm font-medium">Confirm Password</Label>
+                    <Label htmlFor="confirm-password" className="text-sm font-medium text-foreground">Confirm Password</Label>
                     <Input
                       id="confirm-password"
                       type="password"
@@ -648,7 +662,7 @@ const Auth = () => {
                           setPasswordsMatch(null);
                         }
                       }}
-                      className="h-11 transition-shadow focus:shadow-elegant"
+                      className="h-12 transition-all focus:border-accent focus:ring-accent/20 bg-background/50"
                       required
                     />
                     {/* Password match indicator */}
@@ -671,30 +685,35 @@ const Auth = () => {
                     )}
                   </div>
                   
-                   <div className="flex items-center space-x-3 p-3 rounded-lg bg-muted/20 border border-border/50 transition-all hover:bg-muted/30">
+                   <div className="flex items-center space-x-3 p-4 rounded-lg bg-secondary/30 border border-border/30 transition-all hover:bg-secondary/50">
                      <Checkbox
                        id="terms"
                        checked={acceptedTerms}
                        onCheckedChange={(checked) => setAcceptedTerms(checked as boolean)}
-                       className="data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                       className="data-[state=checked]:bg-accent data-[state=checked]:border-accent"
                      />
                      <Label
                        htmlFor="terms"
-                       className="text-sm font-medium leading-relaxed cursor-pointer peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                       className="text-sm font-medium leading-relaxed cursor-pointer peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-foreground"
                      >
                        I agree to the{' '}
                        <a 
                          href="/terms" 
                          target="_blank" 
                          rel="noopener noreferrer" 
-                         className="text-primary hover:text-primary/80 underline underline-offset-4 font-semibold transition-colors"
+                         className="text-accent hover:text-accent/80 underline underline-offset-4 font-semibold transition-colors"
                        >
                          Terms and Conditions
                        </a>
                      </Label>
                    </div>
                   
-                  <Button type="submit" className="w-full h-12 text-base shadow-elegant transition-all hover:scale-[1.02]" disabled={isLoading || !acceptedTerms || passwordStrength.score < 3}>
+                  <Button 
+                    type="submit" 
+                    className="w-full h-12 text-base font-semibold transition-all hover:scale-[1.02] text-primary-foreground" 
+                    style={{ background: 'var(--gradient-gold)', boxShadow: 'var(--shadow-gold)' }}
+                    disabled={isLoading || !acceptedTerms || passwordStrength.score < 3}
+                  >
                     {isLoading ? 'Creating Account...' : 'Sign Up'}
                   </Button>
 
@@ -713,11 +732,11 @@ const Auth = () => {
                     <Button
                       type="button"
                       variant="outline"
-                      className="w-full h-11 transition-all hover:scale-[1.02] hover:shadow-soft"
+                      className="w-full h-12 transition-all hover:scale-[1.02] hover:border-accent hover:bg-accent/5 font-medium"
                       onClick={() => handleGoogleSignUp('tenant')}
                       disabled={isLoading || !acceptedTerms}
                     >
-                      <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
+                      <svg className="mr-2 h-5 w-5" viewBox="0 0 24 24">
                         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
                         <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
                         <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
@@ -728,11 +747,11 @@ const Auth = () => {
                     <Button
                       type="button"
                       variant="outline"
-                      className="w-full h-11 transition-all hover:scale-[1.02] hover:shadow-soft"
+                      className="w-full h-12 transition-all hover:scale-[1.02] hover:border-accent hover:bg-accent/5 font-medium"
                       onClick={() => handleGoogleSignUp('landlord')}
                       disabled={isLoading || !acceptedTerms}
                     >
-                      <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
+                      <svg className="mr-2 h-5 w-5" viewBox="0 0 24 24">
                         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
                         <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
                         <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
