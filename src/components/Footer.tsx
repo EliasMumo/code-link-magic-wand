@@ -10,7 +10,7 @@ const Footer = () => {
       <div className="h-1 bg-accent" />
       
       <div className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* Brand Section */}
           <div className="space-y-6">
             <div className="flex items-center gap-3">
@@ -42,27 +42,7 @@ const Footer = () => {
               Quick Links
             </h3>
             <ul className="space-y-3">
-              {['Browse Properties', 'List Your Property', 'How It Works', 'Pricing', 'FAQs'].map((link) => (
-                <li key={link}>
-                  <a 
-                    href="#" 
-                    className="text-background/70 hover:text-accent transition-colors duration-300 flex items-center gap-2 group"
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent/50 group-hover:bg-accent transition-colors" />
-                    {link}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Support */}
-          <div className="space-y-6">
-            <h3 className="text-lg font-semibold text-background border-b border-accent/30 pb-3">
-              Support
-            </h3>
-            <ul className="space-y-3">
-              {['Help Center', 'Contact Us', 'Privacy Policy', 'Terms of Service', 'Accessibility'].map((link) => (
+              {['Browse Properties', 'List Your Property', 'How It Works', 'Pricing'].map((link) => (
                 <li key={link}>
                   <a 
                     href="#" 

@@ -5,7 +5,7 @@ import SimpleSearch from '@/components/SimpleSearch';
 import PropertyDetail from '@/components/PropertyDetail';
 import AddPropertyForm from '@/components/AddPropertyForm';
 import HeroSection from '@/components/HeroSection';
-import StatsSection from '@/components/StatsSection';
+
 import FeaturedProperties from '@/components/FeaturedProperties';
 import LandlordDashboard from '@/components/LandlordDashboard';
 import AdminDashboard from '@/components/AdminDashboard';
@@ -125,12 +125,6 @@ const Index = () => {
               onAddPropertyClick={handleAddPropertyClick}
             />
 
-            <StatsSection 
-              propertiesCount={propertiesCount}
-              availablePropertiesCount={availablePropertiesCount}
-              totalViews={totalViews}
-              totalInquiries={totalInquiries}
-            />
 
             {userMode === 'renter' && (
               <FeaturedProperties 
