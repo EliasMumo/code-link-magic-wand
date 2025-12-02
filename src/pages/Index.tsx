@@ -12,6 +12,7 @@ import AdminDashboard from '@/components/AdminDashboard';
 import FeatureHighlights from '@/components/FeatureHighlights';
 import TestimonialsSection from '@/components/TestimonialsSection';
 import CTASection from '@/components/CTASection';
+import Footer from '@/components/Footer';
 import { Home } from 'lucide-react';
 import { useIndexLogic } from '@/hooks/useIndexLogic';
 
@@ -163,7 +164,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <Navigation 
         userMode={userMode}
         onModeChange={() => {}} // Disabled since mode is now based on actual role
@@ -176,9 +177,11 @@ const Index = () => {
         userName={userName}
       />
       
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         {renderContent()}
       </main>
+
+      {currentView === 'home' && <Footer />}
     </div>
   );
 };
