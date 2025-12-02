@@ -49,7 +49,7 @@ const PropertyCard = ({
 
   return (
     <Card 
-      className="cursor-pointer hover:shadow-lg transition-shadow duration-300 overflow-hidden"
+      className="cursor-pointer group hover:shadow-elegant transition-all duration-300 overflow-hidden border-border/50 bg-card/98 hover:border-accent/30"
       onClick={() => onClick(property)}
     >
       <div className="relative">
@@ -58,16 +58,19 @@ const PropertyCard = ({
           title={property.title}
           className="h-48"
         />
-        <div className="absolute top-2 right-2 flex gap-2">
+        {/* Elegant overlay gradient */}
+        <div className="absolute inset-0 bg-gradient-to-t from-foreground/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+        
+        <div className="absolute top-3 right-3 flex gap-2">
           {onToggleFavorite && (
             <Button
               variant="ghost"
               size="sm"
-              className="h-8 w-8 p-0 bg-white/90 hover:bg-white"
+              className="h-9 w-9 p-0 bg-card/95 backdrop-blur-sm hover:bg-card border border-border/50 shadow-soft"
               onClick={handleFavoriteClick}
             >
               <Heart 
-                className={`h-4 w-4 ${isFavorite ? 'fill-red-500 text-red-500' : 'text-gray-600'}`} 
+                className={`h-4 w-4 transition-colors ${isFavorite ? 'fill-accent text-accent' : 'text-muted-foreground'}`} 
               />
             </Button>
           )}
@@ -75,74 +78,80 @@ const PropertyCard = ({
             <Button
               variant="ghost"
               size="sm"
-              className="h-8 w-8 p-0 bg-white/90 hover:bg-white"
+              className="h-9 w-9 p-0 bg-card/95 backdrop-blur-sm hover:bg-card border border-border/50 shadow-soft"
               onClick={handleComparisonClick}
             >
               <GitCompare 
-                className={`h-4 w-4 ${isInComparison ? 'text-blue-600' : 'text-gray-600'}`} 
+                className={`h-4 w-4 transition-colors ${isInComparison ? 'text-accent' : 'text-muted-foreground'}`} 
               />
             </Button>
           )}
-          <div className="flex gap-1">
-            <Badge variant={property.is_available ? 'default' : 'secondary'}>
+          <div className="flex gap-1.5">
+            <Badge 
+              variant={property.is_available ? 'default' : 'secondary'}
+              className={property.is_available 
+                ? 'bg-accent text-accent-foreground border-0 shadow-sm' 
+                : 'bg-secondary text-secondary-foreground'
+              }
+            >
               {property.is_available ? 'Available' : 'Rented'}
             </Badge>
             {property.is_available && property.vacancy_count !== undefined && property.vacancy_count > 0 && (
-              <Badge variant="outline" className="bg-white/90 text-xs">
+              <Badge variant="outline" className="bg-card/95 backdrop-blur-sm text-xs border-accent/30 text-foreground">
                 {property.vacancy_count} unit{property.vacancy_count !== 1 ? 's' : ''}
               </Badge>
             )}
           </div>
         </div>
-        <div className="absolute bottom-2 left-2">
-          <Badge variant="outline" className="bg-white/90">
+        <div className="absolute bottom-3 left-3">
+          <Badge variant="outline" className="bg-card/95 backdrop-blur-sm border-border/50 text-foreground font-medium">
             {property.property_type}
           </Badge>
         </div>
       </div>
       
-      <CardContent className="p-4">
-        <h3 className="font-semibold text-lg text-gray-900 mb-2 line-clamp-1">
+      <CardContent className="p-5">
+        <h3 className="font-semibold text-lg text-foreground mb-2 line-clamp-1 group-hover:text-accent transition-colors">
           {property.title}
         </h3>
         
-        <div className="flex items-center text-gray-600 mb-2">
-          <MapPin className="h-4 w-4 mr-1" />
+        <div className="flex items-center text-muted-foreground mb-3">
+          <MapPin className="h-4 w-4 mr-1.5 text-accent/70" />
           <span className="text-sm">{property.location}</span>
         </div>
         
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center space-x-4 text-sm text-gray-600">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center space-x-4 text-sm text-muted-foreground">
             <div className="flex items-center">
-              <Bed className="h-4 w-4 mr-1" />
+              <Bed className="h-4 w-4 mr-1.5 text-accent/60" />
               <span>{property.bedrooms}</span>
             </div>
             <div className="flex items-center">
-              <Bath className="h-4 w-4 mr-1" />
+              <Bath className="h-4 w-4 mr-1.5 text-accent/60" />
               <span>{property.bathrooms}</span>
             </div>
             {property.images && property.images.length > 0 && (
               <div className="flex items-center">
-                <Camera className="h-4 w-4 mr-1 text-primary" />
+                <Camera className="h-4 w-4 mr-1.5 text-accent/60" />
                 <span>{property.images.length}</span>
               </div>
             )}
             {property.videos && property.videos.length > 0 && (
               <div className="flex items-center">
-                <Video className="h-4 w-4 mr-1 text-primary" />
+                <Video className="h-4 w-4 mr-1.5 text-accent/60" />
                 <span>{property.videos.length}</span>
               </div>
             )}
           </div>
         </div>
         
-        <div className="flex items-center justify-between">
-          <span className="text-2xl font-bold text-blue-600">
+        <div className="flex items-center justify-between pt-3 border-t border-border/50">
+          <span className="text-xl font-bold text-accent">
             {formatPrice(property.price, property.currency || 'USD')}/mo
           </span>
           {property.is_available && property.vacancy_count !== undefined && property.vacancy_count > 1 && (
-            <div className="flex items-center text-sm text-gray-600">
-              <Users className="h-4 w-4 mr-1" />
+            <div className="flex items-center text-sm text-muted-foreground">
+              <Users className="h-4 w-4 mr-1.5 text-accent/60" />
               <span>{property.vacancy_count} available</span>
             </div>
           )}
