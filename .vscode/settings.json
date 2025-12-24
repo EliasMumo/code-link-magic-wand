@@ -1,0 +1,7 @@
+{
+  "liveServer.settings.root": "dist",
+  "liveServer.settings.port": 5500,
+  "liveServer.settings.wait": 500,
+  "liveServer.settings.ignore": ["**/node_modules/**", "**/.git/**"],
+  "liveServer.settings.noBrowser": false
+}
